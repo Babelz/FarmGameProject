@@ -45,7 +45,9 @@ Jokainen liikutettava olio on gameobject, eli toisin sanoen gameobject voi liikk
  	* Eventit
  	* World eventit
 
- Pidetään muistissa niin kauan kun pelaaja käy tallentaan pelin. 
- #!!!!!!! SAVE FILE TIETOKANTAA EI SÖRKITÄ IKINÄ ENNEN KU PELAAJA TALLENTAA PELIN !!!!!!
+Pidetään muistissa niin kauan kun pelaaja käy tallentaan pelin. 
+#!!!!!!! SAVE FILE TIETOKANTAA EI SÖRKITÄ IKINÄ ENNEN KU PELAAJA TALLENTAA PELIN !!!!!!
+
+Tietokannasta ei poisteta ikinä mitään, vaan merkataan asioita poistettaviksi. Se antaa backwards compatibilityä ja pystyy korjaamaan mahdolliset bugit, koska juttu on vielä tallessa. 
 
 
