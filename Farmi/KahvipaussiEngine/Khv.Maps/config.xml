@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<MapConfiguration>
+  <MapPaths>
+    <Path>Content\Maps\</Path>
+  </MapPaths>
+</MapConfiguration>

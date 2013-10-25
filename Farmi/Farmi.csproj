@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{452F224A-E9D3-424F-9128-4A019468C676}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Farmi</RootNamespace>
+    <AssemblyName>Farmi</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\WindowsGL\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\WindowsGL\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Game1.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Args.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Enums.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\GameStateMachine.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\GameStateManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Helpers.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\KhvGame.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\StateMachine.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\State\EmptyScreen.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\State\GameState.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\State\IStateElement.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\State\ScreenState.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Structs.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\EmptyTransition.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\FadeInHalfTransitionEffect.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\FadeInTransitionEffect.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\FadeOutHalfTransitionEffect.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\FadeOutTransitionEffect.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\IStandAloneTransition.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\ITransition.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\TransitionEffect.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\CharacterEntity.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\BoxCollider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\Collider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\CollisionResult.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\Polygon.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\PolygonCollider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\ShapeType.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\GameObjects\DrawableGameObject.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\GameObjects\GameObject.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\GameObjects\IDrawableObjectComponent.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\GameObjects\IObjectComponent.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\GameObjects\ObjectComponentCollection.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\IEntity.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\MotionEngine.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Player.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\World.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\Alingment.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Collections\Container.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Collections\LayoutPanel.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Collections\Panel.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Collections\Window.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\ContainerManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\ControlManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\FocusManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\IContainerBuilder.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\IndexNavigator.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\Layout\BorderLayout.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\Layout\ILayoutable.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\Layout\ILayoutConstraints.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\Layout\LayoutManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\OnScreenKeyboard.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\TextInputProcessor.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\TransitionPlayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Containers\Components\WindowDesigner.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Control.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\ControlPosition.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\ControlSize.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Margin.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Padding.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\BaseComponents\Style.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\Colors.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\Enums.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\EventDispatchers\ButtonEventDispatcher.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\EventDispatchers\ControlEventDispatcher.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\EventDispatchers\EventDispatcher.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\EventDispatchers\MouseEventDispatcher.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\EventListeners\IButtonListener.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\EventListeners\IControlListener.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\EventListeners\IMouseListener.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\GuiHelper.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\Navigation\KeyTrigger.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\Navigation\NavigationKeyTrigger.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Components\Navigation\NavigationTriggers.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Controls\Button.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Controls\Label.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Controls\LinkLabel.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Controls\TextField.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Effects\DrawableEffect.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Effects\Effect.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Gui\Effects\EffectContainer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\Binding.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\ButtonTrigger.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\GamepadStateProvider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\IInputBindProvider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\IInputCallbacker.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\IInputStateProvider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\IMoveComponent.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\InputCallbacks.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\InputController.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\InputControlSetup.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\InputEventArgs.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\InputKey.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\InputManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\InputMapper.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\InputState.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\ITrigger.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\KeyboardStateProvider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\KeyInputBindProvider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\KeyTrigger.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\LerpRotationComponent.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\MouseInputBindProvider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\MouseStateProvider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\MoveComponent.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\PadInputBindProvider.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\RotationComponent.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Input\TestInputManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\CollectionLoader.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\Components\IDataCollection.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\Components\IObjectData.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\Components\ISheetObjectCollection.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\Components\Valuepair.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\MapObjects\MapObject.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\MapObjects\MapObjectCollection.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\MapObjects\SerializedMapObject.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\MapObjects\SerializedMapObjectCollection.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\RuleObjects\RuleData.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\RuleObjects\RuleDataCollection.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\RuleObjects\SerializedRuleData.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\DataClasses\RuleObjects\SerializedRuleDataCollection.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Layers\BaseSerializedLayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Layers\SerializedAnimationLayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Layers\SerializedComponents\SerializedAnimationManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Layers\SerializedComponents\SerializedMdiData.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Layers\SerializedObjectLayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Layers\SerializedRuleLayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Layers\SerializedTileLayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\SerializedMap.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\SerializedTileEngine.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Tiles\BaseSerializedTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Tiles\SerializedBaseTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Tiles\SerializedObjectTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps.SerializedDataTypes\Tiles\SerializedRuleTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Factories\LayerFactory.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Factories\MapComponentFactory.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Factories\SheetFactory.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Factories\TileFactory.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Components\AnimationManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Components\ComponentBuilder.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Components\DrawOrder.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Components\LayerComponentManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Components\LayerComponents.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Components\RuleHelper.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\ILayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\IMdiLayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Layer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\MdiLayer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Sheets\AnimationTileSheet.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Sheets\BaseClasses\DrawableSheet.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Sheets\BaseClasses\Sheet.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Sheets\TileSheet.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Tiles\AnimationTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Tiles\BaseTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Tiles\Interfaces\IDrawableTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Tiles\Interfaces\IObjectTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Tiles\Interfaces\IUpdatableTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Tiles\ObjectTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Tiles\RuleTile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Layers\Tiles\Tile.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Managers\DrawOrderManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Managers\GameObjectManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Managers\GameObjectManagerContainer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Managers\LayerManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Managers\Manager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Managers\MapComponentManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Managers\MapDepencyContainer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Managers\MapManager.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Processors\MapComponentDataProcessor.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Processors\MapDataLoader.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Processors\MapDataProcessor.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Processors\MapObjectProcessor.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\Processors\TileParameters.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\TileEngine.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapClasses\TileMap.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapComponents\ComponentData.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapComponents\MapComponent.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Particles\Emitters\Emitter.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Particles\Emitters\ParticleEffect.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Particles\Emitters\ParticleEmitter.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Particles\LoopTimedParticle.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Particles\Particle.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Particles\ParticleGenerators\GeneratorAtributes.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Particles\ParticleGenerators\ParticleGenerator.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Particles\TimedParticle.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Builders\ParallelScriptBuilder.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Builders\ScriptBuilder.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Containers\ScriptAssemblyContainer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Containers\ScriptDepencyContainer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Containers\ScriptObserverContainer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Containers\ScriptPathContainer.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Enums.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Resolvers\BlockingScriptResolver.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Resolvers\CompilerErrorLogger.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Resolvers\ParallelScriptResolver.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Resolvers\ResolverErrorLogger.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Resolvers\ScriptCompiler.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\Resolvers\ScriptResolver.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptAssembly.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptClasses\IAautonomousScript.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptClasses\IRunnableScript.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptClasses\IScript.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptClasses\IScriptComponent.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptClasses\IScriptService.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptEngine.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptObserver.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="OpenTK">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Lidgren.Network">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Tao.Sdl">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Tao.Sdl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+    <Content Include="KahvipaussiEngine\Khv.Gui\README.txt" />
+    <Content Include="KahvipaussiEngine\Khv.Gui\TODO.txt" />
+    <Content Include="KahvipaussiEngine\Khv.Maps\config.xml" />
+    <Content Include="KahvipaussiEngine\Khv.Maps\README.txt" />
+    <Content Include="KahvipaussiEngine\Khv.Scripts\csharpscriptengine_README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\" />
+    <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

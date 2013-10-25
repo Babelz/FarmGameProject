@@ -1,0 +1,123 @@
+﻿using Khv.Game;
+using Khv.Game.GameObjects;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework.Input;
+
+namespace Khv.Game
+{
+    public class MotionEngine
+    {
+
+        #region Vars
+
+        private readonly CharacterEntity character;
+
+        private Vector2 oldPosition = Vector2.Zero;
+
+        public Vector2 GoalVelocity = Vector2.Zero;
+
+        private float factor = 25;
+
+        #endregion
+
+        #region Ctor
+
+        public MotionEngine(CharacterEntity target)
+        {
+            character = target;
+            OldDirection = Vector2.Zero;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Palauttaa edellisen paikan ennen nopeuden laskua tällä framella.
+        /// Hyödyllinen esim collisionissa
+        /// </summary>
+        public Vector2 OldPosition
+        {
+            get { return oldPosition; }
+        }
+
+        /// <summary>
+        /// Palauttaa viime framen nopeuden.
+        /// </summary>
+        public Vector2 OldVelocity
+        {
+            get { return oldVelocity; }
+        }
+
+        public Vector2 Direction
+        {
+            get;
+            set;
+        }
+
+        public Vector2 OldDirection
+        {
+            get;
+            protected set;
+        }
+
+        #endregion
+
+        #region Methods
+
+
+        private Vector2 oldVelocity = Vector2.Zero;
+
+        private Vector2 floor = Vector2.Zero;
+
+        public void Update(GameTime gameTime)
+        {
+          
+            Vector2 v = new Vector2();
+           
+            v.X = CalculateSpeed(GoalVelocity.X, character.Velocity.X, (float)gameTime.ElapsedGameTime.TotalSeconds * factor);
+            v.Y = CalculateSpeed(GoalVelocity.Y, character.Velocity.Y, (float)gameTime.ElapsedGameTime.TotalSeconds * factor);
+
+            oldVelocity = character.Velocity;
+            character.Velocity = v;
+
+            oldPosition = character.Position;
+            character.Position += character.Velocity;
+        }
+
+        public float GoalVelocityX
+        {
+            get { return GoalVelocity.X;  }
+            set { GoalVelocity.X = value;  }
+        }
+
+        public float GoalVelocityY
+        {
+            get { return GoalVelocity.Y; }
+            set { GoalVelocity.Y = value; }
+        }
+
+        public float CalculateSpeed(float goal, float currentSpeed, float deltaTime)
+        {
+            float diff = goal - currentSpeed;
+            // jos ollaan kiihtymässä
+            if (diff > deltaTime)
+            {
+                return currentSpeed + deltaTime;
+            }
+
+            // jos ollaan pysähtymässä
+            if (diff < -deltaTime)
+            {
+                return currentSpeed - deltaTime;
+            }
+            return goal;
+        }
+
+        #endregion
+    }
+}
