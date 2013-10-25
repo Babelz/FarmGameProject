@@ -37,14 +37,15 @@ Jokainen liikutettava olio on gameobject, eli toisin sanoen gameobject voi liikk
 
 ### Savedata
 
-
  * Eläimet, 
  * kasvit, 
  * eventit, 
  * NPC tiedot 
- ** Kuinka paljon pitää pelaajasta
- ** Eventit
- ** World eventit
+ 	* Kuinka paljon pitää pelaajasta
+ 	* Eventit
+ 	* World eventit
 
  Pidetään muistissa niin kauan kun pelaaja käy tallentaan pelin. 
+ #!!!!!!! SAVE FILE TIETOKANTAA EI SÖRKITÄ IKINÄ ENNEN KU PELAAJA TALLENTAA PELIN !!!!!!
+
 
