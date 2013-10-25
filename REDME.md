@@ -6,8 +6,7 @@ TODO
 	* 1 pelimaailman minuutti = 1 IRL sekunti
 	* Päivä = 24 min
 
-### Kalenteri
-Kalenteri huolehtii: 
+### Kalenteri huolehtii: 
 	* vuosista, 
 	* päivistä, 
 	* seasonista, 
@@ -16,6 +15,8 @@ Kalenteri huolehtii:
 	* merkkipäivistä ja 
 	* ajasta.
 
+
+### Toimintoja 
 Kalenterin pystyy pysäyttämään, jolloin aika ei enää juokse tai päivä vaihdu.
 
 World huolehtii kalenterista ja sen ajanlaskusta. Kun world sanoo, että skippaa päivä niin 
