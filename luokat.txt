@@ -1,0 +1,50 @@
+farmi plan 0.1
+
+
+DGobject && Gobject
+NPC
+Dialog
+DialogMotor
+Cutscene
+CutsceneMotor
+CutsceneParser
+Plant
+Consumable
+Animal => tarviiko periä?
+WorldEvent
+WorldEventObserver
+Behaviour, skribi elementti
+DataContext
+SpriteAnimation && Spriter lib
+FileManager
+Database???????
+
+
+SpatialIndexingGameobjectCollection
+enum Seasons
+enum Days
+WorldStateManager
+LootTable
+Quest
+QuestManager
+QuestLog
+Interactable
+Item
+ItemManager
+ItemDatabase?
+Inventory
+
+
+
+
+
+
+
+
+PluginContainer
+
+
+
+
+
+
