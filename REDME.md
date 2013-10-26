@@ -41,13 +41,17 @@ Jokainen liikutettava olio on gameobject, eli toisin sanoen gameobject voi liikk
  * kasvit, 
  * eventit, 
  * NPC tiedot 
- 	* Kuinka paljon pitää pelaajasta
- 	* Eventit
- 	* World eventit
+  * Kuinka paljon pitää pelaajasta
+  * Eventit
+  * World eventit
 
 Pidetään muistissa niin kauan kun pelaaja käy tallentaan pelin. 
 #!!!!!!! SAVE FILE TIETOKANTAA EI SÖRKITÄ IKINÄ ENNEN KU PELAAJA TALLENTAA PELIN !!!!!!
 
 Tietokannasta ei poisteta ikinä mitään, vaan merkataan asioita poistettaviksi. Se antaa backwards compatibilityä ja pystyy korjaamaan mahdolliset bugit, koska juttu on vielä tallessa. 
 
+### Filemanager
+Luodaan filemanager joka helpottaa asioita ja hoitaa mm. tiedostojen **etsintää**, tiedostojen **luomista**, **poistamista**, **kopiointia**,
+**siirtämistä** sekä **kansioiden luontia**. Muutamia apureita, jotka voisivat osottaa vaikka yleisimpiin paikkoihin, kuten 
+pelin juureen, pelin content kansioon yms. 
 
