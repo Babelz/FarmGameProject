@@ -46,7 +46,7 @@ Jokainen liikutettava olio on gameobject, eli toisin sanoen gameobject voi liikk
   * World eventit
 
 Pidetään muistissa niin kauan kun pelaaja käy tallentaan pelin. 
-#!!!!!!! SAVE FILE TIETOKANTAA EI SÖRKITÄ IKINÄ ENNEN KU PELAAJA TALLENTAA PELIN !!!!!!
+# !!!!!!! SAVE FILE TIETOKANTAA EI SÖRKITÄ IKINÄ ENNEN KU PELAAJA TALLENTAA PELIN !!!!!!
 
 Tietokannasta ei poisteta ikinä mitään, vaan merkataan asioita poistettaviksi. Se antaa backwards compatibilityä ja pystyy korjaamaan mahdolliset bugit, koska juttu on vielä tallessa. 
 
@@ -54,4 +54,42 @@ Tietokannasta ei poisteta ikinä mitään, vaan merkataan asioita poistettaviksi
 Luodaan filemanager joka helpottaa asioita ja hoitaa mm. tiedostojen **etsintää**, tiedostojen **luomista**, **poistamista**, **kopiointia**,
 **siirtämistä** sekä **kansioiden luontia**. Muutamia apureita, jotka voisivat osottaa vaikka yleisimpiin paikkoihin, kuten 
 pelin juureen, pelin content kansioon yms. 
+
+
+
+### Farmin filepäätteet
+* Kartat (.mp)
+* Data setit (.dt)
+* Save filet (.sv)
+* Dbt (.db)
+* Scriptit (.sc)
+
+
+### Repot
+	Jokaselle datalle on oma repo joka on **readonly**. Repoja ovat mm. Npc, Animal ja Item data kollektiot.
+	Repot osaavat ladata itse itsensä, mutta ajonaikana niihin lisääminen tai niistä poistaminen on mahdotonta.
+
+	```csharp
+	internal abstract class ReadonlyRepo<T> {
+		protected readonly string reponame;
+
+		protected List<T> items;
+
+		public ReadonlyRepo(string reponame) {
+			this.reponame = reponame;
+		}
+
+		public abstract void Load();
+		public abstract T GetItem(Predicate<T> predicate);
+	} 
+	```
+
+	```csharp
+	internal abstract class Repo<T> : ReadOnlyRepo<T> {
+		public abstract void AddItem(T item);
+		public abstract void RemoveItem(T item);
+		public abstract void Save();
+	}
+	```
+
 
