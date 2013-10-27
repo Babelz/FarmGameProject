@@ -67,30 +67,30 @@ pelin juureen, pelin content kansioon yms.
 
 ### Repot
 
-	Jokaselle datalle on oma repo joka on **readonly**. Repoja ovat mm. Npc, Animal ja Item data kollektiot.
-	Repot osaavat ladata itse itsensä, mutta ajonaikana niihin lisääminen tai niistä poistaminen on mahdotonta.
+Jokaselle datalle on oma repo joka on **readonly**. Repoja ovat mm. Npc, Animal ja Item data kollektiot.
+Repot osaavat ladata itse itsensä, mutta ajonaikana niihin lisääminen tai niistä poistaminen on mahdotonta.
 
-	```cs
-	internal abstract class ReadonlyRepo<T> {
-		protected readonly string reponame;
+```cs
+internal abstract class ReadonlyRepo<T> {
+	protected readonly string reponame;
 
-		protected List<T> items;
+	protected List<T> items;
 
-		public ReadonlyRepo(string reponame) {
-			this.reponame = reponame;
-		}
-
-		public abstract void Load();
-		public abstract T GetItem(Predicate<T> predicate);
-	} 
-	```
-
-	```cs
-	internal abstract class Repo<T> : ReadOnlyRepo<T> {
-		public abstract void AddItem(T item);
-		public abstract void RemoveItem(T item);
-		public abstract void Save();
+	public ReadonlyRepo(string reponame) {
+		this.reponame = reponame;
 	}
-	```
+
+	public abstract void Load();
+	public abstract T GetItem(Predicate<T> predicate);
+} 
+```
+
+```cs
+internal abstract class Repo<T> : ReadOnlyRepo<T> {
+	public abstract void AddItem(T item);
+	public abstract void RemoveItem(T item);
+	public abstract void Save();
+}
+```
 
 
