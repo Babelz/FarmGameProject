@@ -34,28 +34,28 @@ Tilet on staattisia, eikä niitä pitäisi koskaan vaihtaa. Rulelayer määritte
 ### Gameobjectit
 Jokainen liikutettava olio on gameobject, eli toisin sanoen gameobject voi liikkua. Aidat, teleportit, eläimet, huonekalut ja kasvit ovat gameobjecteja. Rakennukset voivat olla gameobjecteja, joka antaa sen edun, että sitä voidaan liikuttaa vapaasti kunhan se ei collidaa keneenkään.  
 
-#### Eläimet
+### Eläimet
 Eläimet koostuvat **Animal** luokasta. Ne alustetaan AnimalDataSetillä, jossa on kaikki informaatio eläimelle, kuten sen behaviour, nimi, ikä yms. 
 
-#### Rakennukset
+### Rakennukset
 Rakennukset ovat gameobjecteja. Ne koostuvat BuilidingDataSetistä, jossa on kaikki informaatio mitä ne tarvitsevat. 
+
 ```cs
-class Building : DrawableGameObject {
+internal class Building : DrawableGameObject {
 	
 }
 
-class House : Building {
+internal class House : Building {
 	
 }
 
-class Barn : Building {
+internal class Barn : Building {
 	
 }
 
-class Shop : House {
+internal class Shop : House {
 	
 }
-
 ```
 
 ### Filemanager
