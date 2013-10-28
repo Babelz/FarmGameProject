@@ -38,6 +38,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\FarmPlayer.cs" />
     <Compile Include="FarmGame.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Args.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Enums.cs" />

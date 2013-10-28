@@ -56,6 +56,8 @@ namespace Farmi
             ScriptEngine engine = new ScriptEngine(this, Path.Combine("cfg", "sengine.cfg"));
             Components.Add(engine);
 
+            GameStateManager.ChangeState(new GameplayScreen());
+
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace Farmi
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
-            GameStateManager.ChangeState(new GameplayScreen());
+            
         }
 
         /// <summary>
