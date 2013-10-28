@@ -11,13 +11,8 @@ namespace Farmi.Entities
     {
         #region Vars
         private float zoom;
-        private float speed;
-        private float minZoom;
-        private float maxZoom;
         private const float minSpeed = 1.0f;
         private const float maxSpeed = 100.0f;
-        private int newVal;
-        private int oldVal;
         private Viewport viewport;
 
         private Vector2 position;
@@ -41,12 +36,10 @@ namespace Farmi.Entities
         {
             get
             {
-                Matrix matrix = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0)) *
-                                Matrix.CreateRotationY(0.0f) *
-                                Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
-                                Matrix.CreateTranslation(new Vector3(viewport.Height * 0.5f,
-                                                                     viewport.Width * 0.5f, 0));
-                return matrix;
+                return Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0)) *
+                                           Matrix.CreateRotationZ(0.0f) *
+                                           Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
+                                           Matrix.CreateTranslation(new Vector3(0, 0, 0));
             }
         }
 

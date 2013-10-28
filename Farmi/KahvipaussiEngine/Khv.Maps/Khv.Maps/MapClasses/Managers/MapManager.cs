@@ -150,6 +150,13 @@ namespace Khv.Maps.MapClasses.Managers
                     mapsInBackground.Find(m => predicate(m)));
             }
         }
+        public IEnumerable<TileMap> MapsInBackground()
+        {
+            foreach (TileMap tileMap in mapsInBackground)
+            {
+                yield return tileMap;
+            }
+        }
     }
     public class MapEventArgs : GameEventArgs
     {

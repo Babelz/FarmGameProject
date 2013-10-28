@@ -77,7 +77,7 @@ namespace Farmi.Screens
 
             SpriteBatch.End();
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
-                  null,
+                  SamplerState.PointClamp,
                   null,
                   null,
                   null,
@@ -88,7 +88,7 @@ namespace Farmi.Screens
             base.Draw();
 
             SpriteBatch.DrawString(font, "Alpha build 0.1 - SaniEngine v1.0",
-                new Vector2(camera.Position.X, camera.Position.Y + 25), Color.White);
+                new Vector2(camera.Position.X, camera.Position.Y), Color.White);
 
             SpriteBatch.End();
 
