@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Khv.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
@@ -30,6 +31,12 @@ namespace Khv.Engine
                 return gameStateManager;
             }
         }
+
+        public TestInputManager InputManager
+        {
+            get;
+            private set;
+        }
 		#endregion
 		
 		#region Overrided members
@@ -38,9 +45,11 @@ namespace Khv.Engine
             // hookataan input manageri että ei tarvi joka pelissä erikseen :)
             gameStateManager = new GameStateManager(this);
             InputManager inputManager = new InputManager(this);
-            
+            InputManager = new TestInputManager(this);
+            Components.Add(InputManager);
             Components.Add(inputManager);
             Components.Add(gameStateManager);
+
             base.Initialize();
         }
 

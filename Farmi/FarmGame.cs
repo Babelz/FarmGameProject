@@ -1,6 +1,12 @@
 ﻿#region Using Statements
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Mime;
+using Farmi.Screens;
+using Khv.Engine;
+using Khv.Input;
+using Khv.Scripts.CSharpScriptEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,12 +20,12 @@ namespace Farmi
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Game
+    public class FarmGame : KhvGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Game1()
+        public FarmGame()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,9 +40,22 @@ namespace Farmi
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+            InputManager.AddStateProvider(typeof(KeyboardStateProvider), new KeyboardStateProvider());
+            InputManager.AddStateProvider(typeof(GamepadStateProvider), new GamepadStateProvider());
+            InputManager.Mapper.AddInputBindProvider(typeof(KeyInputBindProvider), new KeyInputBindProvider());
+            InputManager.Mapper.AddInputBindProvider(typeof(PadInputBindProvider), new PadInputBindProvider());
+
+            InputManager.Mapper.GetInputBindProvider<KeyInputBindProvider>().Map(
+                new KeyTrigger("Debug exit", Keys.Escape), (triggered, args) => Exit() 
+                );
+            InputManager.Mapper.GetInputBindProvider<PadInputBindProvider>().Map(
+                new ButtonTrigger("Debug exit", Buttons.Back), (triggered, args) => Exit()
+                );
+
+            ScriptEngine engine = new ScriptEngine(this, Path.Combine("cfg", "sengine.cfg"));
+            Components.Add(engine);
+
         }
 
         /// <summary>
@@ -47,8 +66,8 @@ namespace Farmi
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
+            GameStateManager.ChangeState(new GameplayScreen());
         }
 
         /// <summary>
@@ -57,35 +76,8 @@ namespace Farmi
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-
-            base.Update(gameTime);
-        }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
-        }
     }
 }
