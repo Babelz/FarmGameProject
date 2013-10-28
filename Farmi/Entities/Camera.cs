@@ -11,8 +11,6 @@ namespace Farmi.Entities
     {
         #region Vars
         private float zoom;
-        private const float minSpeed = 1.0f;
-        private const float maxSpeed = 100.0f;
         private Viewport viewport;
 
         private Vector2 position;
@@ -50,7 +48,6 @@ namespace Farmi.Entities
             this.position = position;
             this.viewport = viewport;
             zoom = 1.0f;
-            speed = 5.0f;
         }
     }
 }
