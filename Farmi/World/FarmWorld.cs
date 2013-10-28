@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.World
 {
-    class FarmWorld : Khv.Game.World
+    internal sealed class FarmWorld : Khv.Game.World
     {
         #region Properties
 
@@ -36,10 +36,17 @@ namespace Farmi.World
             Player = new FarmPlayer(Game, PlayerIndex.One);
             Player.Initialize();
             WorldObjects.AddGameObject(Player);
+
+            MapManager.ChangeMap("farm");
         }
 
         public override void Update(GameTime gameTime)
         {
+            if (MapManager.ActiveMap != null)
+            {
+                MapManager.ActiveMap.Update(gameTime);
+            }
+
             var gameobjects = WorldObjects.AllObjects();
             foreach (var gameobject in gameobjects)
             {
@@ -49,7 +56,10 @@ namespace Farmi.World
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            throw new NotImplementedException();
+            if (MapManager.ActiveMap != null)
+            {
+                MapManager.ActiveMap.Draw(spriteBatch);
+            }
         }
     }
 }

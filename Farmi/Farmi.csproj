@@ -38,7 +38,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DataSets\BuildingDataSet.cs" />
+    <Compile Include="DataSets\TeleportDataSet.cs" />
+    <Compile Include="Entities\Buildings\Building.cs" />
+    <Compile Include="Entities\Camera.cs" />
+    <Compile Include="Entities\CropSpot.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
+    <Compile Include="Entities\Teleport.cs" />
     <Compile Include="FarmGame.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Args.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Enums.cs" />
@@ -269,6 +275,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\MapTileSets\outdoors1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\MapTileSets\outdoors2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\mps\farm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="KahvipaussiEngine\Khv.Gui\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Gui\TODO.txt" />
@@ -277,7 +292,6 @@
     <Content Include="KahvipaussiEngine\Khv.Scripts\csharpscriptengine_README.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\" />
     <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
   </ItemGroup>
   <ItemGroup>
@@ -285,6 +299,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="cfg\sengine.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\arial.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

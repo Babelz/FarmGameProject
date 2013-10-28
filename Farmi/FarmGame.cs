@@ -20,7 +20,7 @@ namespace Farmi
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class FarmGame : KhvGame
+    internal sealed class FarmGame : KhvGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -58,6 +58,8 @@ namespace Farmi
 
             GameStateManager.ChangeState(new GameplayScreen());
 
+            base.Initialize();
+
         }
 
         /// <summary>
@@ -69,6 +71,8 @@ namespace Farmi
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
+
+            base.LoadContent();
             
         }
 
@@ -78,8 +82,7 @@ namespace Farmi
         /// </summary>
         protected override void UnloadContent()
         {
-            
+            base.UnloadContent();
         }
-
     }
 }

@@ -25,6 +25,7 @@ namespace Khv.Maps.MapClasses.Managers
 
         private Dictionary<Type, IList> objectLists;
         private List<GameObject> allObjects;
+        private List<DrawableGameObject> drawableObjects;
         #endregion
 
         #region Properties
@@ -68,9 +69,10 @@ namespace Khv.Maps.MapClasses.Managers
             this.owner = owner;
 
             allObjects = new List<GameObject>();
+            drawableObjects = new List<DrawableGameObject>();
 
             objectLists = new Dictionary<Type, IList>();
-            objectLists.Add(typeof(DrawableGameObject), new List<DrawableGameObject>());
+            objectLists.Add(typeof(DrawableGameObject), drawableObjects);
             objectLists.Add(typeof(GameObject), allObjects);
         }
 
@@ -331,7 +333,8 @@ namespace Khv.Maps.MapClasses.Managers
         {
             IList list = objectLists[type];
 
-            if (list.Count <= 0 && list != allObjects)
+            if (list.Count <= 0 && 
+                list != allObjects && list != drawableObjects)
             {
                 objectLists.Remove(type);
             }
@@ -348,6 +351,15 @@ namespace Khv.Maps.MapClasses.Managers
             {
                 allObjects.Remove(gameObject);
             }
+            if (list != drawableObjects)
+            {
+                DrawableGameObject drawableObject = gameObject as DrawableGameObject;
+                if (drawableObject != null)
+                {
+                    drawableObjects.Remove(drawableObject);
+                }
+            }
+            
         }
         /// <summary>
         /// Lisää olion listaan ja allobjects listaan jos sitä ei lisätä heti alussa.
@@ -360,6 +372,14 @@ namespace Khv.Maps.MapClasses.Managers
             if (list != allObjects)
             {
                 allObjects.Add(gameObject);
+            }
+            if (list != drawableObjects)
+            {
+                DrawableGameObject drawableObject = gameObject as DrawableGameObject;
+                if (drawableObject != null)
+                {
+                    drawableObjects.Add(drawableObject);
+                }
             }
         }
     }

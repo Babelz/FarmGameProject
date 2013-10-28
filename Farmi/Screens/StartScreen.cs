@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Screens
 {
-    class StartScreen : GameState
+    internal sealed class StartScreen : GameState
     {
         public override void Draw()
         {

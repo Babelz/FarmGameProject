@@ -35,10 +35,10 @@ namespace Khv.Maps.MapClasses.Processors
         {
             #region Object parsing and creation
             GameObjectManager objectManager = new GameObjectManager(layer);
-            List<MapObjectParameters> parameters = GetContainingObjectsParameters(serializedObjectLayer);
+            List<MapObjectArguments> parameters = GetContainingObjectsParameters(serializedObjectLayer);
 
             // Loopataan jokainen parametri läpi.
-            foreach (MapObjectParameters parameter in parameters)
+            foreach (MapObjectArguments parameter in parameters)
             {
                 Type objectType = null;
                 GameObject mapObject = null;
@@ -78,7 +78,7 @@ namespace Khv.Maps.MapClasses.Processors
         }
 
         // Heittää poikkeuksen kun olion luominen epäonnistuu.
-        private void ThrowFailedToResolve(MapObjectParameters parameter)
+        private void ThrowFailedToResolve(MapObjectArguments parameter)
         {
             string namespaces = "";
             Array.ForEach(objectNamespaces, s => namespaces += s);
@@ -88,19 +88,19 @@ namespace Khv.Maps.MapClasses.Processors
         }
 
         // Luo aktivaattorilla uuden instanssin halutusta oliosta.
-        private GameObject CreateObject(KhvGame game, Type type, MapObjectParameters data)
+        private GameObject CreateObject(KhvGame game, Type type, MapObjectArguments data)
         {
             return (GameObject)Activator.CreateInstance(type, game, data);
         }
 
         // Hakee kaikki tiedot layeristä luomista varten.
-        private List<MapObjectParameters> GetContainingObjectsParameters(SerializedObjectLayer serializedObjectLayer)
+        private List<MapObjectArguments> GetContainingObjectsParameters(SerializedObjectLayer serializedObjectLayer)
         {
-            List<MapObjectParameters> parameters = new List<MapObjectParameters>();
+            List<MapObjectArguments> parameters = new List<MapObjectArguments>();
 
             serializedObjectLayer.Tiles.ForEach(t =>
                 {
-                    parameters.Add(new MapObjectParameters(new Index(t.PositionIndexX, t.PositionIndexY), t.MapObject));
+                    parameters.Add(new MapObjectArguments(new Index(t.PositionIndexX, t.PositionIndexY), t.MapObject));
                 });
 
             return parameters;
@@ -110,7 +110,7 @@ namespace Khv.Maps.MapClasses.Processors
     /// Olio joka luodaan wrappaamaan tietoja ennen kun serialisoidusta oliosta
     /// luodaan instanssi.
     /// </summary>
-    public class MapObjectParameters
+    public class MapObjectArguments
     {
         #region Vars
         private readonly Index index;
@@ -148,7 +148,7 @@ namespace Khv.Maps.MapClasses.Processors
         }
         #endregion
 
-        public MapObjectParameters(Index index, SerializedMapObject serializedData)
+        public MapObjectArguments(Index index, SerializedMapObject serializedData)
         {
             this.index = index;
             this.serializedData = serializedData;

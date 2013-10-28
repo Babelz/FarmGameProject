@@ -86,7 +86,7 @@ namespace Khv.Maps.MapClasses.Layers.Components
         public override void Draw(SpriteBatch spriteBatch)
         {
             Array.ForEach(genericOwner.Tiles, row =>
-                Array.ForEach(row, t =>
+                Array.ForEach(row.Where(t => t != null).ToArray(), t =>
                     t.Draw(spriteBatch)));
         }
     }

@@ -193,7 +193,6 @@ namespace Khv.Engine.State
 
         #endregion
 
-
         #region Methods
 
 
@@ -248,8 +247,8 @@ namespace Khv.Engine.State
         /// <summary>
         /// Kutsutaan kun halutaan päivittää ruutu
         /// </summary>
-        /// <param name="t">Kauan aikaa viime framesta</param>
-        public virtual void Update(GameTime t)
+        /// <param name="gameTime">Kauan aikaa viime framesta</param>
+        public virtual void Update(GameTime gameTime)
         {
         }
 

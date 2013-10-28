@@ -29,3 +29,7 @@ Komponenttien syntaksi on: [LayerinNimi] -[KomponentinNimi]([Parametri]:[Arvo]);
 Esim 
 TilePlatform1 -Moving(startX:0, endX:100);
 TilePlatform2 -PointMover("tileplatform.pointmap");
+
+Default konsu olioille jotka luodaan suoraan kartasta on
+Konsu (KhvGame game, MapObjectArguments args) {
+}

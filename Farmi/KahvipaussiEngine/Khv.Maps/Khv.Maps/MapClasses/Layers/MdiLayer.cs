@@ -74,7 +74,7 @@ namespace Khv.Maps.MapClasses.Layers
             originalPosition = new Vector2(startIndex.X * tileEngine.TileSize.Width, 
                                                     startIndex.Y * tileEngine.TileSize.Height);
 
-            Position = new Vector2(OriginalPosition.X, OriginalPosition.Y);
+            position = new Vector2(OriginalPosition.X, OriginalPosition.Y);
         }
 
         public override void Initialize(TileParameters tileParameters)
@@ -121,8 +121,11 @@ namespace Khv.Maps.MapClasses.Layers
             {
                 for (int w = 0; w < Size.Width; w++)
                 {
-                    (Tiles[h][w] as T).Move(new Vector2(position.X + (w * tileEngine.TileSize.Width),
-                                                                     position.Y + (h * tileEngine.TileSize.Height)));
+                    if (tiles[h][w] != null)
+                    {
+                        (Tiles[h][w] as T).Move(new Vector2(position.X + (w * tileEngine.TileSize.Width),
+                                                            position.Y + (h * tileEngine.TileSize.Height)));
+                    }
                 }
             }
         }

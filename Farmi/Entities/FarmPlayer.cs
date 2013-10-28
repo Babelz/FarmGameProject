@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Farmi.Entities
 {
-    class FarmPlayer : Player
+    internal sealed class FarmPlayer : Player
     {
         private const float speed = 5f;
         private InputController controller;

@@ -201,7 +201,7 @@ namespace Khv.Maps.MapClasses.Layers
         {
             // antaa viitteen sheetistä tileille
             Array.ForEach(tiles, row =>
-                Array.ForEach(row, t =>
+                Array.ForEach(row.Where(t => t != null).ToArray(), t =>
                     t.Sheet = Sheet));
         }
         public void Update(GameTime gameTime)

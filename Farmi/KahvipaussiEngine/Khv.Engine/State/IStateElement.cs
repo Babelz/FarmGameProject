@@ -23,7 +23,7 @@ namespace Khv.Engine.State
 
         bool IsPopUp { get; set; }
 
-        void Update(GameTime time);
+        void Update(GameTime gameTime);
 
         bool IsInitialized { get; set; }
 
