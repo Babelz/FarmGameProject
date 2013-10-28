@@ -34,14 +34,8 @@ namespace Khv.Game
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Päivittää komponentteja
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime)
-        {
-            Components.ForEach(c => c.Update(gameTime));
-        }
+
+
 
         #endregion
 

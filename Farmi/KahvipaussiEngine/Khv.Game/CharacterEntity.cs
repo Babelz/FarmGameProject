@@ -25,12 +25,6 @@ namespace Khv.Game
             protected set;
         }
 
-        protected List<IObjectComponent> Components
-        {
-            get;
-            set;
-        }
-
         #endregion
 
 
@@ -38,7 +32,6 @@ namespace Khv.Game
             : base(game)
         {
             MotionEngine = new MotionEngine(this);
-            Components = new List<IObjectComponent>();
         }
     }
 }
