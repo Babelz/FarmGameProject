@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Khv.Engine.Structs;
+using Khv.Game.Collision;
 using Khv.Game.GameObjects;
 using Khv.Engine;
 using SerializedDataTypes.MapObjects;
@@ -39,6 +40,7 @@ namespace Farmi.Entities.Buildings
         private void TestInitialize(MapObjectArguments args)
         {
             size = new Size(192, 128);
+            Collider = new BoxCollider(null, this);
             if (args == null)
             {
                 position = Vector2.Zero;
@@ -52,6 +54,12 @@ namespace Farmi.Entities.Buildings
         public void InitializeFromData(string datasetName)
         {
             // Alustaa otuksen datasta tässä.
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            Collider.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

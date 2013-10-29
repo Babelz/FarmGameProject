@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Farmi.Entities;
 using Khv.Engine;
+using Khv.Game.GameObjects;
 using Khv.Maps.MapClasses.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,7 +34,7 @@ namespace Farmi.World
         {
             MapManager = new MapManager(Game, Path.Combine("cfg", "mengine.cfg"));
             WorldObjects = new GameObjectManager(null);
-            Player = new FarmPlayer(Game, PlayerIndex.One);
+            Player = new FarmPlayer(Game, this, PlayerIndex.One);
             Player.Initialize();
             WorldObjects.AddGameObject(Player);
 
@@ -59,6 +60,11 @@ namespace Farmi.World
             if (MapManager.ActiveMap != null)
             {
                 MapManager.ActiveMap.Draw(spriteBatch);
+            }
+            var gameobjects = WorldObjects.GameObjectsOfType<DrawableGameObject>(g => g is DrawableGameObject);
+            foreach (var gameobject in gameobjects)
+            {
+               gameobject.Draw(spriteBatch);
             }
         }
     }

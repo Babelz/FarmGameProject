@@ -76,8 +76,10 @@ namespace Farmi.Screens
             SpriteBatch.GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.End();
-            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
-                  null,
+            SpriteBatch.Begin(
+                SpriteSortMode.Deferred, 
+                BlendState.AlphaBlend,
+                 SamplerState.PointClamp,
                   null,
                   null,
                   null,
@@ -86,12 +88,16 @@ namespace Farmi.Screens
             World.Draw(SpriteBatch);
 
             base.Draw();
-
-            SpriteBatch.DrawString(font, "Alpha build 0.1 - SaniEngine v1.0",
-                new Vector2(camera.Position.X, camera.Position.Y + 25), Color.White);
+            string text = "Alpha build 0.1 - SaniEngine v1.0 - Kairatie Edition";
+            Vector2 v = font.MeasureString(text);
+            SpriteBatch.DrawString(font, text,
+                new Vector2(
+                    camera.Position.X + camera.Viewport.Width / 2 - v.X / 2, 
+                    camera.Position.Y + camera.Viewport.Height - v.Y * 2),
+                    Color.White);
 
             SpriteBatch.End();
-
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             Console.WriteLine(camera.Position);
         }
     }

@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Khv.Game.Collision
 {
+
     public class BoxCollider : PolygonCollider
     {
         #region Vars
@@ -64,8 +65,13 @@ namespace Khv.Game.Collision
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            #warning proto
             // oletetetaan että on ajettu läpi g => g.IsCollidable
+            if (world == null)
+                return;
             IEnumerable<GameObject> nearGameObjects = world.WorldObjects.AllObjects();
+
+            nearGameObjects.Union(world.MapManager.ActiveMap.ObjectManagers.GetManager(g => g != null).AllObjects());
             Layer<RuleTile> rules = world.MapManager.ActiveMap.LayerManager.AllLayers().First(l => l is Layer<RuleTile>) as Layer<RuleTile>;
             Size tSize = world.MapManager.ActiveMap.TileEngine.TileSize;
             if (rules != null)
@@ -92,21 +98,51 @@ namespace Khv.Game.Collision
                         
                         CollisionResult r = PolygonCollision(this, polygon);
 
-                       
-                        FireOnCollision(Instance, t, r);
+                        if (r.Intersecting || r.WillIntersect)
+                        {
+                            Instance.Position += r.Translation;
+                            FireOnCollision(Instance, t, r);
+                        }
+                        
                     }
                 }
             }
+
             foreach (GameObject gameObject in nearGameObjects)
             {
                 CollisionResult r;
                 if (!Collides(gameObject, out r)) continue;
 
+                Asd(Instance, r);
+
+                CollisionResult r2 = PolygonCollision(gameObject.Collider as PolygonCollider, this);
+                Asd(gameObject, r2);
+
+
+
                 FireOnCollision(Instance, gameObject, r);
-                FireOnCollision(gameObject, Instance, 
-                    PolygonCollision(gameObject.Collider as PolygonCollider, this)
+                FireOnCollision(gameObject, Instance,
+                    r2
                     );
             }
+        }
+
+        private void Asd(GameObject gameObject, CollisionResult r)
+        {
+            Vector2 translation = Vector2.Zero;
+            if (Math.Abs(r.Translation.X) > 0.00001f)
+            {
+
+                gameObject.Velocity = new Vector2(0, gameObject.Velocity.Y);
+
+                Console.WriteLine("jees");
+            }
+            if (Math.Abs(r.Translation.Y) > 0.00001f)
+            {
+                gameObject.Velocity = new Vector2(gameObject.Velocity.X, 0);
+                Console.WriteLine("jees");
+            }
+            gameObject.Position += r.Translation + translation;
         }
 
         /// <summary>
