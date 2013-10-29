@@ -15,7 +15,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Khv.Game.Collision
 {
-
     public class BoxCollider : PolygonCollider
     {
         #region Vars
@@ -69,14 +68,21 @@ namespace Khv.Game.Collision
             // oletetetaan että on ajettu läpi g => g.IsCollidable
             if (world == null)
                 return;
-            IEnumerable<GameObject> nearGameObjects = world.WorldObjects.AllObjects();
+            List<GameObject> nearGameObjects = world.WorldObjects.AllObjects().ToList();
 
-            nearGameObjects.Union(world.MapManager.ActiveMap.ObjectManagers.GetManager(g => g != null).AllObjects());
+            if (world.MapManager.ActiveMap != null)
+            {
+                foreach (GameObjectManager gameobjectManager in world.MapManager.ActiveMap.ObjectManagers.AllManagers())
+                {
+                    nearGameObjects.AddRange(gameobjectManager.AllObjects());
+                }
+            }
+
             Layer<RuleTile> rules = world.MapManager.ActiveMap.LayerManager.AllLayers().First(l => l is Layer<RuleTile>) as Layer<RuleTile>;
             Size tSize = world.MapManager.ActiveMap.TileEngine.TileSize;
             if (rules != null)
             {
-                RuleTile[][] tiles = rules.GetSurroundingTiles(Instance.Position);
+                RuleTile[][] tiles = rules.GetSurroundingTiles(Instance.Position, 3, 3);
                 for (int i = 0; i < tiles.Length; i++)
                 {
                     for (int j = 0; j < tiles[i].Length; j++)
@@ -134,13 +140,10 @@ namespace Khv.Game.Collision
             {
 
                 gameObject.Velocity = new Vector2(0, gameObject.Velocity.Y);
-
-                Console.WriteLine("jees");
             }
             if (Math.Abs(r.Translation.Y) > 0.00001f)
             {
                 gameObject.Velocity = new Vector2(gameObject.Velocity.X, 0);
-                Console.WriteLine("jees");
             }
             gameObject.Position += r.Translation + translation;
         }

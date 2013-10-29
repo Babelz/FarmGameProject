@@ -49,7 +49,6 @@ namespace Khv.Maps.MapClasses.Managers
         {
             return gameObjectManagers.Find(o => predicate(o));
         }
-
         /// <summary>
         /// Poistaa kaikki managerit joiden InUse value on
         /// false.
@@ -57,6 +56,13 @@ namespace Khv.Maps.MapClasses.Managers
         public void Update()
         {
             gameObjectManagers.RemoveAll(m => !m.InUse);
+        }
+        public IEnumerable<GameObjectManager> AllManagers()
+        {
+            foreach (GameObjectManager gameObjectManager in gameObjectManagers)
+            {
+                yield return gameObjectManager;
+            }
         }
     }
 }
