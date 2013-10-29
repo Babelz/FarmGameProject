@@ -82,7 +82,7 @@ namespace Khv.Game.Collision
             Size tSize = world.MapManager.ActiveMap.TileEngine.TileSize;
             if (rules != null)
             {
-                RuleTile[][] tiles = rules.GetSurroundingTiles(Instance.Position, 3, 3);
+                RuleTile[][] tiles = rules.GetSurroundingTiles(Instance.Position);
                 for (int i = 0; i < tiles.Length; i++)
                 {
                     for (int j = 0; j < tiles[i].Length; j++)

@@ -281,6 +281,7 @@
     <Content Include="Content\MapTileSets\outdoors2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="dat\mps\farmi.xml" />
     <Content Include="dat\mps\farm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

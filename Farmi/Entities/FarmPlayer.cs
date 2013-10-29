@@ -37,7 +37,7 @@ namespace Farmi.Entities
 
         void Collider_OnCollision(object sender, CollisionResult result)
         {
-            Console.WriteLine(sender);
+            //Console.WriteLine(sender);
         }
 
         public void Initialize()

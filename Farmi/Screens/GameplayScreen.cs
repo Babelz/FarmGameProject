@@ -37,26 +37,6 @@ namespace Farmi.Screens
 
             camera = new Camera(Vector2.Zero, Game.GraphicsDevice.Viewport);
 
-            Game.InputManager.Mapper.GetInputBindProvider<KeyInputBindProvider>().Map(
-                new KeyTrigger("camera move down", Keys.Down), (s, a) =>
-                    {
-                        camera.Position = new Vector2(camera.Position.X, camera.Position.Y + 1.25f);
-                    });
-            Game.InputManager.Mapper.GetInputBindProvider<KeyInputBindProvider>().Map(
-                new KeyTrigger("camera move up", Keys.Up), (s, a) =>
-                    {
-                        camera.Position = new Vector2(camera.Position.X, camera.Position.Y - 1.25f);
-                    });
-            Game.InputManager.Mapper.GetInputBindProvider<KeyInputBindProvider>().Map(
-                new KeyTrigger("camera move right", Keys.Right), (s, a) =>
-                    {
-                        camera.Position = new Vector2(camera.Position.X + 1.25f, camera.Position.Y);
-                    });
-            Game.InputManager.Mapper.GetInputBindProvider<KeyInputBindProvider>().Map(
-                new KeyTrigger("camera move left", Keys.Left), (s, a) =>
-                    {
-                        camera.Position = new Vector2(camera.Position.X - 1.25f, camera.Position.Y);
-                    });
         }
 
         public override void LoadContent()
@@ -69,6 +49,13 @@ namespace Farmi.Screens
             base.Update(gameTime);
 
             World.Update(gameTime);
+
+            FarmPlayer player = World.WorldObjects.GetGameObject<FarmPlayer>(p => p is FarmPlayer);
+
+            if (player != null)
+            {
+                camera.Position = player.Position;
+            }
         }
 
         public override void Draw()
@@ -99,7 +86,7 @@ namespace Farmi.Screens
 
             SpriteBatch.End();
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            Console.WriteLine(camera.Position);
+            //Console.WriteLine(camera.Position);
         }
     }
 }
