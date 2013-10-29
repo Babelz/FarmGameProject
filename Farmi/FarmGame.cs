@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Farmi.Repositories;
+using Farmi.Datasets;
 #endregion
 
 namespace Farmi
@@ -58,8 +60,11 @@ namespace Farmi
 
             GameStateManager.ChangeState(new GameplayScreen());
 
-            base.Initialize();
+            Components.Add(new RepositoryManager(@"\dat\repos",
+                           new string[] { "Farmi.Datasets." },
+                           new string[] { "Farmi.Repositories." }));
 
+            base.Initialize();
         }
 
         /// <summary>

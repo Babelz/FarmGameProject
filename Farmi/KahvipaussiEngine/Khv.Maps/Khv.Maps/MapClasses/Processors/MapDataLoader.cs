@@ -33,7 +33,7 @@ namespace Khv.Maps.MapClasses.Processors
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SerializedMap));
             SerializedMap serializedMap = null;
 
-            string fullName = ResolveFullName(mapname + ".xml");
+            string fullName = ResolveFullName(mapname + ".mp");
             using (StreamReader streamReader = new StreamReader(fullName))
             {
                 serializedMap = (SerializedMap)xmlSerializer.Deserialize(streamReader);
