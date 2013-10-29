@@ -64,10 +64,7 @@ namespace Farmi.Screens
 
             SpriteBatch.End();
 
-            SpriteBatch.Begin(
-                SpriteSortMode.Deferred, 
-                BlendState.AlphaBlend,
-                 SamplerState.PointClamp,
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                   null,
                   null,
                   null,
