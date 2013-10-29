@@ -36,7 +36,8 @@ namespace Farmi.Screens
             World.Initialize();
 
             camera = new Camera(Vector2.Zero, Game.GraphicsDevice.Viewport);
-
+            FarmPlayer player = World.WorldObjects.GetGameObject<FarmPlayer>(p => p is FarmPlayer);
+            camera.Follow(player);
         }
 
         public override void LoadContent()
@@ -50,12 +51,7 @@ namespace Farmi.Screens
 
             World.Update(gameTime);
 
-            FarmPlayer player = World.WorldObjects.GetGameObject<FarmPlayer>(p => p is FarmPlayer);
-
-            if (player != null)
-            {
-                camera.Position = player.Position;
-            }
+            camera.Update(World.MapManager.ActiveMap);
         }
 
         public override void Draw()

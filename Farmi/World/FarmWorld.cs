@@ -53,6 +53,7 @@ namespace Farmi.World
             {
                 gameobject.Update(gameTime);
             }
+           
         }
 
         public override void Draw(SpriteBatch spriteBatch)
