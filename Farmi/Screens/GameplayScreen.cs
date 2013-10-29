@@ -76,6 +76,7 @@ namespace Farmi.Screens
             SpriteBatch.GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.End();
+
             SpriteBatch.Begin(
                 SpriteSortMode.Deferred, 
                 BlendState.AlphaBlend,
