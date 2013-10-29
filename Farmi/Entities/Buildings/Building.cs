@@ -25,9 +25,6 @@ namespace Farmi.Entities.Buildings
 
             TestInitialize(args);
         }
-        /// <summary>
-        /// Konsu kun luodaan olio suoraan lennosta.
-        /// </summary>
         public Building(KhvGame game)
             : base(game)
         {
@@ -41,6 +38,7 @@ namespace Farmi.Entities.Buildings
         {
             size = new Size(192, 128);
             Collider = new BoxCollider(null, this);
+
             if (args == null)
             {
                 position = Vector2.Zero;

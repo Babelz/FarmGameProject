@@ -38,8 +38,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DataSets\BuildingDataSet.cs" />
-    <Compile Include="DataSets\TeleportDataSet.cs" />
+    <Compile Include="DataSets\AnimalDataset.cs" />
+    <Compile Include="DataSets\BuildingDataset.cs" />
+    <Compile Include="DataSets\DoorDataset.cs" />
+    <Compile Include="DataSets\ItemDataset.cs" />
+    <Compile Include="DataSets\TeleportDataset.cs" />
     <Compile Include="Entities\Buildings\Building.cs" />
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\CropSpot.cs" />
@@ -252,6 +255,9 @@
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptObserver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BuildingRepository.cs" />
+    <Compile Include="Repositories\RepositoryManager.cs" />
+    <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\StartScreen.cs" />
     <Compile Include="World\FarmWorld.cs" />
@@ -281,10 +287,12 @@
     <Content Include="Content\MapTileSets\outdoors2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="dat\mps\farmi.xml" />
-    <Content Include="dat\mps\farm.xml">
+    <None Include="dat\mps\farm.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Include="dat\repos\buildings.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Icon.ico" />
     <Content Include="KahvipaussiEngine\Khv.Gui\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Gui\TODO.txt" />
