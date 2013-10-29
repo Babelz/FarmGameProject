@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Farmi.KahvipaussiEngine.Khv.Game.Collision;
 using Farmi.World;
 using Khv.Engine;
 using Khv.Engine.Structs;
@@ -14,7 +15,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Farmi.Entities
 {
-    internal sealed class FarmPlayer : Player
+    public sealed class FarmPlayer : Player
     {
         private readonly FarmWorld world;
         private const float speed = 5f;
@@ -29,8 +30,11 @@ namespace Farmi.Entities
             Position = new Vector2(500, 200);
 
             Size = new Size(32, 32);
-            
-            Collider = new BoxCollider(world, this);
+
+            Collider = new BoxCollider(world, 
+                this, 
+                new BasicObjectCollisionQuerier(), 
+                new BasicTileCollisionQuerier());
             Collider.OnCollision += Collider_OnCollision;
             
         }

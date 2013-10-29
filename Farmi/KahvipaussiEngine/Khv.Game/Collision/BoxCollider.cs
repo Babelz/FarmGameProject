@@ -1,4 +1,5 @@
-﻿using Khv.Engine;
+﻿using Farmi.KahvipaussiEngine.Khv.Game.Collision;
+using Khv.Engine;
 ﻿using Khv.Game.Collision;
 using Khv.Engine.Structs;
 using Khv.Game.GameObjects;
@@ -21,7 +22,8 @@ namespace Khv.Game.Collision
 
         protected World world;
 
-        
+        private ITileCollisionQuerier tileQuerier;
+        private IObjectCollisionQuerier objectQuerier; 
 
         #endregion
 
@@ -32,9 +34,11 @@ namespace Khv.Game.Collision
         /// </summary>
         /// <param name="world">Mistä kysellään ja etsitään gameobjecteja tai tilejä</param>
         /// <param name="Instance">Kenen gameobjectin collider tämä on</param>
-        public BoxCollider(World world, GameObject Instance) : base(Instance)
+        public BoxCollider(World world, GameObject instance, IObjectCollisionQuerier objectQuerier = null, ITileCollisionQuerier tileQuerier = null) : base(instance)
         {
             this.world = world;
+            this.objectQuerier = objectQuerier;
+            this.tileQuerier = tileQuerier;
 
             Polygon = new Polygon();
             
@@ -68,52 +72,41 @@ namespace Khv.Game.Collision
             // oletetetaan että on ajettu läpi g => g.IsCollidable
             if (world == null)
                 return;
-            List<GameObject> nearGameObjects = world.WorldObjects.AllObjects().ToList();
 
-            if (world.MapManager.ActiveMap != null)
-            {
-                foreach (GameObjectManager gameobjectManager in world.MapManager.ActiveMap.ObjectManagers.AllManagers())
-                {
-                    nearGameObjects.AddRange(gameobjectManager.AllObjects());
-                }
-            }
 
-            Layer<RuleTile> rules = world.MapManager.ActiveMap.LayerManager.AllLayers().First(l => l is Layer<RuleTile>) as Layer<RuleTile>;
+
             Size tSize = world.MapManager.ActiveMap.TileEngine.TileSize;
-            if (rules != null)
+            if (tileQuerier != null)
             {
-                RuleTile[][] tiles = rules.GetSurroundingTiles(Instance.Position);
-                for (int i = 0; i < tiles.Length; i++)
+                foreach (var tile in tileQuerier.Query(world, Instance))
                 {
-                    for (int j = 0; j < tiles[i].Length; j++)
+                    Vector2 v1 = (tile.Position);
+                    Vector2 v2 = new Vector2(v1.X + tSize.Width, v1.Y);
+                    Vector2 v3 = new Vector2(v2.X, v2.Y + tSize.Height);
+                    Vector2 v4 = new Vector2(tile.Position.X, v3.Y);
+                    Polygon polygon = new Polygon();
+                    polygon.Vertices.Add(v1);
+                    polygon.Vertices.Add(v2);
+                    polygon.Vertices.Add(v3);
+                    polygon.Vertices.Add(v4);
+                    polygon.BuildEdges();
+                    CollisionResult r = PolygonCollision(this, polygon);
+                    if (r.Intersecting || r.WillIntersect)
                     {
-                        RuleTile t = tiles[i][j];
-                        if (t == null)
-                            continue;
-                        
-                        Vector2 v1 = (t.Position);
-                        Vector2 v2 = new Vector2(v1.X + tSize.Width, v1.Y);
-                        Vector2 v3 = new Vector2(v2.X, v2.Y + tSize.Height);
-                        Vector2 v4 = new Vector2(t.Position.X, v3.Y);
-                        Polygon polygon = new Polygon();
-                        polygon.Vertices.Add(v1);
-                        polygon.Vertices.Add(v2);
-                        polygon.Vertices.Add(v3);
-                        polygon.Vertices.Add(v4);
-                        polygon.BuildEdges();
-                        
-                        CollisionResult r = PolygonCollision(this, polygon);
-
-                        if (r.Intersecting || r.WillIntersect)
-                        {
-                            Instance.Position += r.Translation;
-                            FireOnCollision(Instance, t, r);
-                        }
-                        
+                        Instance.Position += r.Translation;
+                        FireOnCollision(Instance, tile, r);
                     }
                 }
+                
             }
 
+            List<GameObject> nearGameObjects = new List<GameObject>();
+            if (objectQuerier != null)
+            {
+                nearGameObjects = objectQuerier.Query(world, Instance).ToList();
+            }
+            
+            
             foreach (GameObject gameObject in nearGameObjects)
             {
                 CollisionResult r;

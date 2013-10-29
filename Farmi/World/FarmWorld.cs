@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.World
 {
-    internal sealed class FarmWorld : Khv.Game.World
+    public sealed class FarmWorld : Khv.Game.World
     {
         #region Properties
 

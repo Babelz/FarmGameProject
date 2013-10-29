@@ -70,9 +70,13 @@
     <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\ITransition.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Transition\TransitionEffect.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\CharacterEntity.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\BasicObjectCollisionQuerier.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\BasicTileCollisionQuerier.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\BoxCollider.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\Collider.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\CollisionResult.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\IObjectCollisionQuerier.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\ITileCollisionQuerier.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\Polygon.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\PolygonCollider.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\ShapeType.cs" />
@@ -140,7 +144,6 @@
     <Compile Include="KahvipaussiEngine\Khv.Input\InputController.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Input\InputControlSetup.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Input\InputEventArgs.cs" />
-    <Compile Include="KahvipaussiEngine\Khv.Input\InputKey.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Input\InputManager.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Input\InputMapper.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Input\InputState.cs" />
