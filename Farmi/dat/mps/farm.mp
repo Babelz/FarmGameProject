@@ -9950,7 +9950,7 @@
               </Pair>
               <Pair>
                 <Name>ContextName</Name>
-                <Value>PlayerBuilding</Value>
+                <Value>playerhouse1</Value>
               </Pair>
             </Valuepairs>
           </MapObject>

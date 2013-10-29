@@ -58,11 +58,11 @@ namespace Farmi
             ScriptEngine engine = new ScriptEngine(this, Path.Combine("cfg", "sengine.cfg"));
             Components.Add(engine);
 
-            GameStateManager.ChangeState(new GameplayScreen());
-
             Components.Add(new RepositoryManager(@"\dat\repos",
                            new string[] { "Farmi.Datasets." },
                            new string[] { "Farmi.Repositories." }));
+
+            GameStateManager.ChangeState(new GameplayScreen());
 
             base.Initialize();
         }
