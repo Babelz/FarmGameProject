@@ -281,6 +281,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Buildings\playerhouse1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\MapTileSets\outdoors1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -69,13 +69,5 @@ namespace Farmi.Datasets
             set;
         }
         #endregion
-
-        /// <summary>
-        /// Palauttaa tyhjän datasetin.
-        /// </summary>
-        public static BuildingDataset Empty()
-        {
-            return new BuildingDataset();
-        }
     }
 }

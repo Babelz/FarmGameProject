@@ -10,11 +10,18 @@ using SerializedDataTypes.MapObjects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Khv.Maps.MapClasses.Processors;
+using Farmi.Repositories;
+using Farmi.Datasets;
 
 namespace Farmi.Entities.Buildings
 {
     internal sealed class Building : DrawableGameObject
     {
+        #region Vars
+        private Texture2D texture;
+        private Color color;
+        #endregion
+
         /// <summary>
         /// Muodostin kun ladataan suoraan kartasta olio.
         /// </summary>
@@ -36,9 +43,6 @@ namespace Farmi.Entities.Buildings
         // Testi metodi initille.
         private void TestInitialize(MapObjectArguments args)
         {
-            size = new Size(192, 128);
-            Collider = new BoxCollider(null, this);
-
             if (args == null)
             {
                 position = Vector2.Zero;
@@ -47,6 +51,25 @@ namespace Farmi.Entities.Buildings
             {
                 position = args.Origin;
             }
+
+            // Hakee tiedot repoista.
+            RepositoryManager repositoryManager = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
+            BuildingDataset dataset = repositoryManager.GetDataSet<BuildingDataset>(s => s.Name == args.SerializedData.valuepairs[1].Value);
+
+            if (!string.IsNullOrEmpty(dataset.Name))
+            {
+                texture = game.Content.Load<Texture2D>(@"Buildings\" + dataset.AssetName);
+                size = dataset.Size;
+                color = Color.White;
+            }
+            else
+            {
+                size = new Size(128, 64);
+                texture = KhvGame.Temp;
+                color = Color.Brown;
+            }
+
+            Collider = new BoxCollider(null, this);
         }
 
         public void InitializeFromData(string datasetName)
@@ -62,7 +85,7 @@ namespace Farmi.Entities.Buildings
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Brown);   
+            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), color);   
         }
     }
 }
