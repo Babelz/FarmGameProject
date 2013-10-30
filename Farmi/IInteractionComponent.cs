@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Khv.Game.GameObjects;
+
+namespace Farmi
+{
+    public delegate void InteractionDelegate();
+    public interface IInteractionComponent : IObjectComponent
+    {
+        event InteractionDelegate OnInteractionBegin;
+        event InteractionDelegate OnInteraction;
+        event InteractionDelegate OnInteractionFinished;
+
+        void Interact(GameObject source);
+        bool CanInteract(GameObject source);
+
+    }
+}

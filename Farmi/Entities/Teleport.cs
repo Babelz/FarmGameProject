@@ -39,18 +39,15 @@ namespace Farmi.Entities
 
         private void MakeFromMapData(MapObjectArguments mapObjectArguments)
         {
-            if (mapObjectArguments != null)
-            {
-                size = GetSize(mapObjectArguments);
-                mapToTeleport = GetMapToTeleport(mapObjectArguments);
-                positionOffSet = GetPositionOffSet(mapObjectArguments);
-                position = mapObjectArguments.Origin;
+            size = GetSize(mapObjectArguments);
+            mapToTeleport = GetMapToTeleport(mapObjectArguments);
+            positionOffSet = GetPositionOffSet(mapObjectArguments);
+            position = mapObjectArguments.Origin;
 
-                mapContainedIn = mapObjectArguments.MapContainedIn;
+            mapContainedIn = mapObjectArguments.MapContainedIn;
 
-                Collider = new BoxCollider(null, this);
-                Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
-            }
+            Collider = new BoxCollider(null, this);
+            Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
         }
         private void MakeFromDataset(TeleportDataset teleportDataset, string mapContainedIn)
         {

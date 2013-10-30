@@ -38,6 +38,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BasicInteractionComponent.cs" />
     <Compile Include="Datasets\AnimalDataset.cs" />
     <Compile Include="Datasets\BuildingDataset.cs" />
     <Compile Include="Datasets\DoorDataset.cs" />
@@ -47,9 +48,11 @@
     <Compile Include="Entities\Buildings\Building.cs" />
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\CropSpot.cs" />
+    <Compile Include="Entities\Door.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
     <Compile Include="Entities\Teleport.cs" />
     <Compile Include="FarmGame.cs" />
+    <Compile Include="IInteractionComponent.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Args.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Enums.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\GameStateMachine.cs" />

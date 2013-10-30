@@ -29,14 +29,12 @@ namespace Farmi.Entities.Buildings
             : base(game)
         {
             // Pitäs ladata db:stä tietoja jo tässä
-
             MakeFromMapData(args);
+            Components.Add(new BasicInteractionComponent());
         }
         public Building(KhvGame game)
             : base(game)
         {
-            // Pitäs ladata db:stä tietoja jo tässä
-
             MakeFromMapData(null);
         }
 
@@ -61,9 +59,22 @@ namespace Farmi.Entities.Buildings
                 texture = game.Content.Load<Texture2D>(@"Buildings\" + dataset.AssetName);
                 size = dataset.Size;
                 color = Color.White;
+                Doors = new Door[dataset.Doors.Length];
+                for (int doorIndex = 0; doorIndex < dataset.Doors.Length; doorIndex++)
+                {
+                    var doorDataset = dataset.Doors[doorIndex];
+                    Door door = new Door(game, this, doorDataset);
+                    Doors[doorIndex] = door;
+                    
+                    
+                }
+
+                // heitetään buildingin collision boxeista pois ovet
+                
             }
             else
             {
+                Doors = new Door[0];
                 size = new Size(128, 64);
                 texture = KhvGame.Temp;
                 color = Color.Brown;
@@ -85,7 +96,17 @@ namespace Farmi.Entities.Buildings
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), color);   
+            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), color);
+            foreach (var door in Doors)
+            {
+                door.Draw(spriteBatch);
+            }
+        }
+
+        public Door[] Doors
+        {
+            get;
+            private set;
         }
     }
 }

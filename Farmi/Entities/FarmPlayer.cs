@@ -8,10 +8,12 @@ using Khv.Engine;
 using Khv.Engine.Structs;
 using Khv.Game;
 using Khv.Game.Collision;
+using Khv.Game.GameObjects;
 using Khv.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using OpenTK.Input;
 
 namespace Farmi.Entities
 {
@@ -62,12 +64,22 @@ namespace Farmi.Entities
             keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
             keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, speed));
+            keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract());
 
             var padmapper = defaultInputSetup.Mapper.GetInputBindProvider<PadInputBindProvider>();
             padmapper.Map(new ButtonTrigger("Move left", Buttons.LeftThumbstickLeft, Buttons.DPadLeft), (triggered, args) => MotionEngine.GoalVelocityX = -speed);
             padmapper.Map(new ButtonTrigger("Move right", Buttons.LeftThumbstickRight, Buttons.DPadRight), (triggered, args) => MotionEngine.GoalVelocityX = speed);
             padmapper.Map(new ButtonTrigger("Move up", Buttons.LeftThumbstickUp, Buttons.DPadUp), (triggered, args) => MotionEngine.GoalVelocityY = -speed);
             padmapper.Map(new ButtonTrigger("Move down", Buttons.LeftThumbstickDown, Buttons.DPadDown), (triggered, args) => MotionEngine.GoalVelocityX = speed);
+        }
+
+        private void TryInteract()
+        {
+            GameObject closest = world.GetNearestInteractable(this, 32);
+            if (closest == null)
+                return;
+            (closest.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent).Interact(this);
+            
         }
 
         private float VelocityFunc(InputEventArgs args, float src)

@@ -90,10 +90,14 @@ namespace Khv.Game.Collision
                     polygon.Vertices.Add(v3);
                     polygon.Vertices.Add(v4);
                     polygon.BuildEdges();
+
                     CollisionEventArgs r = PolygonCollision(this, polygon);
                     if (r.Intersecting || r.WillIntersect)
+
+                    r = PolygonCollision(this, polygon);
+                    if (r.WillIntersect)
                     {
-                        Instance.Position += r.Translation;
+                        Asd(Instance, r);
                         FireOnCollision(Instance, tile, r);
                     }
                 }
