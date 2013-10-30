@@ -32,7 +32,7 @@ namespace Farmi.Entities
         /// Luo uuden instanssin teleportista.
         /// </summary>
         /// <param name="game">Khv peli instanssi.</param>
-        /// <param name="args">Argumentit jotka saadaan kun karttaa parsitaa ja tämä olio alustetaan.</param>
+        /// <param name="args">Argumentit jotka saadaan kun karttaa parsitaan ja tämä olio alustetaan.</param>
         public Teleport(KhvGame game, MapObjectArguments args)
             : base(game)
         {
@@ -47,7 +47,8 @@ namespace Farmi.Entities
         public Teleport(KhvGame game, TeleportDataset teleportDataset, string mapContainedIn)
             : base(game)
         {
-            MakeFromDataset(teleportDataset, mapContainedIn);
+            this.mapContainedIn = mapContainedIn;
+            MakeFromDataset(teleportDataset);
         }
 
         /// <summary>
@@ -70,13 +71,11 @@ namespace Farmi.Entities
         /// Parsii datat suoraan datasetistä, ei hookkaa
         /// collision eventtiä.
         /// </summary>
-        private void MakeFromDataset(TeleportDataset teleportDataset, string mapContainedIn)
+        private void MakeFromDataset(TeleportDataset teleportDataset)
         {
             size = teleportDataset.Size;
             mapToTeleport = teleportDataset.TeleportTo;
             positionOffSet = teleportDataset.PositionOffSet;
-
-            this.mapContainedIn = mapContainedIn;
 
             Collider = new BoxCollider(null, this);
         }
