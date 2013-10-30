@@ -10,7 +10,7 @@
       </Scripts>
       <Doors>
         <!-- Kaikki rakennuksen ovet tulee alustaa tässä. -->
-        <Door X="0,0" Y="32,0" Width="32" Height="32" AssetName="door1">
+        <Door X="40,0" Y="64,0" Width="32" Height="32" AssetName="door1">
           <Teleport X="0,0" Y="-32,0" Width="0" Height="0" 
                     TeleportTo="playerhouseindoors1"/>
         </Door>
