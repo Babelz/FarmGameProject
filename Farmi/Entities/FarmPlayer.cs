@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Farmi.Entities.Components;
 using Farmi.KahvipaussiEngine.Khv.Game.Collision;
 using Farmi.World;
 using Khv.Engine;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Khv.Game.GameObjects;
 
-namespace Farmi
+namespace Farmi.Entities.Components
 {
     public delegate void InteractionDelegate();
     public interface IInteractionComponent : IObjectComponent

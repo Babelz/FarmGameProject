@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Farmi.Entities;
+using Farmi.Entities.Components;
 using Khv.Engine;
 using Khv.Engine.Helpers;
 using Khv.Game.GameObjects;

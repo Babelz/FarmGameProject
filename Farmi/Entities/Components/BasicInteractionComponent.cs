@@ -6,7 +6,7 @@ using Farmi.Entities;
 using Khv.Game.GameObjects;
 using Microsoft.Xna.Framework;
 
-namespace Farmi
+namespace Farmi.Entities.Components
 {
     abstract class BasicInteractionComponent : IInteractionComponent
     {
