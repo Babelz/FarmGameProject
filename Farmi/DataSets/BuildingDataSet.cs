@@ -100,6 +100,7 @@ namespace Farmi.Datasets
             {
                 Doors = (from doors in xElement.Descendants("Doors")
                          from door in doors.Descendants()
+                         where door.Name == "Door"
                          select new DoorDataset(door)).ToArray();
             }
         }

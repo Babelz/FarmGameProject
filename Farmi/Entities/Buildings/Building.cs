@@ -30,18 +30,18 @@ namespace Farmi.Entities.Buildings
         {
             // Pitäs ladata db:stä tietoja jo tässä
 
-            TestInitialize(args);
+            MakeFromMapData(args);
         }
         public Building(KhvGame game)
             : base(game)
         {
             // Pitäs ladata db:stä tietoja jo tässä
 
-            TestInitialize(null);
+            MakeFromMapData(null);
         }
 
         // Testi metodi initille.
-        private void TestInitialize(MapObjectArguments args)
+        private void MakeFromMapData(MapObjectArguments args)
         {
             if (args == null)
             {

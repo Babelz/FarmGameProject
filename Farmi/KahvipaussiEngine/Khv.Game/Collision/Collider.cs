@@ -26,10 +26,13 @@ namespace Khv.Game.Collision
         /// Apuri että voidaan laukaista eventti yläluokista
         /// </summary>
         /// <param name="source">GameObject johon/joka törmäsi</param>
-        protected virtual void FireOnCollision(GameObject me, object sender, CollisionResult result)
+        protected virtual void FireOnCollision(GameObject me, object sender, CollisionEventArgs result)
         {
             if (me.Collider.OnCollision != null)
-                me.Collider.OnCollision(sender, result);
+            {
+                result.CollidingObject = sender;
+                me.Collider.OnCollision(this, result);
+            }
         }
 
         #endregion
@@ -41,7 +44,7 @@ namespace Khv.Game.Collision
         /// </summary>
         /// <param name="other">Gameobject != itse</param>
         /// <returns>true jos törmää</returns>
-        public abstract bool Collides(GameObject other, out CollisionResult result);
+        public abstract bool Collides(GameObject other, out CollisionEventArgs result);
 
         /// <summary>
         /// Päivittää colliderin toimintaa, etsii uusia
@@ -53,5 +56,5 @@ namespace Khv.Game.Collision
         #endregion
     }
 
-    public delegate void CollisionEventHandler(object sender, CollisionResult result);
+    public delegate void CollisionEventHandler(object sender, CollisionEventArgs result);
 }

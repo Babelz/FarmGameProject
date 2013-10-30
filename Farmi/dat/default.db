@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Defaults>
+  
+  <!-- Teleport at map -->
+  <MapObject>
+    <Name>Teleport</Name>
+    <Valuepairs>
+      <Pair>
+        <Name>To</Name>
+        <Value>farm</Value>
+      </Pair>
+      <Pair>
+        <Name>PositionOffSet</Name>
+        <Value>X = 0, Y = -32</Value>
+      </Pair>
+      <Pair>
+        <Name>Size</Name>
+        <Value>Width = 64, Height = 32</Value>
+      </Pair>
+    </Valuepairs>
+  </MapObject>
+
+  <!-- Teleport at db -->
+  <Teleport X="0,0" Y="-32,0" Width="0" Height="0"
+            TeleportTo="playerhouseindoors1"/>
+
+  <!-- Building at map -->
+  <MapObject>
+    <Name>Building</Name>
+    <Valuepairs>
+      <Pair>
+        <Name>Type</Name>
+        <Value>BuildingDataset</Value>
+      </Pair>
+      <Pair>
+        <Name>ContextName</Name>
+        <Value>playerhouse1</Value>
+      </Pair>
+    </Valuepairs>
+  </MapObject>
+
+  <!-- Building at db -->
+  <Building Name="" Width="0" Height="0" AssetName="">
+    <Collider X="0,0f" Y="0,0" Width="0" Height="0"/>
+    <Scripts>
+
+    </Scripts>
+    <Doors>
+      <Door X="0,0" Y="0,0" Width="0" Height="0" AssetName="">
+        <Teleport X="0,0" Y="-0,0" Width="0" Height="0" TeleportTo="playerhouseindoors1"/>
+      </Door>
+    </Doors>
+  </Building>
+  
+</Defaults>
