@@ -20,23 +20,40 @@ namespace Farmi.Entities
     internal sealed class Teleport : GameObject
     {
         #region Vars
+        // Kartta johon teleportataan.
         private string mapToTeleport;
+        // Kartta jossa teleportti asuu.
         private string mapContainedIn;
 
         private Vector2 positionOffSet;
         #endregion
 
+        /// <summary>
+        /// Luo uuden instanssin teleportista.
+        /// </summary>
+        /// <param name="game">Khv peli instanssi.</param>
+        /// <param name="args">Argumentit jotka saadaan kun karttaa parsitaa ja tämä olio alustetaan.</param>
         public Teleport(KhvGame game, MapObjectArguments args)
             : base(game)
         {
             MakeFromMapData(args);
         }
+        /// <summary>
+        /// Alustaa uuden teleportin.
+        /// </summary>
+        /// <param name="game">Khv peli instanssi.</param>
+        /// <param name="teleportDataset">Teleport dataset josta haetaan tiedot teleportille.</param>
+        /// <param name="mapContainedIn">Kartta jossa teleportti asuu.</param>
         public Teleport(KhvGame game, TeleportDataset teleportDataset, string mapContainedIn)
             : base(game)
         {
             MakeFromDataset(teleportDataset, mapContainedIn);
         }
 
+        /// <summary>
+        /// Parsii datat suoraan kartan tiedoista ja hookkaa
+        /// collision eventin.
+        /// </summary>
         private void MakeFromMapData(MapObjectArguments mapObjectArguments)
         {
             size = GetSize(mapObjectArguments);
@@ -49,6 +66,10 @@ namespace Farmi.Entities
             Collider = new BoxCollider(null, this);
             Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
         }
+        /// <summary>
+        /// Parsii datat suoraan datasetistä, ei hookkaa
+        /// collision eventtiä.
+        /// </summary>
         private void MakeFromDataset(TeleportDataset teleportDataset, string mapContainedIn)
         {
             size = teleportDataset.Size;
@@ -58,7 +79,6 @@ namespace Farmi.Entities
             this.mapContainedIn = mapContainedIn;
 
             Collider = new BoxCollider(null, this);
-            Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
         }
 
         #region Value parsing methods
