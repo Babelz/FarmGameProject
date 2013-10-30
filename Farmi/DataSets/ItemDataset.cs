@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Farmi.Datasets
 {
-    internal class ItemDataset
+    internal sealed class ItemDataset
     {
     }
 }

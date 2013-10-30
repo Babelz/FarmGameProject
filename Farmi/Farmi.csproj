@@ -39,11 +39,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BasicInteractionComponent.cs" />
-    <Compile Include="DataSets\AnimalDataset.cs" />
-    <Compile Include="DataSets\BuildingDataset.cs" />
-    <Compile Include="DataSets\DoorDataset.cs" />
-    <Compile Include="DataSets\ItemDataset.cs" />
-    <Compile Include="DataSets\TeleportDataset.cs" />
+    <Compile Include="Datasets\AnimalDataset.cs" />
+    <Compile Include="Datasets\BuildingDataset.cs" />
+    <Compile Include="Datasets\DoorDataset.cs" />
+    <Compile Include="Datasets\IDataset.cs" />
+    <Compile Include="Datasets\ItemDataset.cs" />
+    <Compile Include="Datasets\TeleportDataset.cs" />
     <Compile Include="Entities\Buildings\Building.cs" />
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\CropSpot.cs" />
@@ -300,6 +301,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="dat\repos\buildings.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="dat\mps\town.mp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="dat\mps\forest.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Icon.ico" />

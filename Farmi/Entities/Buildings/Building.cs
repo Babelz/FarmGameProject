@@ -57,7 +57,7 @@ namespace Farmi.Entities.Buildings
             RepositoryManager repositoryManager = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
             BuildingDataset dataset = repositoryManager.GetDataSet<BuildingDataset>(s => s.Name == args.SerializedData.valuepairs[1].Value);
 
-            if (!string.IsNullOrEmpty(dataset.Name))
+            if (dataset != null)
             {
                 texture = game.Content.Load<Texture2D>(@"Buildings\" + dataset.AssetName);
                 size = dataset.Size;

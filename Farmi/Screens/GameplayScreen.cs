@@ -10,6 +10,7 @@ using Khv.Engine;
 using Khv.Input;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Khv.Gui.Components.BaseComponents.Containers.Components;
 
 namespace Farmi.Screens
 {
@@ -60,10 +61,7 @@ namespace Farmi.Screens
 
             SpriteBatch.End();
 
-            SpriteBatch.Begin(
-                SpriteSortMode.Deferred, 
-                BlendState.AlphaBlend,
-                 SamplerState.PointClamp,
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                   null,
                   null,
                   null,

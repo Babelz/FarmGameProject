@@ -12,18 +12,18 @@ using System.Xml.Linq;
 
 namespace Khv.Maps.MapClasses.Managers
 {
+    public enum MapChangeAction
+    {
+        DisposeCurrent,
+        MoveCurrentToBackground
+    }
+
     /// <summary>
     /// Luokka joka sisältää kartat ja niihin liittyvät tiedot.
     /// Aktiivinen kartta asuu tässä oliossa.
     /// </summary>
     public class MapManager : Manager
     {
-        public enum MapChangeAction
-        {
-            DisposeCurrent,
-            MoveCurrentToBackground
-        }
-
         #region Vars
         private KhvGame game;
         private ContentManager contentManager;

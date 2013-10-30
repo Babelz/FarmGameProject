@@ -37,50 +37,7 @@ namespace Farmi.Repositories
             foreach (var buildingData in buildingDatas)
             {
                 BuildingDataset buildingDataset = new BuildingDataset();
-
-                // Rakennuksen perustietojen hakeminen.
-                #region Building parsing
-                buildingDataset.Name = buildingData.Attribute("Name").Value;
-
-                buildingDataset.Size = new Size(int.Parse(buildingData.Attribute("Width").Value),
-                                                int.Parse(buildingData.Attribute("Height").Value));
-
-                buildingDataset.AssetName = buildingData.Attribute("AssetName").Value;
-                #endregion
-
-                // Colliderin valueiden hakeminen.
-                #region Collider parsing
-                var colliderData = buildingData.Element("Collider");
-
-                buildingDataset.ColliderPositionOffSet = new Vector2(float.Parse(colliderData.Attribute("X").Value),
-                                                                     float.Parse(colliderData.Attribute("Y").Value));
-
-                buildingDataset.ColliderSizeOffSet = new Size(int.Parse(colliderData.Attribute("Width").Value),
-                                                              int.Parse(colliderData.Attribute("Height").Value));
-                #endregion
-
-                // Scriptien valueiden hakeminen.
-                #region Script parsing
-                buildingDataset.Scripts = (from scriptNames in buildingData.Descendants("Scripts")
-                                           from scriptName in scriptNames.Descendants()
-                                           select scriptName.Attribute("Name").Value).ToArray<string>();
-                #endregion
-
-                // Ovien valueiden hakeminen.
-                #region Door parsing
-                buildingDataset.Doors = (from doors in buildingData.Descendants("Doors")
-                                         from door in doors.Descendants()
-                                         select
-                                         new DoorDataset()
-                                         {
-                                             AssetName = door.Attribute("AssetName").Value,
-                                             TeleportTo = door.Attribute("TeleportTo").Value,
-                                             Position = new Vector2(float.Parse(door.Attribute("X").Value),
-                                                                    float.Parse(door.Attribute("Y").Value)),
-                                             Size = new Size(int.Parse(door.Attribute("Width").Value),
-                                                             int.Parse(door.Attribute("Height").Value))
-                                         }).ToArray<DoorDataset>();
-                #endregion
+                buildingDataset.ParseValuesFrom(buildingData);
 
                 items.Add(buildingDataset);
             }

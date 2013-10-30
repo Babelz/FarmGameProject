@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Farmi.Datasets
 {
-    internal struct TeleportDataset
+    internal sealed class TeleportDataset
     {
     }
 }
