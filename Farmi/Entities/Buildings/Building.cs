@@ -48,6 +48,12 @@ namespace Farmi.Entities.Buildings
             MakeFromMapData(mapObjectArguments);
             //Components.Add(new BasicInteractionComponent());
         }
+        public Building(KhvGame game)
+            : base(game)
+        {
+            world = (game.GameStateManager.States.First
+                    (s => s is GameplayScreen) as GameplayScreen).World;
+        }
 
         // Testi metodi initille.
         private void MakeFromMapData(MapObjectArguments mapObjectArguments)
@@ -101,11 +107,11 @@ namespace Farmi.Entities.Buildings
         {
             if (e.Current.Name == mapContainedIn)
             {
-                world.WorldObjects.RemoveGameObjects<Door>(Doors);
+                world.WorldObjects.SafelyRemove<Door>(Doors);
             }
             else
             {
-                world.WorldObjects.AddGameObjects(Doors);
+                world.WorldObjects.SafelyAddMany(Doors);
             }
         }
         #endregion

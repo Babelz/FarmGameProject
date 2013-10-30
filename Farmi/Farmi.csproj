@@ -48,6 +48,7 @@
     <Compile Include="Entities\Components\DoorInteractionComponent.cs" />
     <Compile Include="Entities\Buildings\Building.cs" />
     <Compile Include="Entities\Camera.cs" />
+    <Compile Include="Entities\Components\ExclamationMarkDrawer.cs" />
     <Compile Include="Entities\CropSpot.cs" />
     <Compile Include="Entities\Door.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
@@ -290,6 +291,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Buildings\playerhouse1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\exclamation.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\MapTileSets\outdoors1.png">

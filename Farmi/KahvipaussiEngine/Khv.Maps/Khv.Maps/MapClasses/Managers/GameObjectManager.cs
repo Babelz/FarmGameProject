@@ -26,8 +26,9 @@ namespace Khv.Maps.MapClasses.Managers
         private Dictionary<Type, IList> objectLists;
         private List<GameObject> allObjects;
         private List<DrawableGameObject> drawableObjects;
-        private List<GameObject> addQue;
-        private List<GameObject> removeQue;
+
+        private List<GameObject> safeAddQue;
+        private List<GameObject> safeRemoveQue;
         #endregion
 
         #region Properties
@@ -77,78 +78,113 @@ namespace Khv.Maps.MapClasses.Managers
             objectLists.Add(typeof(DrawableGameObject), drawableObjects);
             objectLists.Add(typeof(GameObject), allObjects);
 
-            addQue = new List<GameObject>();
-            removeQue = new List<GameObject>();
+            safeAddQue = new List<GameObject>();
+            safeRemoveQue = new List<GameObject>();
         }
 
         #region Safe add methods
+        /// <summary>
+        /// Lisää safe add queen uuden olion.
+        /// </summary>
         public void SafelyAdd(GameObject gameObject)
         {
-            addQue.Add(gameObject);
+            safeAddQue.Add(gameObject);
         }
+        /// <summary>
+        /// Lisää safe add queen monta olioa.
+        /// </summary>
         public void SafelyAddMany(IEnumerable<GameObject> gameObjects)
         {
-            addQue.AddRange(gameObjects);
+            safeAddQue.AddRange(gameObjects);
         }
+        /// <summary>
+        /// Lisää safe add queen monta olioa.
+        /// </summary>
         public void SafelyAddMany(params GameObject[] gameObjects)
         {
-            addQue.AddRange(gameObjects);
+            safeAddQue.AddRange(gameObjects);
         }
+        /// <summary>
+        /// Lisää kaikki safe add quessa olevat oliot
+        /// manageriin.
+        /// </summary>
         public void FlushAddQue()
         {
-            addQue.ForEach(o =>
+            safeAddQue.ForEach(o =>
                 {
                     AddGameObject(o);
                 });
 
-            addQue.Clear();
+            safeAddQue.Clear();
         }
         #endregion
 
         #region Safe remove methods
+        /// <summary>
+        /// Lisää olion safe remove queen.
+        /// </summary>
         public void SafelyRemove(GameObject gameObject)
         {
-            removeQue.Add(gameObject);
+            safeRemoveQue.Add(gameObject);
         }
+        /// <summary>
+        /// Lisää olion safe remove queen joka 
+        /// täyttää ensimmäisenä ehdon.
+        /// </summary>
         public void SafelyRemove(Predicate<GameObject> predicate)
         {
             GameObject gameObject = GetGameObject<GameObject>(predicate);
 
             if (gameObject != null)
             {
-                removeQue.Add(gameObject);
+                safeRemoveQue.Add(gameObject);
             }
         }
+        /// <summary>
+        /// Lisää olion safe remove queen joka 
+        /// täyttää ensimmäisenä ehdon.
+        /// </summary>
         public void SafelyRemove<T>(Predicate<T> predicate) where T : GameObject
         {
             T gameObject = GetGameObject<T>(predicate);
 
             if (gameObject != null)
             {
-                removeQue.Add(gameObject);
+                safeRemoveQue.Add(gameObject);
             }
         }
+        /// <summary>
+        /// Lisää argumenttina saadut oliot safe remove queen.
+        /// </summary>
         public void SafelyRemove<T>(IEnumerable<T> objectsToRemove) where T : GameObject
         {
-            removeQue.AddRange(objectsToRemove);
+            safeRemoveQue.AddRange(objectsToRemove);
         }
+        /// <summary>
+        /// Lisää kaikki oliot jotka täyttävät ehdon safe
+        /// remove queen.
+        /// </summary>
         public void SafelyRemoveAll<T>(Predicate<T> predicate) where T : GameObject
         {
             IEnumerable<T> objectsToRemove = GetMany<T>(predicate);
 
             if (objectsToRemove.Count() > 0)
             {
-                removeQue.AddRange(objectsToRemove);
+                safeRemoveQue.AddRange(objectsToRemove);
             }
         }
+        /// <summary>
+        /// Poistaa managerista kaikki safe remove 
+        /// quen oliot.
+        /// </summary>
         public void FlushRemoveQue()
         {
-            removeQue.ForEach(o =>
+            safeRemoveQue.ForEach(o =>
                 {
                     RemoveGameObject(o);
                 });
 
-            removeQue.Clear();
+            safeRemoveQue.Clear();
         }
         #endregion
 
@@ -331,6 +367,10 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         public IEnumerable<T> GameObjectsOfType<T>(Predicate<T> predicate = null)
         {
+            // Flussitaan aluksi quet jos ollaan poistettu 
+            // tai lisätty olioja safe metodeilla.
+            FlushQues();
+
             List<T> list = GetObjectList<T>(typeof(T));
 
             return GetIterator<T>(list, predicate);
@@ -356,6 +396,21 @@ namespace Khv.Maps.MapClasses.Managers
             }
         }
         #endregion
+
+        /// <summary>
+        /// Flushaa remove ja add quen.
+        /// </summary>
+        public void FlushQues()
+        {
+            if (safeAddQue.Count > 0)
+            {
+                FlushAddQue();
+            }
+            if (safeRemoveQue.Count > 0)
+            {
+                FlushRemoveQue();
+            }
+        }
 
         /// <summary>
         /// Palauttaa aina objekti listan. Luo aina listan jos

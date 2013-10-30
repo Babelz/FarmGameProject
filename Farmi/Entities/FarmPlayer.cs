@@ -20,26 +20,44 @@ namespace Farmi.Entities
 {
     public sealed class FarmPlayer : Player
     {
+        #region Vars
         private readonly FarmWorld world;
+        private GameObject closest;
         private const float speed = 5f;
+
+
         private InputController controller;
+        private InputControlSetup defaultInputSetup;
+        private InputControlSetup shopInputSetup;
+        #endregion
 
-        private InputControlSetup defaultInputSetup = new InputControlSetup();
-        private InputControlSetup shopInputSetup = new InputControlSetup();
-
-        public FarmPlayer(KhvGame game, FarmWorld world, PlayerIndex index = PlayerIndex.One) : base(game, index)
+        #region Properties
+        public bool CouldInteract
         {
+            get
+            {
+                return closest != null;
+            }
+        }
+        #endregion
+
+        public FarmPlayer(KhvGame game, FarmWorld world, PlayerIndex index = PlayerIndex.One)
+            : base(game, index)
+        {
+            defaultInputSetup = new InputControlSetup();
+            shopInputSetup = new InputControlSetup();
+            
             this.world = world;
             Position = new Vector2(500, 200);
 
             Size = new Size(32, 32);
 
-            Collider = new BoxCollider(world, 
-                this, 
-                new BasicObjectCollisionQuerier(), 
+            Collider = new BoxCollider(world, this,
+                new BasicObjectCollisionQuerier(),
                 new BasicTileCollisionQuerier());
+
             Collider.OnCollision += Collider_OnCollision;
-            
+
         }
 
         void Collider_OnCollision(object sender, CollisionEventArgs result)
@@ -52,9 +70,8 @@ namespace Farmi.Entities
             controller = new InputController(game.InputManager);
             controller.ChangeSetup(defaultInputSetup);
             InitDefaultSetup();
-            
-            
-            //controller.ChangeSetup(shopInputSetup);
+
+            Components.Add(new ExclamationMarkDrawer(game, this));
         }
 
 
@@ -77,18 +94,26 @@ namespace Farmi.Entities
         private void TryInteract(InputEventArgs args)
         {
             if (args.State != InputState.Released)
+            {
                 return;
-            GameObject closest = world.GetNearestInteractable(this, 32);
+            }
+
             if (closest == null)
+            {
                 return;
+            }
+
             (closest.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent).Interact(this);
-            
+
         }
 
         private float VelocityFunc(InputEventArgs args, float src)
         {
             if (args.State == InputState.Released)
+            {
                 return 0;
+            }
+
             return src;
         }
 
@@ -97,11 +122,14 @@ namespace Farmi.Entities
             base.Update(gameTime);
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
+
+            closest = world.GetNearestInteractable(this, 32);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int) position.X, (int) position.Y, size.Width, size.Height), Color.Turquoise );
+            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Turquoise);
+            base.Draw(spriteBatch);
         }
     }
 }

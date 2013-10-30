@@ -203,6 +203,8 @@ namespace Farmi.World
             {
                gameobject.Draw(spriteBatch);
             }
+
+            gameobjects.First(o => o is FarmPlayer).Draw(spriteBatch);
         }
     }
 }

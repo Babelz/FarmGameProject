@@ -12195,7 +12195,7 @@
               </Pair>
               <Pair>
                 <Name>PositionOffSet</Name>
-                <Value>X = 0, Y = 32</Value>
+                <Value>X = 0, Y = 64</Value>
               </Pair>
               <Pair>
                 <Name>Size</Name>
