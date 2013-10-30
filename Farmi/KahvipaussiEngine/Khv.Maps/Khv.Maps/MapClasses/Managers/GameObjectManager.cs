@@ -377,6 +377,7 @@ namespace Khv.Maps.MapClasses.Managers
 
             return list;
         }
+
         /// <summary>
         /// Palauttaa generisen version halutusta listasta.
         /// </summary>
@@ -384,6 +385,7 @@ namespace Khv.Maps.MapClasses.Managers
         {
             return GetObjectList(type) as List<T>;
         }
+
         /// <summary>
         /// Yrittää palauttaa objekti listan.
         /// </summary>
@@ -395,6 +397,7 @@ namespace Khv.Maps.MapClasses.Managers
 
             return list;
         }
+
         /// <summary>
         /// Luo listan tyypin perusteella.
         /// </summary>
@@ -402,6 +405,7 @@ namespace Khv.Maps.MapClasses.Managers
         {
             return (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
         }
+
         /// <summary>
         /// Poistaa listan jos se on tyhjä.
         /// </summary>
@@ -415,6 +419,7 @@ namespace Khv.Maps.MapClasses.Managers
                 objectLists.Remove(type);
             }
         }
+
         /// <summary>
         /// Poistaa olion listasta ja allobjects listasta jos sitä ei poisteta heti alussa.
         /// </summary>
@@ -437,6 +442,7 @@ namespace Khv.Maps.MapClasses.Managers
             }
             
         }
+
         /// <summary>
         /// Lisää olion listaan ja allobjects listaan jos sitä ei lisätä heti alussa.
         /// </summary>

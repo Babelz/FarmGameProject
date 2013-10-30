@@ -9,23 +9,35 @@ using Khv.Game.Collision;
 using Khv.Game.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Farmi.Screens;
 
 namespace Farmi.Entities
 {
     class Door : DrawableGameObject
     {
-        public Building Building
+        #region Vars
+        private Texture2D texture;
+        private Teleport teleport;
+        #endregion
+
+        #region Properties
+        public Building OwningBuilding
         {
             get; 
             private set;
         }
-        private Texture2D texture;
+        #endregion
 
-        public Door(KhvGame game, Building building, DoorDataset dataset) : base(game)
+        public Door(KhvGame game, Building owningBuilding, DoorDataset doorDataset)
+            : base(game)
         {
-            Building = building;
-            Position = building.Position + dataset.Position;
-            Size = dataset.Size;
+            OwningBuilding = owningBuilding;
+            Position = owningBuilding.Position + doorDataset.Position;
+            Size = doorDataset.Size;
+
+            GameplayScreen screen = game.GameStateManager.Current as GameplayScreen;
+            teleport = new Teleport(game, doorDataset.TeleportDataset, screen.World.MapManager.ActiveMap.Name);
+
             Collider = new BoxCollider(null, this);
             Components.Add(new BasicInteractionComponent());
         }

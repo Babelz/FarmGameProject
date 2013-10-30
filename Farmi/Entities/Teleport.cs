@@ -25,6 +25,7 @@ namespace Farmi.Entities
         // Kartta jossa teleportti asuu.
         private string mapContainedIn;
 
+        // Value joka lisätään kun pelaaja teleporttaa tähän teleporttiin.
         private Vector2 positionOffSet;
         #endregion
 
@@ -149,9 +150,7 @@ namespace Farmi.Entities
         /// </summary>
         public void Port()
         {
-            GameplayScreen screen = (game.Components
-                                    .First(c => c is GameStateManager) as GameStateManager)
-                                    .Current as GameplayScreen;
+            GameplayScreen screen = game.GameStateManager.Current as GameplayScreen;
 
             if (screen != null)
             {

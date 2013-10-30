@@ -17,6 +17,7 @@ namespace Farmi
         public event InteractionDelegate OnInteractionBegin;
         public event InteractionDelegate OnInteraction;
         public event InteractionDelegate OnInteractionFinished;
+
         public void Interact(GameObject source)
         {
             throw new NotImplementedException();

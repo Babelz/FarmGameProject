@@ -22,6 +22,14 @@ namespace Farmi.Entities.Buildings
         private Color color;
         #endregion
 
+        #region Properties
+        public Door[] Doors
+        {
+            get;
+            private set;
+        }
+        #endregion
+
         /// <summary>
         /// Muodostin kun ladataan suoraan kartasta olio.
         /// </summary>
@@ -65,8 +73,6 @@ namespace Farmi.Entities.Buildings
                     var doorDataset = dataset.Doors[doorIndex];
                     Door door = new Door(game, this, doorDataset);
                     Doors[doorIndex] = door;
-                    
-                    
                 }
 
                 // heitetään buildingin collision boxeista pois ovet
@@ -93,7 +99,6 @@ namespace Farmi.Entities.Buildings
             base.Update(gameTime);
             Collider.Update(gameTime);
         }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), color);
@@ -101,12 +106,6 @@ namespace Farmi.Entities.Buildings
             {
                 door.Draw(spriteBatch);
             }
-        }
-
-        public Door[] Doors
-        {
-            get;
-            private set;
         }
     }
 }
