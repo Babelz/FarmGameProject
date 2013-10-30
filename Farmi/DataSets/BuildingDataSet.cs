@@ -112,7 +112,6 @@ namespace Farmi.Datasets
             {
                 Scripts = (from scriptNames in xElement.Descendants("Scripts")
                            from scriptName in scriptNames.Descendants()
-                           where scriptName.Attribute("Name") != null
                            select scriptName.Attribute("Name").Value).ToArray<string>();
             }
         }
@@ -126,7 +125,7 @@ namespace Farmi.Datasets
                                                      float.Parse(colliderData.Attribute("Y").Value));
 
                 ColliderSizeOffSet = new Size(int.Parse(colliderData.Attribute("Width").Value),
-                                                              int.Parse(colliderData.Attribute("Height").Value));
+                                              int.Parse(colliderData.Attribute("Height").Value));
             }
         }
         private void GetBasicValues(XElement xElement)
@@ -134,7 +133,7 @@ namespace Farmi.Datasets
             Name = xElement.Attribute("Name").Value;
 
             Size = new Size(int.Parse(xElement.Attribute("Width").Value),
-                                            int.Parse(xElement.Attribute("Height").Value));
+                            int.Parse(xElement.Attribute("Height").Value));
 
             AssetName = xElement.Attribute("AssetName").Value;
         }
