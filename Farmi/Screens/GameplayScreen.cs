@@ -72,7 +72,7 @@ namespace Farmi.Screens
             World.Draw(SpriteBatch);
 
             base.Draw();
-            string text = "Alpha build 0.1 - SaniEngine v1.0 - Kairatie Edition";
+            string text = "Alpha build 0.1 - SaNiEngine v1.0 - Kairatie Edition";
             Vector2 v = font.MeasureString(text);
             SpriteBatch.DrawString(font, text,
                 new Vector2(
