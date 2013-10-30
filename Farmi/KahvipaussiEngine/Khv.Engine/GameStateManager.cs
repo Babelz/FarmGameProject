@@ -50,6 +50,14 @@ namespace Khv.Engine
             get { return spriteBatch; }
         }
 
+        public List<GameState> States
+        {
+            get
+            {
+                return stateMachine.States;
+            }
+        }
+
         public void ChangeState(GameState state)
         {
             stateMachine.ChangeState(state);
