@@ -63,10 +63,9 @@ namespace Farmi
             Components.Add(new RepositoryManager(@"\dat\repos",
                            new string[] { "Farmi.Datasets." },
                            new string[] { "Farmi.Repositories." }));
-
             GameStateManager.ChangeState(new GameplayScreen());
 
-            base.Initialize();
+            
         }
 
         /// <summary>
