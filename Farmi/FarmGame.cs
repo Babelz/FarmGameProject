@@ -24,8 +24,10 @@ namespace Farmi
     /// </summary>
     internal sealed class FarmGame : KhvGame
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        #region Vars
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        #endregion
 
         public FarmGame()
             : base()

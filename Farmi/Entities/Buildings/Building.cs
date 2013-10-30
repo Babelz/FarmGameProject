@@ -41,24 +41,12 @@ namespace Farmi.Entities.Buildings
             world = gameplayScreen.World;
             //world.MapManager.OnMapChanged += MapManager_OnMapChanged;
             
-            TestInitialize(args);
+            MakeFromMapData(args);
             //Components.Add(new BasicInteractionComponent());
         }
 
-        void MapManager_OnMapChanged(object sender, MapEventArgs e)
-        {
-            
-        }
-        public Building(KhvGame game)
-            : base(game)
-        {
-            // Pitäs ladata db:stä tietoja jo tässä
-
-            TestInitialize(null);
-        }
-
         // Testi metodi initille.
-        private void TestInitialize(MapObjectArguments args)
+        private void MakeFromMapData(MapObjectArguments args)
         {
             if (args == null)
             {

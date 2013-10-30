@@ -26,6 +26,8 @@ namespace Khv.Maps.MapClasses.Managers
         private Dictionary<Type, IList> objectLists;
         private List<GameObject> allObjects;
         private List<DrawableGameObject> drawableObjects;
+        private List<GameObject> addQue;
+        private List<GameObject> removeQue;
         #endregion
 
         #region Properties
@@ -74,7 +76,81 @@ namespace Khv.Maps.MapClasses.Managers
             objectLists = new Dictionary<Type, IList>();
             objectLists.Add(typeof(DrawableGameObject), drawableObjects);
             objectLists.Add(typeof(GameObject), allObjects);
+
+            addQue = new List<GameObject>();
+            removeQue = new List<GameObject>();
         }
+
+        #region Safe add methods
+        public void SafelyAdd(GameObject gameObject)
+        {
+            addQue.Add(gameObject);
+        }
+        public void SafelyAddMany(IEnumerable<GameObject> gameObjects)
+        {
+            addQue.AddRange(gameObjects);
+        }
+        public void SafelyAddMany(params GameObject[] gameObjects)
+        {
+            addQue.AddRange(gameObjects);
+        }
+        public void FlushAddQue()
+        {
+            addQue.ForEach(o =>
+                {
+                    AddGameObject(o);
+                });
+
+            addQue.Clear();
+        }
+        #endregion
+
+        #region Safe remove methods
+        public void SafelyRemove(GameObject gameObject)
+        {
+            removeQue.Add(gameObject);
+        }
+        public void SafelyRemove(Predicate<GameObject> predicate)
+        {
+            GameObject gameObject = GetGameObject<GameObject>(predicate);
+
+            if (gameObject != null)
+            {
+                removeQue.Add(gameObject);
+            }
+        }
+        public void SafelyRemove<T>(Predicate<T> predicate) where T : GameObject
+        {
+            T gameObject = GetGameObject<T>(predicate);
+
+            if (gameObject != null)
+            {
+                removeQue.Add(gameObject);
+            }
+        }
+        public void SafelyRemove<T>(IEnumerable<T> objectsToRemove) where T : GameObject
+        {
+            removeQue.AddRange(objectsToRemove);
+        }
+        public void SafelyRemoveAll<T>(Predicate<T> predicate) where T : GameObject
+        {
+            IEnumerable<T> objectsToRemove = GetMany<T>(predicate);
+
+            if (objectsToRemove.Count() > 0)
+            {
+                removeQue.AddRange(objectsToRemove);
+            }
+        }
+        public void FlushRemoveQue()
+        {
+            removeQue.ForEach(o =>
+                {
+                    RemoveGameObject(o);
+                });
+
+            removeQue.Clear();
+        }
+        #endregion
 
         #region Add methods
         /// <summary>

@@ -41,7 +41,7 @@ namespace Farmi.Entities
             
         }
 
-        void Collider_OnCollision(object sender, CollisionResult result)
+        void Collider_OnCollision(object sender, CollisionEventArgs result)
         {
             //Console.WriteLine(sender);
         }

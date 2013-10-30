@@ -90,7 +90,11 @@ namespace Khv.Game.Collision
                     polygon.Vertices.Add(v3);
                     polygon.Vertices.Add(v4);
                     polygon.BuildEdges();
-                    CollisionResult r = PolygonCollision(this, polygon);
+
+                    CollisionEventArgs r = PolygonCollision(this, polygon);
+                    if (r.Intersecting || r.WillIntersect)
+
+                    r = PolygonCollision(this, polygon);
                     if (r.WillIntersect)
                     {
                         Asd(Instance, r);
@@ -109,29 +113,24 @@ namespace Khv.Game.Collision
             
             foreach (GameObject gameObject in nearGameObjects)
             {
-                CollisionResult r;
+                CollisionEventArgs r;
                 if (!Collides(gameObject, out r)) continue;
 
                 Asd(Instance, r);
 
-                CollisionResult r2 = PolygonCollision(gameObject.Collider as PolygonCollider, this);
+                CollisionEventArgs r2 = PolygonCollision(gameObject.Collider as PolygonCollider, this);
                 Asd(gameObject, r2);
 
-
-
                 FireOnCollision(Instance, gameObject, r);
-                FireOnCollision(gameObject, Instance,
-                    r2
-                    );
+                FireOnCollision(gameObject, Instance, r2);
             }
         }
 
-        private void Asd(GameObject gameObject, CollisionResult r)
+        private void Asd(GameObject gameObject, CollisionEventArgs r)
         {
             Vector2 translation = Vector2.Zero;
             if (Math.Abs(r.Translation.X) > 0.00001f)
             {
-
                 gameObject.Velocity = new Vector2(0, gameObject.Velocity.Y);
             }
             if (Math.Abs(r.Translation.Y) > 0.00001f)
@@ -146,9 +145,9 @@ namespace Khv.Game.Collision
         /// </summary>
         /// <param name="other">Toinen gameobject != owner</param>
         /// <returns>true jos törmää, false muuten</returns>
-        public override bool Collides(GameObject other, out CollisionResult result)
+        public override bool Collides(GameObject other, out CollisionEventArgs result)
         {
-            result = new CollisionResult();
+            result = new CollisionEventArgs();
             // ei voida törmätä itseen tai olemattomaan ;)
             if (other.Collider == null || other == Instance || !other.IsCollidable)
                 return false;
@@ -164,10 +163,10 @@ namespace Khv.Game.Collision
         }
 
 
-        private CollisionResult PolygonCollision(Polygon polygon, Polygon other, 
+        private CollisionEventArgs PolygonCollision(Polygon polygon, Polygon other, 
             Vector2 velocity = new Vector2() ,Vector2 aOffset = new Vector2(), Vector2 bOffset = new Vector2())
         {
-            CollisionResult result = new CollisionResult();
+            CollisionEventArgs result = new CollisionEventArgs();
             result.WillIntersect = true;
             result.Intersecting = true;
             float minIntervalDistance = float.PositiveInfinity;
@@ -224,7 +223,7 @@ namespace Khv.Game.Collision
         /// <param name="who">liikkuva objekti jonka törmäys katsotaan</param>
         /// <param name="other">keneen ollaan törmäämässä</param>
         /// <returns></returns>
-        private CollisionResult PolygonCollision(PolygonCollider who, PolygonCollider other)
+        private CollisionEventArgs PolygonCollision(PolygonCollider who, PolygonCollider other)
         {
             return PolygonCollision(
                 who.Polygon,
@@ -241,7 +240,7 @@ namespace Khv.Game.Collision
         /// <param name="who">liikkuva objekti</param>
         /// <param name="other">staattinen polygon</param>
         /// <returns></returns>
-        private CollisionResult PolygonCollision(PolygonCollider who, Polygon other)
+        private CollisionEventArgs PolygonCollision(PolygonCollider who, Polygon other)
         {
             return PolygonCollision(
                 who.Polygon,

@@ -1393,6 +1393,14 @@
                 <Name>To</Name>
                 <Value>farm</Value>
               </Pair>
+              <Pair>
+                <Name>PositionOffSet</Name>
+                <Value>X = 0, Y = -32</Value>
+              </Pair>
+              <Pair>
+                <Name>Size</Name>
+                <Value>Width = 64, Height = 32</Value>
+              </Pair>
             </Valuepairs>
           </MapObject>
         </SerializedObjectTile>

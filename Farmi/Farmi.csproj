@@ -79,7 +79,7 @@
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\BasicTileCollisionQuerier.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\BoxCollider.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\Collider.cs" />
-    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\CollisionResult.cs" />
+    <Compile Include="KahvipaussiEngine\Khv.Game\Collision\CollisionEventArgs.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\IObjectCollisionQuerier.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\ITileCollisionQuerier.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Game\Collision\Polygon.cs" />
@@ -310,6 +310,7 @@
     <None Include="dat\mps\forest.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="dat\default.db" />
     <Content Include="Icon.ico" />
     <Content Include="KahvipaussiEngine\Khv.Gui\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Gui\TODO.txt" />

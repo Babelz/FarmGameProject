@@ -24,14 +24,6 @@ namespace Farmi.Datasets
             private set;
         }
         /// <summary>
-        /// Minne teleporttaa.
-        /// </summary>
-        public string TeleportTo
-        {
-            get;
-            private set;
-        }
-        /// <summary>
         /// Oven sijainti.
         /// </summary>
         public Vector2 Position
@@ -43,6 +35,14 @@ namespace Farmi.Datasets
         /// Oven koko.
         /// </summary>
         public Size Size
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Oven teleportin tiedot.
+        /// </summary>
+        public TeleportDataset TeleportDataset
         {
             get;
             private set;
@@ -60,16 +60,26 @@ namespace Farmi.Datasets
             GetBasicValues(xElement);
             GetPositionValues(xElement);
             GetSizeValues(xElement);
+            GetTeleportValues(xElement);
         }
         public XElement AsXElement()
         {
             return xElement;
         }
 
+        private void GetTeleportValues(XElement xElement)
+        {
+            if (xElement.Element("Teleport") != null)
+            {
+                XElement teleportElement = xElement.Element("Teleport");
+
+                TeleportDataset = new TeleportDataset();
+                TeleportDataset.ParseValuesFrom(teleportElement);
+            }
+        }
         private void GetBasicValues(XElement xElement)
         {
             AssetName = xElement.Attribute("AssetName").Value;
-            TeleportTo = xElement.Attribute("TeleportTo").Value;
         }
         private void GetPositionValues(XElement xElement)
         {

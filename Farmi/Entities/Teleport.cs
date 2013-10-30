@@ -12,47 +12,146 @@ using Farmi.World;
 using Farmi.Screens;
 using Khv.Maps.MapClasses.Managers;
 using Microsoft.Xna.Framework;
+using SerializedDataTypes.Components;
+using Farmi.Datasets;
 
 namespace Farmi.Entities
 {
     internal sealed class Teleport : GameObject
     {
         #region Vars
+        // Kartta johon teleportataan.
         private string mapToTeleport;
+        // Kartta jossa teleportti asuu.
         private string mapContainedIn;
+
+        private Vector2 positionOffSet;
         #endregion
 
+        /// <summary>
+        /// Luo uuden instanssin teleportista.
+        /// </summary>
+        /// <param name="game">Khv peli instanssi.</param>
+        /// <param name="args">Argumentit jotka saadaan kun karttaa parsitaan ja tämä olio alustetaan.</param>
         public Teleport(KhvGame game, MapObjectArguments args)
             : base(game)
         {
-            TestInitialize(args);
+            MakeFromMapData(args);
         }
-        public Teleport(KhvGame game)
+        /// <summary>
+        /// Alustaa uuden teleportin.
+        /// </summary>
+        /// <param name="game">Khv peli instanssi.</param>
+        /// <param name="teleportDataset">Teleport dataset josta haetaan tiedot teleportille.</param>
+        /// <param name="mapContainedIn">Kartta jossa teleportti asuu.</param>
+        public Teleport(KhvGame game, TeleportDataset teleportDataset, string mapContainedIn)
             : base(game)
         {
-            TestInitialize(null);
+            this.mapContainedIn = mapContainedIn;
+            MakeFromDataset(teleportDataset);
         }
 
-        private void TestInitialize(MapObjectArguments args)
+        /// <summary>
+        /// Parsii datat suoraan kartan tiedoista ja hookkaa
+        /// collision eventin.
+        /// </summary>
+        private void MakeFromMapData(MapObjectArguments mapObjectArguments)
         {
-            if (args != null)
+            size = GetSize(mapObjectArguments);
+            mapToTeleport = GetMapToTeleport(mapObjectArguments);
+            positionOffSet = GetPositionOffSet(mapObjectArguments);
+            position = mapObjectArguments.Origin;
+
+            mapContainedIn = mapObjectArguments.MapContainedIn;
+
+            Collider = new BoxCollider(null, this);
+            Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
+        }
+        /// <summary>
+        /// Parsii datat suoraan datasetistä, ei hookkaa
+        /// collision eventtiä.
+        /// </summary>
+        private void MakeFromDataset(TeleportDataset teleportDataset)
+        {
+            size = teleportDataset.Size;
+            mapToTeleport = teleportDataset.TeleportTo;
+            positionOffSet = teleportDataset.PositionOffSet;
+
+            Collider = new BoxCollider(null, this);
+        }
+
+        #region Value parsing methods
+        // Hakee karttadatasta positionin offsetin.
+        private Vector2 GetPositionOffSet(MapObjectArguments mapObjectArguments)
+        {
+            Vector2 position = Vector2.Zero;
+
+            Valuepair valuepair = mapObjectArguments.SerializedData.valuepairs
+                                  .Find(v => v.Name == "PositionOffSet");
+
+            if (valuepair != null)
             {
-                position = args.Origin;
-                position.X -= 32;
+                string[] tokens = valuepair.Value.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
-                size = new Size(96, 32);
+                string x = Array.Find<string>(tokens, s => s.Contains("X"));
+                x = x.Trim().Substring(x.IndexOf("=") + 1).Trim();
 
-                Collider = new BoxCollider(null, this);
-                Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
+                string y = Array.Find<string>(tokens, s => s.Contains("Y"));
+                y = y.Trim().Substring(y.IndexOf("=") + 1).Trim();
 
-                mapToTeleport = args.SerializedData.valuepairs[0].Value;
-                mapContainedIn = args.MapContainedIn;
+                position = new Vector2(float.Parse(x), float.Parse(y));
             }
-        }
 
-        private void Collider_OnCollision(object sender, CollisionResult result)
+            return position;
+        }
+        // Hakee serialisoidusta karttadatasta mapin minne tulisi teleportata.
+        private string GetMapToTeleport(MapObjectArguments mapObjectArguments)
         {
-            GameplayScreen screen = (game.Components.First(c => c is GameStateManager) as GameStateManager).Current as GameplayScreen;
+            string mapName = string.Empty;
+
+            Valuepair valuepair = mapObjectArguments.SerializedData.valuepairs
+                                  .Find(v => v.Name == "To");
+
+            if (valuepair != null)
+            {
+                mapName = valuepair.Value.Trim();
+            }
+
+            return mapName;
+        }
+        // Hakee serialisoidusta karttadatasta teleportin koon.
+        private Size GetSize(MapObjectArguments mapObjectArguments)
+        {
+            Size size = new Size(0, 0);
+
+            Valuepair valuePair = mapObjectArguments.SerializedData.valuepairs
+                                  .Find(v => v.Name == "Size");
+
+            if (valuePair != null)
+            {
+                string[] tokens = valuePair.Value.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                string width = Array.Find<string>(tokens, s => s.Contains("Width"));
+                width = width.Trim().Substring(width.IndexOf("=") + 1).Trim();
+
+                string height = Array.Find<string>(tokens, s => s.Contains("Height"));
+                height = height.Trim().Substring(height.IndexOf("=") + 1).Trim();
+
+                size = new Size(int.Parse(width), int.Parse(height));
+            }
+
+            return size;
+        }
+        #endregion
+
+        /// <summary>
+        /// Teleporttaa playerin uudelle kartalle.
+        /// </summary>
+        public void Port()
+        {
+            GameplayScreen screen = (game.Components
+                                    .First(c => c is GameStateManager) as GameStateManager)
+                                    .Current as GameplayScreen;
 
             if (screen != null)
             {
@@ -78,21 +177,20 @@ namespace Farmi.Entities
                                                  .AllManagers()
                                                  .First();
 
-                Teleport teleport = objectManager
-                                    .GetGameObject<Teleport>(
-                                    o => o.mapToTeleport == this.mapContainedIn);
+                Teleport teleport = objectManager.GetGameObject<Teleport>(o => o.mapToTeleport == this.mapContainedIn);
 
-                screen.World.Player.Position = teleport.position;
-
-                if (teleport.position.Y == 0)
-                {
-                    screen.World.Player.Position = new Vector2(screen.World.Player.Position.X, screen.World.Player.Position.Y + 64);
-                }
-                else
-                {
-                    screen.World.Player.Position = new Vector2(screen.World.Player.Position.X, screen.World.Player.Position.Y - 64);
-                }
+                screen.World.Player.Position = teleport.position + teleport.positionOffSet;
             }
         }
+
+        #region Event handlers
+        private void Collider_OnCollision(object sender, CollisionEventArgs result)
+        {
+            if (result.CollidingObject is FarmPlayer)
+            {
+                Port();
+            }
+        }
+        #endregion
     }
 }
