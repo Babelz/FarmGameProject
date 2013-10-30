@@ -64,7 +64,7 @@ namespace Farmi.Entities
             keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
             keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, speed));
-            keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract());
+            keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
 
             var padmapper = defaultInputSetup.Mapper.GetInputBindProvider<PadInputBindProvider>();
             padmapper.Map(new ButtonTrigger("Move left", Buttons.LeftThumbstickLeft, Buttons.DPadLeft), (triggered, args) => MotionEngine.GoalVelocityX = -speed);
@@ -73,8 +73,10 @@ namespace Farmi.Entities
             padmapper.Map(new ButtonTrigger("Move down", Buttons.LeftThumbstickDown, Buttons.DPadDown), (triggered, args) => MotionEngine.GoalVelocityX = speed);
         }
 
-        private void TryInteract()
+        private void TryInteract(InputEventArgs args)
         {
+            if (args.State != InputState.Released)
+                return;
             GameObject closest = world.GetNearestInteractable(this, 32);
             if (closest == null)
                 return;

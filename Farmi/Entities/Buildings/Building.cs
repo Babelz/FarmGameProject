@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Farmi.Screens;
+using Farmi.World;
 using Khv.Engine.Structs;
 using Khv.Game.Collision;
 using Khv.Game.GameObjects;
 using Khv.Engine;
+using Khv.Maps.MapClasses.Managers;
 using SerializedDataTypes.MapObjects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
@@ -20,6 +24,8 @@ namespace Farmi.Entities.Buildings
         #region Vars
         private Texture2D texture;
         private Color color;
+        private FarmWorld world;
+
         #endregion
 
         /// <summary>
@@ -29,9 +35,19 @@ namespace Farmi.Entities.Buildings
             : base(game)
         {
             // Pitäs ladata db:stä tietoja jo tässä
-
+            var gameplayScreen = game.GameStateManager.States.Find(c => c is GameplayScreen) as GameplayScreen;
+            if (gameplayScreen == null)
+                throw new InvalidAsynchronousStateException("Gameplayta ei ole stateissa @ Building.cs consu");
+            world = gameplayScreen.World;
+            //world.MapManager.OnMapChanged += MapManager_OnMapChanged;
+            
             TestInitialize(args);
-            Components.Add(new BasicInteractionComponent());
+            //Components.Add(new BasicInteractionComponent());
+        }
+
+        void MapManager_OnMapChanged(object sender, MapEventArgs e)
+        {
+            
         }
         public Building(KhvGame game)
             : base(game)
@@ -56,7 +72,7 @@ namespace Farmi.Entities.Buildings
             // Hakee tiedot repoista.
             RepositoryManager repositoryManager = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
             BuildingDataset dataset = repositoryManager.GetDataSet<BuildingDataset>(s => s.Name == args.SerializedData.valuepairs[1].Value);
-
+            
             if (dataset != null)
             {
                 texture = game.Content.Load<Texture2D>(@"Buildings\" + dataset.AssetName);
@@ -71,7 +87,7 @@ namespace Farmi.Entities.Buildings
                     
                     
                 }
-
+                world.WorldObjects.AddGameObjects(Doors);
                 // heitetään buildingin collision boxeista pois ovet
                 
             }
@@ -95,6 +111,7 @@ namespace Farmi.Entities.Buildings
         {
             base.Update(gameTime);
             Collider.Update(gameTime);
+            Array.ForEach(Doors, door => door.Update(gameTime));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

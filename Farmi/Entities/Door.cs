@@ -27,7 +27,11 @@ namespace Farmi.Entities
             Position = building.Position + dataset.Position;
             Size = dataset.Size;
             Collider = new BoxCollider(null, this);
-            Components.Add(new BasicInteractionComponent());
+            DoorInteractionComponent c = new DoorInteractionComponent();
+            c.OnInteraction += () => Console.WriteLine("OnInteraction");
+            c.OnInteractionBegin += () => Console.WriteLine("OnInteractionBegin");
+            c.OnInteractionFinished += () => Console.WriteLine("OnInteractionFinished");
+            Components.Add(c);
         }
 
 

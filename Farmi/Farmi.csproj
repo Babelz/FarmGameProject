@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{452F224A-E9D3-424F-9128-4A019468C676}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Farmi</RootNamespace>
     <AssemblyName>Farmi</AssemblyName>
@@ -45,6 +45,7 @@
     <Compile Include="Datasets\IDataset.cs" />
     <Compile Include="Datasets\ItemDataset.cs" />
     <Compile Include="Datasets\TeleportDataset.cs" />
+    <Compile Include="DoorInteractionComponent.cs" />
     <Compile Include="Entities\Buildings\Building.cs" />
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\CropSpot.cs" />

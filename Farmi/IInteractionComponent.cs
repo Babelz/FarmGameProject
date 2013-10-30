@@ -13,6 +13,8 @@ namespace Farmi
         event InteractionDelegate OnInteraction;
         event InteractionDelegate OnInteractionFinished;
 
+        bool IsInteracting { get; }
+
         void Interact(GameObject source);
         bool CanInteract(GameObject source);
 

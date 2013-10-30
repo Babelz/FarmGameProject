@@ -87,6 +87,7 @@ namespace Farmi.World
             {
                 gobs.AddRange(gameobjectManager.AllObjects());
             }
+            gobs.AddRange(WorldObjects.AllObjects());
             Rectangle r = new Rectangle((int) (source.Position.X - radius), (int) (source.Position.Y - radius), (int) (source.Size.Width + radius), (int) (source.Size.Height + radius));
 
             var objects = gobs.Where(o =>
