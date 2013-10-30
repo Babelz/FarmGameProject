@@ -16,8 +16,15 @@ namespace Khv.Engine
     {
 
         private SpriteBatch spriteBatch;
-
         private GameStateMachine stateMachine;
+
+        public GameState Current
+        {
+            get
+            {
+                return stateMachine.Current;
+            }
+        }
 
         public GameStateManager(KhvGame game)
             : base(game)

@@ -11,8 +11,10 @@ namespace Khv.Engine
 {
     public class GameStateMachine : StateMachine<GameState>
     {
+        #region Vars
         private readonly GameStateManager manager;
         private readonly KhvGame game;
+        #endregion
 
         public GameStateMachine(GameStateManager manager, KhvGame game)
         {

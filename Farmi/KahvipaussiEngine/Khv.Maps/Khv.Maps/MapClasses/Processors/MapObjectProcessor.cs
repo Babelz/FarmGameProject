@@ -31,7 +31,7 @@ namespace Khv.Maps.MapClasses.Processors
             this.objectNamespaces = objectNamespaces;
         }
 
-        public GameObjectManager Process(SerializedObjectLayer serializedObjectLayer, Layer<ObjectTile> layer)
+        public GameObjectManager Process(SerializedObjectLayer serializedObjectLayer, Layer<ObjectTile> layer, TileMap tileMap)
         {
             #region Object parsing and creation
             GameObjectManager objectManager = new GameObjectManager(layer);
@@ -54,6 +54,7 @@ namespace Khv.Maps.MapClasses.Processors
                     // debugataan, heittää poikkeuksen.
                     if (objectType != null)
                     {
+                        parameter.MapContainedIn = tileMap.Name;
                         parameter.Origin = layer.Tiles[parameter.OriginTileIndex.Y][parameter.OriginTileIndex.X].Position;
                         mapObject = CreateObject(game, objectType, parameter);
                         objectManager.AddGameObject(mapObject);
@@ -142,6 +143,14 @@ namespace Khv.Maps.MapClasses.Processors
         /// Position näytöllä.
         /// </summary>
         public Vector2 Origin
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Kartta johon olio on sijoitettu.
+        /// </summary>
+        public string MapContainedIn
         {
             get;
             set;

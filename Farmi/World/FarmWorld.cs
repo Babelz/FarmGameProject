@@ -9,6 +9,7 @@ using Khv.Game.GameObjects;
 using Khv.Maps.MapClasses.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Khv.Gui.Components.BaseComponents.Containers.Components;
 
 namespace Farmi.World
 {

@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Farmi.Datasets
 {
-    internal sealed class BuildingDataset
+    internal sealed class BuildingDataset : IDataset
     {
         #region Vars
         private XElement xElement;
@@ -40,7 +40,6 @@ namespace Farmi.Datasets
             get;
             private set;
         }
-
         /// <summary>
         /// Rakennuksen colliderin positionin offset.
         /// </summary>
@@ -75,6 +74,9 @@ namespace Farmi.Datasets
         }
         #endregion
 
+        /// <summary>
+        /// Parsii XElementistä tiedot oliolle.
+        /// </summary>
         public void ParseValuesFrom(XElement xElement)
         {
             this.xElement = xElement;
@@ -84,6 +86,9 @@ namespace Farmi.Datasets
             GetScriptValues(xElement);
             GetDoorValues(xElement);
         }
+        /// <summary>
+        /// Palauttaa olion XElementtinä.
+        /// </summary>
         public XElement AsXElement()
         {
             return xElement;
@@ -94,18 +99,11 @@ namespace Farmi.Datasets
             if (xElement.Descendants("Doors") != null)
             {
                 Doors = (from doors in xElement.Descendants("Doors")
-                         from door in doors.Descendants() select
-                         new DoorDataset()
-                         {
-                             AssetName = door.Attribute("AssetName").Value,
-                             TeleportTo = door.Attribute("TeleportTo").Value,
-                             Position = new Vector2(float.Parse(door.Attribute("X").Value),
-                                                    float.Parse(door.Attribute("Y").Value)),
-                             Size = new Size(int.Parse(door.Attribute("Width").Value),
-                                             int.Parse(door.Attribute("Height").Value))
-                         }).ToArray<DoorDataset>();
+                         from door in doors.Descendants()
+                         select new DoorDataset(door)).ToArray();
             }
         }
+
         private void GetScriptValues(XElement xElement)
         {
             if (xElement.Descendants("Scripts") != null)

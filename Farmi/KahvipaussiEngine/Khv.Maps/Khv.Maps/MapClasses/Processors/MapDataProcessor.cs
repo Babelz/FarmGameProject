@@ -80,7 +80,7 @@ namespace Khv.Maps.MapClasses.Processors
             MapObjectProcessor mapObjectProcessor = new MapObjectProcessor(game, map.TileEngine, mapDenecyContainer.MapObjectNamespaces);
 
             GameObjectManager gameObjectManager = mapObjectProcessor.Process(serializedLayer as SerializedObjectLayer,
-                                                                             layer as Layer<ObjectTile>);
+                                                                             layer as Layer<ObjectTile>, map);
 
             // lisää kartan objekti managerille uuden kartta objektin
             map.ObjectManagers.AddManager(gameObjectManager);

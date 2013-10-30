@@ -6,10 +6,9 @@ using System.Xml.Linq;
 
 namespace Farmi.Datasets
 {
-    internal sealed class AnimalDataset
+    internal interface IDataset
     {
-        #region Vars
-        private XElement xElement;
-        #endregion
+        void ParseValuesFrom(XElement xElement);
+        XElement AsXElement();
     }
 }

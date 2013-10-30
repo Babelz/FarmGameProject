@@ -23,9 +23,13 @@ namespace Khv.Engine
         #endregion
 
         #region Properties
-
-
-
+        public T Current
+        {
+            get
+            {
+                return current;
+            }
+        }
         #endregion
 
         #region Constructor
