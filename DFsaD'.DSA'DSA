@@ -1,0 +1,230 @@
+[33mcommit 689e9a3cc510f187e72f6ea02df73da10957c5a9[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 22:56:51 2013 +0200
+
+    Varkatty repojen ja oliojen kanssa, enimmakseen Teleportin kanssa.
+
+[33mcommit 10b005a97497cffb24acbf81d8bfa1c71670ea88[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 04:20:37 2013 +0200
+
+    'Pseudo' testi teleporteilla.
+
+[33mcommit 37964ca55b727a5c6bff35dac94c18ae5e016612[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 02:30:24 2013 +0200
+
+    Viela pieni muutos.
+
+[33mcommit c44b44c19e2e2fdb898b5a320c0a7bbf72376f19[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 02:28:28 2013 +0200
+
+    Siirretty XElementin parsinta itse oliolle.
+
+[33mcommit b8a5ff6e76faee603660dc67224be07dd22a062b[m
+Merge: 1ace845 933b6e6
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 01:49:01 2013 +0200
+
+    Merge branch 'master' of ssh://babi.kamu.li:17954/khvdev/farmi
+
+[33mcommit 1ace845eb19bfd0416a50c097e8b4c80c30edbb2[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 01:48:52 2013 +0200
+
+    Formatoitu.
+
+[33mcommit 933b6e67d9e854bd0f4d3d08642f6db5c8de77ea[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Wed Oct 30 01:46:45 2013 +0200
+
+    Kamera voi seurata gameobjectia.
+
+[33mcommit eea4bbc17843709c6f70fc5bbd99bcb289ed3f5b[m
+Merge: a2d0a2f 276499e
+Author: siquel <squual@kahvipaussi.net>
+Date:   Wed Oct 30 01:13:41 2013 +0200
+
+    Merge branch 'master' of ssh://babi.kamu.li:17954/khvdev/farmi
+
+[33mcommit a2d0a2f7f68aeb1097c869c4b2cec7b32072cf2f[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Wed Oct 30 01:08:21 2013 +0200
+
+    Luotu collision querittaja niin kaikki colliderit ei eti tilejä/objekteja.
+
+[33mcommit a8e898594d86a0f56a6051c4c5b5a068cf3f9f69[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 01:07:08 2013 +0200
+
+    Laitettu testi playerin talosta.
+
+[33mcommit 303b32c5e5a5704697efc0d076558d9500043c45[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 00:43:00 2013 +0200
+
+    Listty eka repo ja pohjaluokat repoja varten.
+
+[33mcommit 276499e7347529126cd28d526103f3f5e5e30702[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 01:07:08 2013 +0200
+
+    Laitettu testi playerin talosta.
+
+[33mcommit 5108baa16eaf8e2fc6d06a93f0fa74676389d4af[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Wed Oct 30 00:43:00 2013 +0200
+
+    Listty eka repo ja pohjaluokat repoja varten.
+
+[33mcommit 34e6167a32747dcf95462d1a09bc893107e6baca[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Tue Oct 29 17:43:44 2013 +0200
+
+    No idea what i haz donet..
+
+[33mcommit ef6f17d29a7524a8daadd36dc5910e79f261dc1b[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Tue Oct 29 04:04:50 2013 +0200
+
+    Laitettu mapin objectit collidamaan worldin otuseten kanssa.
+
+[33mcommit 51fe8c357e7427506fef4dd74c124f77be551c3f[m
+Merge: 585a561 019c01c
+Author: siquel <squual@kahvipaussi.net>
+Date:   Tue Oct 29 03:34:24 2013 +0200
+
+    Mergetty ja korjattu conflictit.
+
+[33mcommit 585a561d677af3d704d754b5821342676923668e[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Tue Oct 29 03:30:04 2013 +0200
+
+    Jatkettu runkoa, luotu temp pelaaja joka voi liikkua ja törmätä. Collision on vielä proto.
+
+[33mcommit 019c01c2b99bc175f5376caa836bd9afb0741fae[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Tue Oct 29 01:59:35 2013 +0200
+
+    jeejee kamera taas.
+
+[33mcommit accbd2d2ceed741fd4ce44ecaf58479071f99c86[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Tue Oct 29 01:58:25 2013 +0200
+
+    Kameraa matafaka.
+
+[33mcommit 6c7affea56fa5fa4d43a7887980460db4aea3417[m
+Author: niko.halikka@gmail.com <niko.halikka@gmail.com>
+Date:   Tue Oct 29 01:13:27 2013 +0200
+
+    Laitettu eka mappi rullaan ja pari otukset sinne.
+
+[33mcommit 2cee5f344b53b6056963668c6e479d090eeaff0e[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Mon Oct 28 23:44:13 2013 +0200
+
+    Luotu näppäinbindit pelaajalle ja lisätty se maailmaan.
+
+[33mcommit d070d8189cb1be7733bd52ae13a9e153e613008a[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Mon Oct 28 22:51:36 2013 +0200
+
+    Luotu runko pelille.
+
+[33mcommit f8cffbde9442b6ef1adba8f3ab6d6f43a187210e[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Mon Oct 28 21:41:36 2013 +0200
+
+    Korjattu komponenttilistan näkyvyysongelma.
+
+[33mcommit 9d4e95275d19424225b3b326c6283e072fc5eb08[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Sun Oct 27 20:19:43 2013 +0200
+
+    Korjattu READMEn renderöini.
+
+[33mcommit 8b25f8ae5021b26efa924ecfdf0dfbf42d7f3c5d[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Sun Oct 27 20:15:35 2013 +0200
+
+    Kirjoitettu muistiinpanot exporttereista, repoista, dataseteistä ja niiden käyttötarkoituksista.
+
+[33mcommit 6459e7c1da148b95223360631674201fc1e9cc3d[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Sun Oct 27 19:56:30 2013 +0200
+
+    Jokohan se vitun README renderais oikein.
+
+[33mcommit 8c4627f2c5078f4973fd63c51584db659fc14d19[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Sun Oct 27 19:55:09 2013 +0200
+
+    Korjattu csharp syntax highlight.
+
+[33mcommit b412b20e2c13dd0a175b07f61a1ad2f67721d094[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Sun Oct 27 19:48:28 2013 +0200
+
+    Lisätty repoista maininta ja niiden kuvauksen aloitus.
+
+[33mcommit 465df4adde6b534ee49d2b7a5db3526814675fff[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Sat Oct 26 19:26:06 2013 +0300
+
+    Lisätty filemanagerin toimintaa kuvaava maininta READMEhen.
+
+[33mcommit d6ca860d2606072ca499326dbb90537b5d1b38a4[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Fri Oct 25 17:35:39 2013 +0300
+
+    Juttuja.
+
+[33mcommit c96947ebf58ea001e8e027a92f0b15809ed618c0[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Fri Oct 25 05:24:13 2013 +0300
+
+    Lisätty maininta savedatasta.
+
+[33mcommit 9709e3003d847335e17624a91b42565200c716b4[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Fri Oct 25 05:15:15 2013 +0300
+
+    Lisätty suunnitelma mahdollisista luokista.
+
+[33mcommit 53b1e4f6cbcb90f506cd08c02626003a5e07e00d[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Fri Oct 25 05:12:20 2013 +0300
+
+    Kirjoiteltu muistiinpanoja gameobjecteista, savedatasta ja tileistä.
+
+[33mcommit 8825fc5ed8a28e5fab57dca4c3bd6391caa897c0[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Fri Oct 25 04:43:29 2013 +0300
+
+    Poistettu README ku kävi typo.
+
+[33mcommit f0fd5da29c420c41862864396b2c584c528051ff[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Fri Oct 25 04:38:56 2013 +0300
+
+    Korjattu READMEn markdown.
+
+[33mcommit 236e74dee28e07164603a85e26be602a0ef3011b[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Fri Oct 25 04:36:24 2013 +0300
+
+    Renamettu README .md muotoon.
+
+[33mcommit a460ce6cc983e4fe64cab2a151c8fe439a489c66[m
+Author: siquel <squual@kahvipaussi.net>
+Date:   Fri Oct 25 04:25:22 2013 +0300
+
+    Kirjoteltu ideoita ylös.
+
+[33mcommit 7d68bd333d606fb4ec52127a79ff98242b6a2ba2[m
+Author: Jani Niemelä <squual@kahvipaussi.net>
+Date:   Fri Oct 25 03:26:49 2013 +0300
+
+    Init.
