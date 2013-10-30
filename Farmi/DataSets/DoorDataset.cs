@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Datasets
 {
-    internal struct DoorDataset
+    internal sealed class DoorDataset
     {
         #region Vars
         /// <summary>
