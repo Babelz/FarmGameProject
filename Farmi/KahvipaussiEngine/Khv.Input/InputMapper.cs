@@ -81,7 +81,6 @@ namespace Khv.Input
 
             setups.Add(setup);
             setup.Mapper.StateProviders = StateProviders;
-            setup.Mapper.InputProviders = InputProviders;
         }
     }
 }

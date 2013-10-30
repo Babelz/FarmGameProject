@@ -43,7 +43,8 @@ namespace Khv.Engine
 
         public virtual void ChangeState(T state)
         {
-            InitState(state);
+            
+            
             if (states.Count != 0)
             {
                 current = states[states.Count - 1];
@@ -55,14 +56,14 @@ namespace Khv.Engine
                 current.IsExiting = true;
             }
             current.State = ScreenState.TransitionOff; // ollaan häivyttämässä
-            states.Add(state);
             current.HasFocus = false;
             next.HasFocus = false;
+            states.Add(state);
+            InitState(state);
         }
 
         public virtual void PushState(T state)
         {
-            InitState(state);
             if (states.Count != 0)
             {
                 leaveTransition = (state.IsPopUp) ? null : states[states.Count - 1].LeaveTransition;
@@ -77,6 +78,7 @@ namespace Khv.Engine
             next.HasFocus = false;
             current.HasFocus = false;
             states.Add(state);
+            InitState(state);
 
         }
 

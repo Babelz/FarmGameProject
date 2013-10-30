@@ -18,6 +18,8 @@ namespace Khv.Input
         public InputControlSetup ()
 		{
             Mapper = new InputMapper();
+            Mapper.AddInputBindProvider(typeof(KeyInputBindProvider), new KeyInputBindProvider());
+            Mapper.AddInputBindProvider(typeof(PadInputBindProvider), new PadInputBindProvider());
 		}
 
         #endregion 

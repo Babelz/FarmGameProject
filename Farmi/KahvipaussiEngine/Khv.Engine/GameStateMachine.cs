@@ -16,6 +16,15 @@ namespace Khv.Engine
         private readonly KhvGame game;
         #endregion
 
+        #region Properties
+
+        public List<GameState> States
+        {
+            get { return states.ToList(); }
+        }
+
+        #endregion
+
         public GameStateMachine(GameStateManager manager, KhvGame game)
         {
             this.manager = manager;

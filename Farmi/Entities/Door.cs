@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Farmi.Datasets;
 using Farmi.Entities.Buildings;
+using Farmi.Entities.Components;
 using Khv.Engine;
 using Khv.Game.Collision;
 using Khv.Game.GameObjects;
@@ -28,7 +29,7 @@ namespace Farmi.Entities
         }
         #endregion
 
-        public Door(KhvGame game, Building owningBuilding, DoorDataset doorDataset)
+        public Door(KhvGame game, Building owningBuilding, DoorDataset doorDataset, string mapContainedIn)
             : base(game)
         {
             OwningBuilding = owningBuilding;
@@ -36,10 +37,14 @@ namespace Farmi.Entities
             Size = doorDataset.Size;
 
             GameplayScreen screen = game.GameStateManager.Current as GameplayScreen;
-            teleport = new Teleport(game, doorDataset.TeleportDataset, screen.World.MapManager.ActiveMap.Name);
+            teleport = new Teleport(game, doorDataset.TeleportDataset, mapContainedIn);
 
             Collider = new BoxCollider(null, this);
-            Components.Add(new BasicInteractionComponent());
+            DoorInteractionComponent c = new DoorInteractionComponent();
+            c.OnInteraction += () => Console.WriteLine("OnInteraction");
+            c.OnInteractionBegin += () => Console.WriteLine("OnInteractionBegin");
+            c.OnInteractionFinished += () => Console.WriteLine("OnInteractionFinished");
+            Components.Add(c);
         }
 
 

@@ -27,17 +27,22 @@ namespace Farmi.Entities
 
         // Value joka lisätään kun pelaaja teleporttaa tähän teleporttiin.
         private Vector2 positionOffSet;
+
+        private FarmWorld world;
         #endregion
 
         /// <summary>
         /// Luo uuden instanssin teleportista.
         /// </summary>
         /// <param name="game">Khv peli instanssi.</param>
-        /// <param name="args">Argumentit jotka saadaan kun karttaa parsitaan ja tämä olio alustetaan.</param>
-        public Teleport(KhvGame game, MapObjectArguments args)
+        /// <param name="mapObjectArguments">Argumentit jotka saadaan kun karttaa parsitaan ja tämä olio alustetaan.</param>
+        public Teleport(KhvGame game, MapObjectArguments mapObjectArguments)
             : base(game)
         {
-            MakeFromMapData(args);
+            world = (game.GameStateManager.States.First
+                    (c => c is GameplayScreen) as GameplayScreen).World;
+
+            MakeFromMapData(mapObjectArguments);
         }
         /// <summary>
         /// Alustaa uuden teleportin.
@@ -150,11 +155,9 @@ namespace Farmi.Entities
         /// </summary>
         public void Port()
         {
-            GameplayScreen screen = game.GameStateManager.Current as GameplayScreen;
-
-            if (screen != null)
+            if (world != null)
             {
-                MapManager mapManager = screen.World.MapManager;
+                MapManager mapManager = world.MapManager;
                 MapChangeAction action;
 
                 #warning Testi @ teleport, voi kusta tulevaisuudessa ku pitäs pitää karttoja muistissa.
@@ -178,7 +181,7 @@ namespace Farmi.Entities
 
                 Teleport teleport = objectManager.GetGameObject<Teleport>(o => o.mapToTeleport == this.mapContainedIn);
 
-                screen.World.Player.Position = teleport.position + teleport.positionOffSet;
+                world.Player.Position = teleport.position + teleport.positionOffSet;
             }
         }
 

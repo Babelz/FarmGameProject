@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Farmi.Entities;
+using Farmi.Entities.Components;
 using Khv.Engine;
 using Khv.Engine.Helpers;
 using Khv.Game.GameObjects;
@@ -52,6 +53,7 @@ namespace Farmi.World
             }
 
             var gameobjects = WorldObjects.AllObjects();
+
             foreach (var gameobject in gameobjects)
             {
                 gameobject.Update(gameTime);
@@ -68,9 +70,10 @@ namespace Farmi.World
         public List<GameObject> GetNearInteractables(GameObject source, float radius)
         {
             List<GameObject> gobs = GetNearGameObjects(source, radius);
-            var objects = gobs.Where(o =>
-                o.Components.ContainsComponent(c => c is IInteractionComponent)
-                ).ToList();
+            var objects = gobs.Where(
+                 o => o.Components.ContainsComponent(c => c is IInteractionComponent))
+                .ToList();
+
             return objects;
         }
 
@@ -87,18 +90,12 @@ namespace Farmi.World
             {
                 gobs.AddRange(gameobjectManager.AllObjects());
             }
+
+            gobs.AddRange(WorldObjects.AllObjects());
             Rectangle r = new Rectangle((int) (source.Position.X - radius), (int) (source.Position.Y - radius), (int) (source.Size.Width + radius), (int) (source.Size.Height + radius));
 
-            var objects = gobs.Where(o =>
-                !ReferenceEquals(o, source) &&
-                r.Intersects(new Rectangle(
-                     (int)o.Position.X,
-                     (int)o.Position.Y,
-                     o.Size.Width,
-                     o.Size.Height
-                     )
-               )
-            ).ToList();
+            var objects = gobs.Where(
+                o => !ReferenceEquals(o, source) && r.Intersects(new Rectangle((int)o.Position.X, (int)o.Position.Y, o.Size.Width, o.Size.Height))).ToList();
 
             return objects;
         }
@@ -124,9 +121,13 @@ namespace Farmi.World
         {
 
             if (objects.Count == 0)
+            {
                 return null;
+            }
             if (objects.Count == 1)
+            {
                 return objects[0];
+            }
 
             Rectangle search = new Rectangle((int)source.Position.X, (int)source.Position.Y, source.Size.Width, source.Size.Height);
 
@@ -137,6 +138,7 @@ namespace Farmi.World
             {
                 var g = objects[index];
                 Vector2 v = g.Position;
+
                 if (g.Position.X + g.Size.Width <= source.Position.X ||
                     g.Position.X + g.Size.Width <= source.Position.X + source.Size.Width)
                 {
@@ -148,6 +150,7 @@ namespace Farmi.World
                 {
                     v.Y += g.Size.Height;
                 }
+
                 tocheck[index] = v;
             }
 
@@ -155,10 +158,12 @@ namespace Farmi.World
             Vector2? closest = null;
             int closestindex = 0;
             float mindis = float.MaxValue;
+
             for (int index = 0; index < tocheck.Length; index++)
             {
                 var pos = tocheck[index];
                 float dis = VectorHelper.Distance(pos, source.Position);
+
                 if (!closest.HasValue || dis < mindis)
                 {
                     closest = pos;
@@ -166,7 +171,6 @@ namespace Farmi.World
                     closestindex = index;
                 }
             }
-
 
             return objects[closestindex];
         }
@@ -182,10 +186,9 @@ namespace Farmi.World
             List<GameObject> objects = GetNearInteractables(source, radius);
 
             GameObject nearest = GetNearestGameObject(objects, source);
+
             return nearest;
         }
-
-        
 
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -193,15 +196,13 @@ namespace Farmi.World
             {
                 MapManager.ActiveMap.Draw(spriteBatch);
             }
+
             var gameobjects = WorldObjects.GameObjectsOfType<DrawableGameObject>(g => g is DrawableGameObject);
+
             foreach (var gameobject in gameobjects)
             {
                gameobject.Draw(spriteBatch);
             }
         }
-    }
-
-    public class InteractionComponent
-    {
     }
 }

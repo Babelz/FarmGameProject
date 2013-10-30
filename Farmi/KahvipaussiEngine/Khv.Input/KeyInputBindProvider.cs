@@ -65,7 +65,7 @@ namespace Khv.Input
                  
                     KeyboardBinding binding = Bindings[bind.Key];
 
-                    InputState inputState;
+                    InputState inputState = InputState.Up;
                     // koska key on down useimmiten, niin parempi tarkastaa eka
                     if (keyInput.IsKeyDown(key))
                     {
@@ -80,10 +80,11 @@ namespace Khv.Input
                         binding.HoldTime = 0;
                     }
                         // just löysätty
-                    else
+                    else if (keyInput.IsKeyReleased(key))
                     {
                         inputState = InputState.Released;
                     }
+                    
                     InputEventArgs args = new InputEventArgs(binding.HoldTime, inputState, gt);
                     KeyboardInputCallbacker cb = new KeyboardInputCallbacker(key, args, binding.Callbacks);
 

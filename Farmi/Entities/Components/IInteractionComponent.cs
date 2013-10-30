@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Khv.Game.GameObjects;
 
-namespace Farmi
+namespace Farmi.Entities.Components
 {
     public delegate void InteractionDelegate();
     public interface IInteractionComponent : IObjectComponent
@@ -12,6 +12,8 @@ namespace Farmi
         event InteractionDelegate OnInteractionBegin;
         event InteractionDelegate OnInteraction;
         event InteractionDelegate OnInteractionFinished;
+
+        bool IsInteracting { get; }
 
         void Interact(GameObject source);
         bool CanInteract(GameObject source);
