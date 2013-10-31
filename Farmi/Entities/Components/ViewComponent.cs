@@ -11,32 +11,54 @@ namespace Farmi.Entities.Components
 {
     class ViewComponent : IObjectComponent
     {
-        private Vector2 viewVector = Vector2.Zero;
+        #region Vars
+        private Vector2 viewVector;
+        #endregion
+
+        #region Properties
+        public SpriteEffects Effects
+        {
+            get;
+            private set;
+        }
+        public Vector2 Default
+        {
+            get;
+            private set;
+        }
         public Vector2 ViewVector
         {
             get { return viewVector;  }
             set
             {
                 if (value.X < 0 && Default.X > 0)
+                {
                     Effects = SpriteEffects.FlipHorizontally;
+                }
                 else if (value.X > 0 && Default.X < 0)
+                {
                     Effects = SpriteEffects.FlipHorizontally;
+                }
                 else
+                {
                     Effects = SpriteEffects.None;
+                }
+
                 if (value.Y < 0 && Default.Y > 0)
+                {
                     Effects = SpriteEffects.FlipVertically;
+                }
                 else if (value.Y > 0 && Default.Y < 0)
+                {
                     Effects = SpriteEffects.FlipVertically;
+                }
                 else
+                {
                     Effects = SpriteEffects.None;
+                }
             }
         }
-
-        public Vector2 Default
-        {
-            get;
-            private set;
-        }
+        #endregion
 
         public ViewComponent(Vector2 defaultView)
         {
@@ -46,7 +68,7 @@ namespace Farmi.Entities.Components
 
         public void Update(GameTime gametime)
         {
- /*           if (ViewVector.X < 0 && Default.X > 0)
+            /*if (ViewVector.X < 0 && Default.X > 0)
                 Effects = SpriteEffects.FlipHorizontally;
             else if (ViewVector.X > 0 && Default.X < 0)
                 Effects = SpriteEffects.FlipHorizontally;
@@ -56,7 +78,5 @@ namespace Farmi.Entities.Components
             else if (ViewVector.Y > 0 && Default.Y < 0)
                 Effects = SpriteEffects.FlipVertically;*/
         }
-
-        public SpriteEffects Effects { get; private set; }
     }
 }

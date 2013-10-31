@@ -12,50 +12,46 @@ namespace Farmi.Entities.Components
 {
     class PushableComponent : BasicInteractionComponent
     {
+        #region Vars
         private readonly GameObject toMove;
-
         private Vector2 offset = Vector2.Zero;
-
         private MotionEngine engine;
+        #endregion
 
         public PushableComponent(GameObject toMove)
         {
             this.toMove = toMove;
             
-            
-#warning motion engine pitäs olla komponentti
             engine = new MotionEngine(toMove);
             OnInteractionBegin += PushableComponent_OnInteractionBegin;
             OnInteractionFinished +=PushableComponent_OnInteractionFinished;
         }
 
-        void PushableComponent_OnInteractionBegin(object sender, InteractionEventArgs e)
+        #region Event handlers
+        private void PushableComponent_OnInteractionBegin(object sender, InteractionEventArgs e)
         {
             e.Interactor.Collider.OnCollision += OnHolderCollides;
             toMove.Collider.OnCollision += OnInteractWithCollides;
         }
-
         private void OnHolderCollides(object sender, CollisionEventArgs result)
         {
             if (ReferenceEquals(result.CollidingObject, toMove))
                 result.IsCanceled = true;
         }
-
         private void OnInteractWithCollides(object sender, CollisionEventArgs result)
         {
             if (ReferenceEquals(result.CollidingObject, InteractWith))
                 result.IsCanceled = true;
         }
-
-        void PushableComponent_OnInteractionFinished(object sender, InteractionEventArgs e)
+        private void PushableComponent_OnInteractionFinished(object sender, InteractionEventArgs e)
         {
             e.Interactor.Collider.OnCollision -= OnHolderCollides;
             toMove.Collider.OnCollision -= OnInteractWithCollides;
         }
+        #endregion
 
         protected override void DoInteract(GameObject with, GameTime gameTime)
         {
-            
             Vector2 v = with.Velocity;
             v.Normalize();
 

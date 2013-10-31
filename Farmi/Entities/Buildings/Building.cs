@@ -46,8 +46,8 @@ namespace Farmi.Entities.Buildings
         public Building(KhvGame game, MapObjectArguments mapObjectArguments)
             : base(game)
         {
-            world = (game.GameStateManager.States.First
-                    (s => s is GameplayScreen) as GameplayScreen).World;
+            world = (game.GameStateManager.States.First(
+                s => s is GameplayScreen) as GameplayScreen).World;
 
             MakeFromMapData(mapObjectArguments);
             //Components.Add(new BasicInteractionComponent());
@@ -55,8 +55,8 @@ namespace Farmi.Entities.Buildings
         public Building(KhvGame game)
             : base(game)
         {
-            world = (game.GameStateManager.States.First
-                    (s => s is GameplayScreen) as GameplayScreen).World;
+            world = (game.GameStateManager.States.First(
+                s => s is GameplayScreen) as GameplayScreen).World;
         }
 
         // Testi metodi initille.
@@ -75,8 +75,11 @@ namespace Farmi.Entities.Buildings
             }
 
             // Hakee tiedot repoista.
-            RepositoryManager repositoryManager = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
-            BuildingDataset dataset = repositoryManager.GetDataSet<BuildingDataset>(s => s.Name == mapObjectArguments.SerializedData.valuepairs[1].Value);
+            RepositoryManager repositoryManager = game.Components.First(
+                c => c is RepositoryManager) as RepositoryManager;
+
+            BuildingDataset dataset = repositoryManager.GetDataSet<BuildingDataset>(
+                s => s.Name == mapObjectArguments.SerializedData.valuepairs[1].Value);
             
             if (dataset != null)
             {
@@ -93,8 +96,6 @@ namespace Farmi.Entities.Buildings
                 }
 
                 world.WorldObjects.AddGameObjects(Doors);
-                // heitetään buildingin collision boxeista pois ovet
-                
             }
             else
             {
@@ -105,7 +106,6 @@ namespace Farmi.Entities.Buildings
             }
 
             Collider = new BoxCollider(world, this);
-                //, new BasicObjectCollisionQuerier(), new BasicTileCollisionQuerier());
         }
 
         #region Event handlers
@@ -122,21 +122,20 @@ namespace Farmi.Entities.Buildings
         }
         #endregion
 
-        public void InitializeFromData(string datasetName)
-        {
-            // Alustaa otuksen datasta tässä.
-        }
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             Collider.Update(gameTime);
-            Array.ForEach(Doors, d => d.Update(gameTime));
+
+            Array.ForEach<Door>(Doors, 
+                d => d.Update(gameTime));
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), color);
-            Array.ForEach(Doors, d => d.Draw(spriteBatch));
+
+            Array.ForEach<Door>(Doors, 
+                d => d.Draw(spriteBatch));
         }
     }
 }

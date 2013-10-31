@@ -104,7 +104,6 @@ namespace Farmi.Datasets
                          select new DoorDataset(door)).ToArray();
             }
         }
-
         private void GetScriptValues(XElement xElement)
         {
             if (xElement.Descendants("Scripts") != null)

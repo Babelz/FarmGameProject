@@ -123,11 +123,6 @@ namespace Farmi.Entities
         {
             Vector2 v2 = g.Position;
             v2.Normalize();
-            Console.WriteLine(
-                    1 - VectorHelper.DotProduct(viewComponent.ViewVector, v2)
-                );
-            Console.WriteLine(viewComponent.ViewVector);
-            Console.WriteLine(g);
         }
 
         private float VelocityFunc(InputEventArgs args, float src)
@@ -150,10 +145,16 @@ namespace Farmi.Entities
             {
                 return 0;
             }
+
             if (velY < 0)
+            {
                 viewComponent.ViewVector = new Vector2(0, -1);
+            }
             else if (velY > 0)
+            {
                 viewComponent.ViewVector = new Vector2(0, 1);
+            }
+
             return velY;
         }
 
@@ -164,11 +165,19 @@ namespace Farmi.Entities
                 return 0;
             }
             if (velX != 0 && (Velocity.Y > 0 || Velocity.Y < 0))
+            {
                 return 0;
+            }
+            
             if (velX < 0)
+            {
                 viewComponent.ViewVector = new Vector2(-1, 0);
+            }
             else if (velX > 0)
+            {
                 viewComponent.ViewVector = new Vector2(1, 0);
+            }
+
             return velX;
         }
 

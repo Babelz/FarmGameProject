@@ -46,12 +46,12 @@ namespace Farmi.Entities
             Teleport.Position = position;
 
             Collider = new BoxCollider(null, this);
-            DoorInteractionComponent c = new DoorInteractionComponent(this);
+            DoorInteractionComponent doorInteractionComponent = new DoorInteractionComponent(this);
 
             // Joku tekstuuri ois kiva.
             texture = KhvGame.Temp;
 
-            Components.Add(c);
+            Components.Add(doorInteractionComponent);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

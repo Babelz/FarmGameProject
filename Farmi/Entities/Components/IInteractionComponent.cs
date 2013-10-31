@@ -6,8 +6,6 @@ using Khv.Game.GameObjects;
 
 namespace Farmi.Entities.Components
 {
-    public delegate void InteractionDelegate(GameObject source);
-
     public interface IInteractionComponent : IObjectComponent
     {
         #region Events
