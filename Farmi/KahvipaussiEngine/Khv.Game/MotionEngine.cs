@@ -14,19 +14,19 @@ namespace Khv.Game
 
         #region Vars
 
-        private readonly CharacterEntity character;
+        private readonly GameObject character;
 
         private Vector2 oldPosition = Vector2.Zero;
 
         public Vector2 GoalVelocity = Vector2.Zero;
 
-        private float factor = 25;
+        private float factor = 50;
 
         #endregion
 
         #region Ctor
 
-        public MotionEngine(CharacterEntity target)
+        public MotionEngine(GameObject target)
         {
             character = target;
             OldDirection = Vector2.Zero;

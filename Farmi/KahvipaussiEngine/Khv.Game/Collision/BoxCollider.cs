@@ -97,8 +97,12 @@ namespace Khv.Game.Collision
                     r = PolygonCollision(this, polygon);
                     if (r.WillIntersect)
                     {
-                        Asd(Instance, r);
                         FireOnCollision(Instance, tile, r);
+                        if (!r.IsCanceled)
+                        {
+                            Asd(Instance, r);
+                        }
+
                     }
                 }
                 
@@ -116,13 +120,21 @@ namespace Khv.Game.Collision
                 CollisionEventArgs r;
                 if (!Collides(gameObject, out r)) continue;
 
-                Asd(Instance, r);
+                FireOnCollision(Instance, gameObject, r);
+                if (!r.IsCanceled)
+                {
+                    Asd(Instance, r);
+                }
 
                 CollisionEventArgs r2 = PolygonCollision(gameObject.Collider as PolygonCollider, this);
-                Asd(gameObject, r2);
-
-                FireOnCollision(Instance, gameObject, r);
                 FireOnCollision(gameObject, Instance, r2);
+                if (!r2.IsCanceled)
+                {
+                    Asd(gameObject, r2);
+                }
+
+
+
             }
         }
 

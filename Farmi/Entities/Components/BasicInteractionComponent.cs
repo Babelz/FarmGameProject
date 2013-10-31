@@ -44,6 +44,11 @@ namespace Farmi.Entities.Components
                 isInteracting = value;
             }
         }
+
+        protected GameObject InteractWith
+        {
+            get { return interactWith;  }
+        }
         #endregion
 
         public virtual void Update(GameTime gametime)
@@ -58,39 +63,36 @@ namespace Farmi.Entities.Components
                                             Interactor = interactWith
                                         });
                 }
-
-                DoInteract(interactWith);
+                DoInteract(interactWith, gametime);
             }
             
         }
 
-        public virtual void Interact(GameObject source)
+        public virtual void Interact(GameObject with)
         {
-            if (!CanInteract(source))
+            if (!CanInteract(with))
             {
                 return;
             }
             
             if (!IsInteracting)
             {
-                interactWith = source;
+                interactWith = with;
                 IsInteracting = true;
 
                 if (OnInteractionBegin != null)
                 {
                     OnInteractionBegin(this, new InteractionEventArgs()
                                              {
-                                                 Interactor = source
+                                                 Interactor = with
                                              });
                 }
-
-                DoInteract(source);
             }
         }
 
         #region Abstract members
-        protected abstract void DoInteract(GameObject source);
-        public abstract bool CanInteract(GameObject source);
+        protected abstract void DoInteract(GameObject with, GameTime gameTime);
+        public abstract bool CanInteract(GameObject with);
         #endregion
     }
 }

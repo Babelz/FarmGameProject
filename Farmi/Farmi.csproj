@@ -49,6 +49,8 @@
     <Compile Include="Entities\Buildings\Building.cs" />
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\Components\ExclamationMarkDrawer.cs" />
+    <Compile Include="Entities\Components\PushableComponent.cs" />
+    <Compile Include="Entities\Components\ViewComponent.cs" />
     <Compile Include="Entities\CropSpot.cs" />
     <Compile Include="Entities\Door.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
@@ -327,6 +329,9 @@
     <None Include="dat\mps\playerhouseindoors1.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\naama.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="KahvipaussiEngine\Khv.Gui\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Gui\TODO.txt" />

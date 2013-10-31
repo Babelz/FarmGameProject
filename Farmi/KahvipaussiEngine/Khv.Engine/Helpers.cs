@@ -13,5 +13,10 @@ namespace Khv.Engine.Helpers
             double results = Math.Pow((double)(a.X - b.X), 2.0) + Math.Pow((double)(a.Y - b.Y), 2.0);
             return (float)Math.Sqrt(results);
         }
+
+        public static float DotProduct(Vector2 a, Vector2 b)
+        {
+            return a.X*b.X + a.Y*b.Y;
+        }
     }
 }

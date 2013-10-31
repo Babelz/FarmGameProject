@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Farmi.Entities.Components;
+using Farmi.KahvipaussiEngine.Khv.Game.Collision;
 using Farmi.Screens;
 using Farmi.World;
 using Khv.Engine.Structs;
 using Khv.Game.Collision;
 using Khv.Game.GameObjects;
 using Khv.Engine;
+using Khv.Input;
 using Khv.Maps.MapClasses.Managers;
+using Microsoft.Xna.Framework.Input;
 using SerializedDataTypes.MapObjects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
@@ -58,6 +62,7 @@ namespace Farmi.Entities.Buildings
         // Testi metodi initille.
         private void MakeFromMapData(MapObjectArguments mapObjectArguments)
         {
+            Components.Add(new PushableComponent(this));
             world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
 
             if (mapObjectArguments == null)
@@ -99,7 +104,8 @@ namespace Farmi.Entities.Buildings
                 color = Color.Brown;
             }
 
-            Collider = new BoxCollider(null, this);
+            Collider = new BoxCollider(world, this);
+                //, new BasicObjectCollisionQuerier(), new BasicTileCollisionQuerier());
         }
 
         #region Event handlers

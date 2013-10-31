@@ -5,6 +5,7 @@ using System.Text;
 using Farmi.Entities;
 using Farmi.Entities.Components;
 using Khv.Game.GameObjects;
+using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
@@ -18,7 +19,7 @@ namespace Farmi.Entities.Components
         {
             this.owner = owner;
         }
-        protected override void DoInteract(GameObject source)
+        protected override void DoInteract(GameObject source, GameTime gameTime)
         {
             owner.Teleport.Port();
 
