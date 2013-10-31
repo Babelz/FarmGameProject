@@ -21,6 +21,8 @@ namespace Farmi.Entities.Components
         public PushableComponent(GameObject toMove)
         {
             this.toMove = toMove;
+            
+            
 #warning motion engine pitäs olla komponentti
             engine = new MotionEngine(toMove);
             OnInteractionBegin += PushableComponent_OnInteractionBegin;
@@ -31,7 +33,6 @@ namespace Farmi.Entities.Components
         {
             e.Interactor.Collider.OnCollision += OnHolderCollides;
             toMove.Collider.OnCollision += OnInteractWithCollides;
-            Console.WriteLine("JEESUS");
         }
 
         private void OnHolderCollides(object sender, CollisionEventArgs result)

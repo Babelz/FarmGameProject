@@ -20,7 +20,7 @@ namespace Khv.Game
 
         public Vector2 GoalVelocity = Vector2.Zero;
 
-        private float factor = 25;
+        private float factor = 50;
 
         #endregion
 

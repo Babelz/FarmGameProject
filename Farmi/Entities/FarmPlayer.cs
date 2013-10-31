@@ -29,6 +29,8 @@ namespace Farmi.Entities
         private InputController controller;
         private InputControlSetup defaultInputSetup;
         private InputControlSetup shopInputSetup;
+        private Texture2D texture;
+
         #endregion
 
         #region Properties
@@ -77,16 +79,17 @@ namespace Farmi.Entities
             InitDefaultSetup();
 
             Components.Add(new ExclamationMarkDrawer(game, this));
+            texture = game.Content.Load<Texture2D>("naama");
         }
 
 
         private void InitDefaultSetup()
         {
             var keymapper = defaultInputSetup.Mapper.GetInputBindProvider<KeyInputBindProvider>();
-            keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, -speed));
-            keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
-            keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, -speed));
-            keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, speed));
+            keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => MotionEngine.GoalVelocityX = HorizontalVelocityFunc(args, -speed));
+            keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = HorizontalVelocityFunc(args, speed));
+            keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VerticalVelocityFunc(args, -speed));
+            keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VerticalVelocityFunc(args, speed));
             keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
 
             var padmapper = defaultInputSetup.Mapper.GetInputBindProvider<PadInputBindProvider>();
@@ -122,6 +125,30 @@ namespace Farmi.Entities
             return src;
         }
 
+        private float VerticalVelocityFunc(InputEventArgs args, float velY)
+        {
+            if (args.State == InputState.Released)
+            {
+                return 0;
+            }
+            if (velY != 0 && (Velocity.X > 0 || Velocity.X < 0))
+                return 0;
+
+            return velY;
+        }
+
+        private float HorizontalVelocityFunc(InputEventArgs args, float velX)
+        {
+            if (args.State == InputState.Released)
+            {
+                return 0;
+            }
+            if (velX != 0 && (Velocity.Y > 0 || Velocity.Y < 0))
+                return 0;
+
+            return velX;
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -139,7 +166,8 @@ namespace Farmi.Entities
             Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), radius.Left + radius.Right , radius.Top + radius.Bottom * 2);
             spriteBatch.Draw(KhvGame.Temp, r, Color.Red);*/
             #endregion
-            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Turquoise);
+            //spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Turquoise);
+            spriteBatch.Draw(texture, Position, Color.White);
             base.Draw(spriteBatch);
         }
     }
