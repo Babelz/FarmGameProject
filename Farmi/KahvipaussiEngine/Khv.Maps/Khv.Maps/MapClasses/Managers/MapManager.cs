@@ -66,15 +66,18 @@ namespace Khv.Maps.MapClasses.Managers
         /// kartta on jo taustalla olevissa kartoissa, palauttaa
         /// sen suorilta.
         /// </summary>
-        private TileMap GetMap(SerializedMap mapData)
+        private TileMap GetMap(string mapName)
         {
-            TileMap map = mapsInBackground.Find(m => m.Name == mapData.Name);
+            TileMap map = mapsInBackground.Find(m => m.Name == mapName);
 
-            return map ?? ProcessNewMap(mapData);
+            return map ?? ProcessNewMap(mapName);
         }
-        private TileMap ProcessNewMap(SerializedMap mapData)
+        private TileMap ProcessNewMap(string mapName)
         {
+            SerializedMap mapData = LoadMapData(mapName);
+
             MapDataProcessor mapDataProcessor = new MapDataProcessor(game, mapData, mapDepencyContainer);
+
             return mapDataProcessor.Process();
         }
         // DeSerialisoi kartan tiedot Xml tiedostosta SerializedMap olioksi.
@@ -102,7 +105,7 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         public void ChangeMap(string mapName, MapChangeAction mapChangeAction = MapChangeAction.DisposeCurrent)
         {
-            TileMap nextMap = GetMap(LoadMapData(mapName));
+            TileMap nextMap = GetMap(mapName);
 
             if (OnMapChanging != null)
             {
@@ -132,7 +135,7 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         public void LoadMap(string mapName)
         {
-            MoveToBackground(ProcessNewMap(LoadMapData(mapName)));
+            MoveToBackground(ProcessNewMap(mapName));
         }
         /// <summary>
         /// Poistaa kartan mikä täyttää ehon. Tätä
