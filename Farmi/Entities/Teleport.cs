@@ -14,6 +14,8 @@ using Khv.Maps.MapClasses.Managers;
 using Microsoft.Xna.Framework;
 using SerializedDataTypes.Components;
 using Farmi.Datasets;
+using Farmi.Entities.Buildings;
+using System.Text.RegularExpressions;
 
 namespace Farmi.Entities
 {
@@ -27,8 +29,6 @@ namespace Farmi.Entities
 
         // Value joka lisätään kun pelaaja teleporttaa tähän teleporttiin.
         private Vector2 positionOffSet;
-
-        private FarmWorld world;
         #endregion
 
         /// <summary>
@@ -39,9 +39,6 @@ namespace Farmi.Entities
         public Teleport(KhvGame game, MapObjectArguments mapObjectArguments)
             : base(game)
         {
-            world = (game.GameStateManager.States.First
-                    (c => c is GameplayScreen) as GameplayScreen).World;
-
             MakeFromMapData(mapObjectArguments);
         }
         /// <summary>
@@ -150,21 +147,61 @@ namespace Farmi.Entities
         }
         #endregion
 
+        // Hakee kartalta joka on vaihdettu vastakkaisen teleportin.
+        private Teleport ResolveOpposite(MapManager mapManager)
+        {
+            // Hakee ensimmäisen objekti tason.
+            GameObjectManager objectManager = mapManager.ActiveMap.ObjectManagers
+                                             .AllManagers()
+                                             .First();
+
+            // Koittaa hakea teleportin aluksi suoraan kartan objekti listasta.
+            Teleport teleport = objectManager.GetGameObject<Teleport>(o => 
+                o.mapToTeleport == this.mapContainedIn);
+
+            // Koska teleportti on vielä null, sen on pakko olla ovessa.
+            if (teleport == null)
+            {
+                // Haetaan kaikki rakennukset kartalta.
+                List<Building> buildings = objectManager.GameObjectsOfType<Building>()
+                                           .ToList();
+
+
+                // Haetaan semmoinen rakennus jossa on tarvittava teleportti.
+                Building building = buildings.Find(p =>
+                    Array.Find(p.Doors, d =>
+                        d.Teleport.mapToTeleport == this.mapContainedIn) != null);
+
+                // Haetaan rakennuksen ovista oikea teleportti.
+                teleport = building.Doors.First(d =>
+                    d.Teleport.mapToTeleport == this.mapContainedIn).Teleport;
+            }
+
+            return teleport;
+        }
+
         /// <summary>
         /// Teleporttaa playerin uudelle kartalle.
         /// </summary>
         public void Port()
         {
+            FarmWorld world = (game.GameStateManager.States.First
+                              (c => c is GameplayScreen) as GameplayScreen).World;
+
             if (world != null)
             {
-                MapManager mapManager = world.MapManager;
                 MapChangeAction action;
+                MapManager mapManager = world.MapManager;
 
-                #warning Testi @ teleport, voi kusta tulevaisuudessa ku pitäs pitää karttoja muistissa.
-                #warning Testi @ teleport, vaihtaa vielä aika pseudona, ei osaa disabloida input eikä alottaa transition.
-                #warning Testi @ teleport, ei ole viel offset position joka annetaan teleporttaajalle kun hän porttaa eikä teleportin oikeaa kokoa.
+                #region Warning flags
+#warning Testi @ teleport, voi kusta tulevaisuudessa ku pitäs pitää karttoja muistissa.
+#warning Testi @ teleport, vaihtaa vielä aika pseudona, ei osaa disabloida input eikä alottaa transition.
+#warning Testi @ teleport, ei ole viel offset position joka annetaan teleporttaajalle kun hän porttaa eikä teleportin oikeaa kokoa.
+                #endregion
 
-                if (mapManager.ActiveMap.Name == "farm")
+                // Katotaan tässä kaikki mapit jotka tulisi pitää muistissa eikä disposata.
+                // Jos kartta on "tärkeä" se tulee laittaa taustalle.
+                if (mapManager.ActiveMap.Name == "farm" || Regex.IsMatch(mapManager.ActiveMap.Name, "playerhouseindoors[0-9]"))
                 {
                     action = MapChangeAction.MoveCurrentToBackground;
                 }
@@ -173,14 +210,10 @@ namespace Farmi.Entities
                     action = MapChangeAction.DisposeCurrent;
                 }
 
+                // Vaihtaa kartan ja resolvaa vastakkaisen teleportin.
                 mapManager.ChangeMap(mapToTeleport, action);
 
-                GameObjectManager objectManager = mapManager.ActiveMap.ObjectManagers
-                                                 .AllManagers()
-                                                 .First();
-
-                Teleport teleport = objectManager.GetGameObject<Teleport>(o => o.mapToTeleport == this.mapContainedIn);
-
+                Teleport teleport = ResolveOpposite(mapManager);
                 world.Player.Position = teleport.position + teleport.positionOffSet;
             }
         }
