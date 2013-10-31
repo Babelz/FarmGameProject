@@ -10,13 +10,20 @@ namespace Farmi.Entities.Components
 {
     internal class DoorInteractionComponent : BasicInteractionComponent
     {
-        
+        #region Vars
+        private readonly Door owner;
+        #endregion
+
+        public DoorInteractionComponent(Door owner)
+        {
+            this.owner = owner;
+        }
         protected override void DoInteract(GameObject source)
         {
-            //throw new NotImplementedException();
+            owner.Teleport.Port();
+
             IsInteracting = false;
         }
-
         public override bool CanInteract(GameObject source)
         {
             return source as FarmPlayer != null;

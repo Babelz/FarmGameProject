@@ -18,13 +18,17 @@ namespace Farmi.Entities
     {
         #region Vars
         private Texture2D texture;
-        private Teleport teleport;
         #endregion
 
         #region Properties
         public Building OwningBuilding
         {
             get; 
+            private set;
+        }
+        public Teleport Teleport
+        {
+            get;
             private set;
         }
         #endregion
@@ -37,20 +41,21 @@ namespace Farmi.Entities
             Size = doorDataset.Size;
 
             GameplayScreen screen = game.GameStateManager.Current as GameplayScreen;
-            teleport = new Teleport(game, doorDataset.TeleportDataset, mapContainedIn);
+
+            Teleport = new Teleport(game, doorDataset.TeleportDataset, mapContainedIn);
+            Teleport.Position = position;
 
             Collider = new BoxCollider(null, this);
-            DoorInteractionComponent c = new DoorInteractionComponent();
-            c.OnInteraction += () => Console.WriteLine("OnInteraction");
-            c.OnInteractionBegin += () => Console.WriteLine("OnInteractionBegin");
-            c.OnInteractionFinished += () => Console.WriteLine("OnInteractionFinished");
+            DoorInteractionComponent c = new DoorInteractionComponent(this);
+
+            // Joku tekstuuri ois kiva.
+            texture = KhvGame.Temp;
+
             Components.Add(c);
         }
-
-
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int) position.X, (int) position.Y, size.Width, size.Height), Color.Black);
+            spriteBatch.Draw(texture, new Rectangle((int) position.X, (int) position.Y, size.Width, size.Height), Color.Black);
         }
 
     }

@@ -23,7 +23,6 @@ namespace Farmi.Entities
     {
         #region Vars
         private readonly FarmWorld world;
-        private GameObject closest;
         private const float speed = 5f;
 
 
@@ -37,8 +36,13 @@ namespace Farmi.Entities
         {
             get
             {
-                return closest != null;
+                return ClosestInteractable != null;
             }
+        }
+        public GameObject ClosestInteractable
+        {
+            get;
+            set;
         }
         #endregion
 
@@ -99,12 +103,12 @@ namespace Farmi.Entities
                 return;
             }
 
-            if (closest == null)
+            if (ClosestInteractable == null)
             {
                 return;
             }
 
-            (closest.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent).Interact(this);
+            (ClosestInteractable.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent).Interact(this);
 
         }
 
@@ -123,8 +127,7 @@ namespace Farmi.Entities
             base.Update(gameTime);
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
-
-            closest = world.GetNearestInteractable(this, new Padding(10, 5));
+            ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
         }
 
         public override void Draw(SpriteBatch spriteBatch)
