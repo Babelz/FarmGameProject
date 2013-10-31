@@ -6,6 +6,7 @@ using Farmi.Entities.Components;
 using Farmi.KahvipaussiEngine.Khv.Game.Collision;
 using Farmi.World;
 using Khv.Engine;
+using Khv.Engine.Helpers;
 using Khv.Engine.Structs;
 using Khv.Game;
 using Khv.Game.Collision;
@@ -30,6 +31,8 @@ namespace Farmi.Entities
         private InputControlSetup defaultInputSetup;
         private InputControlSetup shopInputSetup;
         private Texture2D texture;
+
+        private ViewComponent viewComponent;
 
         #endregion
 
@@ -64,7 +67,8 @@ namespace Farmi.Entities
                 new BasicTileCollisionQuerier());
 
             Collider.OnCollision += Collider_OnCollision;
-
+            viewComponent = new ViewComponent(new Vector2(0, 1));
+            Components.Add(viewComponent);
         }
 
         void Collider_OnCollision(object sender, CollisionEventArgs result)
@@ -115,6 +119,17 @@ namespace Farmi.Entities
 
         }
 
+        public void CanSee(GameObject g)
+        {
+            Vector2 v2 = g.Position;
+            v2.Normalize();
+            Console.WriteLine(
+                    1 - VectorHelper.DotProduct(viewComponent.ViewVector, v2)
+                );
+            Console.WriteLine(viewComponent.ViewVector);
+            Console.WriteLine(g);
+        }
+
         private float VelocityFunc(InputEventArgs args, float src)
         {
             if (args.State == InputState.Released)
@@ -132,8 +147,13 @@ namespace Farmi.Entities
                 return 0;
             }
             if (velY != 0 && (Velocity.X > 0 || Velocity.X < 0))
+            {
                 return 0;
-
+            }
+            if (velY < 0)
+                viewComponent.ViewVector = new Vector2(0, -1);
+            else if (velY > 0)
+                viewComponent.ViewVector = new Vector2(0, 1);
             return velY;
         }
 
@@ -145,7 +165,10 @@ namespace Farmi.Entities
             }
             if (velX != 0 && (Velocity.Y > 0 || Velocity.Y < 0))
                 return 0;
-
+            if (velX < 0)
+                viewComponent.ViewVector = new Vector2(-1, 0);
+            else if (velX > 0)
+                viewComponent.ViewVector = new Vector2(1, 0);
             return velX;
         }
 
@@ -155,6 +178,8 @@ namespace Farmi.Entities
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
+            //if (ClosestInteractable != null)
+            //    CanSee(ClosestInteractable);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -167,7 +192,7 @@ namespace Farmi.Entities
             spriteBatch.Draw(KhvGame.Temp, r, Color.Red);*/
             #endregion
             //spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Turquoise);
-            spriteBatch.Draw(texture, Position, Color.White);
+            spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero,1f, viewComponent.Effects ,1f);
             base.Draw(spriteBatch);
         }
     }
