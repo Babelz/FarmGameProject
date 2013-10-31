@@ -162,19 +162,11 @@ namespace Farmi.Entities
             // Koska teleportti on vielä null, sen on pakko olla ovessa.
             if (teleport == null)
             {
-                // Haetaan kaikki rakennukset kartalta.
-                List<Building> buildings = objectManager.GameObjectsOfType<Building>()
-                                           .ToList();
-
-
-                // Haetaan semmoinen rakennus jossa on tarvittava teleportti.
-                Building building = buildings.Find(p =>
-                    Array.Find(p.Doors, d =>
-                        d.Teleport.mapToTeleport == this.mapContainedIn) != null);
-
-                // Haetaan rakennuksen ovista oikea teleportti.
-                teleport = building.Doors.First(d =>
-                    d.Teleport.mapToTeleport == this.mapContainedIn).Teleport;
+                // Hakee rakennuksen jossa teleportti on.
+                 teleport = objectManager.GetGameObject<Building>(
+                     b => Array.Find<Door>(b.Doors, 
+                         d => d.Teleport.mapToTeleport == this.mapContainedIn) != null)
+                         .Doors.First(d => d.Teleport.mapToTeleport == this.mapContainedIn).Teleport;
             }
 
             return teleport;

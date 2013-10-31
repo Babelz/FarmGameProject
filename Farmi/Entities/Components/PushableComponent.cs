@@ -27,9 +27,9 @@ namespace Farmi.Entities.Components
             OnInteractionFinished +=PushableComponent_OnInteractionFinished;
         }
 
-        void PushableComponent_OnInteractionBegin(GameObject source)
+        void PushableComponent_OnInteractionBegin(object sender, InteractionEventArgs e)
         {
-            source.Collider.OnCollision += OnHolderCollides;
+            e.Interactor.Collider.OnCollision += OnHolderCollides;
             toMove.Collider.OnCollision += OnInteractWithCollides;
             Console.WriteLine("JEESUS");
         }
@@ -46,9 +46,9 @@ namespace Farmi.Entities.Components
                 result.IsCanceled = true;
         }
 
-        void PushableComponent_OnInteractionFinished(GameObject with)
+        void PushableComponent_OnInteractionFinished(object sender, InteractionEventArgs e)
         {
-            with.Collider.OnCollision -= OnHolderCollides;
+            e.Interactor.Collider.OnCollision -= OnHolderCollides;
             toMove.Collider.OnCollision -= OnInteractWithCollides;
         }
 

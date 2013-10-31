@@ -11,9 +11,14 @@ namespace Farmi.Entities.Components
     abstract class BasicInteractionComponent : IInteractionComponent
     {
         #region Vars
-        private bool wasInteracting;
         private GameObject interactWith;
         private bool isInteracting;
+        #endregion
+
+        #region Events
+        public event InterActionEventHandler OnInteractionBegin;
+        public event InterActionEventHandler OnInteraction;
+        public event InterActionEventHandler OnInteractionFinished;
         #endregion
 
         #region Properties
@@ -29,9 +34,13 @@ namespace Farmi.Entities.Components
                 {
                     if (OnInteractionFinished != null)
                     {
-                        OnInteractionFinished(interactWith);
+                        OnInteractionFinished(this, new InteractionEventArgs()
+                                                    {
+                                                        Interactor = interactWith
+                                                    });
                     }
                 }
+
                 isInteracting = value;
             }
         }
@@ -42,12 +51,6 @@ namespace Farmi.Entities.Components
         }
         #endregion
 
-        #region Events
-        public event InteractionDelegate OnInteractionBegin;
-        public event InteractionDelegate OnInteraction;
-        public event InteractionDelegate OnInteractionFinished;
-        #endregion
-
         public virtual void Update(GameTime gametime)
         {
 
@@ -55,7 +58,10 @@ namespace Farmi.Entities.Components
             {
                 if (OnInteraction != null)
                 {
-                    OnInteraction(interactWith);
+                    OnInteraction(this, new InteractionEventArgs()
+                                        {
+                                            Interactor = interactWith
+                                        });
                 }
                 DoInteract(interactWith, gametime);
             }
@@ -73,9 +79,13 @@ namespace Farmi.Entities.Components
             {
                 interactWith = with;
                 IsInteracting = true;
+
                 if (OnInteractionBegin != null)
                 {
-                    OnInteractionBegin(with);
+                    OnInteractionBegin(this, new InteractionEventArgs()
+                                             {
+                                                 Interactor = with
+                                             });
                 }
             }
         }
