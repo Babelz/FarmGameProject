@@ -8,6 +8,7 @@ using Farmi.Entities.Components;
 using Khv.Engine;
 using Khv.Engine.Helpers;
 using Khv.Game.GameObjects;
+using Khv.Gui.Components.BaseComponents;
 using Khv.Maps.MapClasses.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -65,9 +66,9 @@ namespace Farmi.World
         /// Hakee lähimmät gameobjectit joilla on interaction komponentti
         /// </summary>
         /// <param name="source">Kenestä katsottuna lähimmät.</param>
-        /// <param name="radius">Kuinka isolta alueelta, pikseleissä</param>
+        /// <param name="radius">Säde kuinka laajalta alueelta etsitään.</param>
         /// <returns>Tyhjän listan jos ei löydy yhtään, muuten lähimmät objektit</returns>
-        public List<GameObject> GetNearInteractables(GameObject source, float radius)
+        public List<GameObject> GetNearInteractables(GameObject source, Padding radius)
         {
             List<GameObject> gobs = GetNearGameObjects(source, radius);
             var objects = gobs.Where(
@@ -81,9 +82,9 @@ namespace Farmi.World
         /// Hakee lähimmät gameobjectit
         /// </summary>
         /// <param name="source">Kenestä katsottuna lähimmät.</param>
-        /// <param name="radius">Kuinka isolta alueelta, pikseleissä</param>
-        /// <returns>Tyhjän listan jos ei löydy yhtään, muuten lähimmät objektit</returns>
-        public List<GameObject> GetNearGameObjects(GameObject source, float radius)
+        /// <param name="radius">Säde kuinka laajalta alueelta etsitään.</param>
+        /// <returns></returns>
+        public List<GameObject> GetNearGameObjects(GameObject source, Padding radius)
         {
             List<GameObject> gobs = new List<GameObject>();
             foreach (GameObjectManager gameobjectManager in MapManager.ActiveMap.ObjectManagers.AllManagers())
@@ -92,7 +93,8 @@ namespace Farmi.World
             }
 
             gobs.AddRange(WorldObjects.AllObjects());
-            Rectangle r = new Rectangle((int) (source.Position.X - radius), (int) (source.Position.Y - radius), (int) (source.Size.Width + radius), (int) (source.Size.Height + radius));
+            Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), source.Size.Width + radius.Right * 2, source.Size.Height + radius.Bottom * 2);
+           // Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), radius.Left + radius.Right, radius.Top + radius.Bottom * 2);
 
             var objects = gobs.Where(
                 o => !ReferenceEquals(o, source) && r.Intersects(new Rectangle((int)o.Position.X, (int)o.Position.Y, o.Size.Width, o.Size.Height))).ToList();
@@ -104,9 +106,9 @@ namespace Farmi.World
         /// Hakee lähimmän peliobjektin
         /// </summary>
         /// <param name="source">Kenestä katsottuna lähin.</param>
-        /// <param name="radius">Kuinka isolta alueelta.</param>
+        /// <param name="radius">Säde kuinka laajalta alueelta etsitään.</param>
         /// <returns>Lähimmän peliobjektin, jos ei löydy niin palauttaa null</returns>
-        public GameObject GetNearestGameObject(GameObject source, float radius)
+        public GameObject GetNearestGameObject(GameObject source, Padding radius)
         {
             return GetNearestGameObject(GetNearGameObjects(source, radius), source);
         }
@@ -179,9 +181,9 @@ namespace Farmi.World
         /// Hakee lähimmän interactablen
         /// </summary>
         /// <param name="source">Kenestä katsottuna lähin.</param>
-        /// <param name="radius">Miltä alueelta</param>
+        /// <param name="radius">Säde kuinka laajalta alueelta etsitään.</param>
         /// <returns>Null jos ei löydy läheltä, muuten lähimmän objektin</returns>
-        public GameObject GetNearestInteractable(GameObject source, float radius)
+        public GameObject GetNearestInteractable(GameObject source, Padding radius)
         {
             List<GameObject> objects = GetNearInteractables(source, radius);
 
