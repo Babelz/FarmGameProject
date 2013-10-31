@@ -6,7 +6,7 @@ using Khv.Game.GameObjects;
 
 namespace Farmi.Entities.Components
 {
-    public delegate void InteractionDelegate();
+    public delegate void InteractionDelegate(GameObject source);
     public interface IInteractionComponent : IObjectComponent
     {
         event InteractionDelegate OnInteractionBegin;
@@ -15,8 +15,8 @@ namespace Farmi.Entities.Components
 
         bool IsInteracting { get; }
 
-        void Interact(GameObject source);
-        bool CanInteract(GameObject source);
+        void Interact(GameObject with);
+        bool CanInteract(GameObject with);
 
     }
 }

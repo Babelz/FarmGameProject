@@ -14,7 +14,7 @@ namespace Khv.Game
 
         #region Vars
 
-        private readonly CharacterEntity character;
+        private readonly GameObject character;
 
         private Vector2 oldPosition = Vector2.Zero;
 
@@ -26,7 +26,7 @@ namespace Khv.Game
 
         #region Ctor
 
-        public MotionEngine(CharacterEntity target)
+        public MotionEngine(GameObject target)
         {
             character = target;
             OldDirection = Vector2.Zero;

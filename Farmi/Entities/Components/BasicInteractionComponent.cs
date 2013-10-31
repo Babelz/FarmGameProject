@@ -29,11 +29,16 @@ namespace Farmi.Entities.Components
                 {
                     if (OnInteractionFinished != null)
                     {
-                        OnInteractionFinished();
+                        OnInteractionFinished(interactWith);
                     }
                 }
                 isInteracting = value;
             }
+        }
+
+        protected GameObject InteractWith
+        {
+            get { return interactWith;  }
         }
         #endregion
 
@@ -50,35 +55,34 @@ namespace Farmi.Entities.Components
             {
                 if (OnInteraction != null)
                 {
-                    OnInteraction();
+                    OnInteraction(interactWith);
                 }
-                DoInteract(interactWith);
+                DoInteract(interactWith, gametime);
             }
             
         }
 
-        public virtual void Interact(GameObject source)
+        public virtual void Interact(GameObject with)
         {
-            if (!CanInteract(source))
+            if (!CanInteract(with))
             {
                 return;
             }
             
             if (!IsInteracting)
             {
-                interactWith = source;
+                interactWith = with;
                 IsInteracting = true;
                 if (OnInteractionBegin != null)
                 {
-                    OnInteractionBegin();
+                    OnInteractionBegin(with);
                 }
-                DoInteract(source);
             }
         }
 
         #region Abstract members
-        protected abstract void DoInteract(GameObject source);
-        public abstract bool CanInteract(GameObject source);
+        protected abstract void DoInteract(GameObject with, GameTime gameTime);
+        public abstract bool CanInteract(GameObject with);
         #endregion
     }
 }

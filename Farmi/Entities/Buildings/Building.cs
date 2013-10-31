@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Farmi.Entities.Components;
 using Farmi.Screens;
 using Farmi.World;
 using Khv.Engine.Structs;
@@ -58,6 +59,7 @@ namespace Farmi.Entities.Buildings
         // Testi metodi initille.
         private void MakeFromMapData(MapObjectArguments mapObjectArguments)
         {
+            Components.Add(new PushableComponent(this));
             world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
 
             if (mapObjectArguments == null)
