@@ -93,8 +93,8 @@ namespace Farmi.World
             }
 
             gobs.AddRange(WorldObjects.AllObjects());
-           // Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), source.Size.Width*2 + radius.Right, source.Size.Height * 2 + radius.Bottom);
-            Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), radius.Left + radius.Right, radius.Top + radius.Bottom * 2);
+            Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), source.Size.Width + radius.Right * 2, source.Size.Height + radius.Bottom * 2);
+           // Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), radius.Left + radius.Right, radius.Top + radius.Bottom * 2);
 
             var objects = gobs.Where(
                 o => !ReferenceEquals(o, source) && r.Intersects(new Rectangle((int)o.Position.X, (int)o.Position.Y, o.Size.Width, o.Size.Height))).ToList();
