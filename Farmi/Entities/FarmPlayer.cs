@@ -10,6 +10,7 @@ using Khv.Engine.Structs;
 using Khv.Game;
 using Khv.Game.Collision;
 using Khv.Game.GameObjects;
+using Khv.Gui.Components.BaseComponents;
 using Khv.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -123,11 +124,18 @@ namespace Farmi.Entities
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
 
-            closest = world.GetNearestInteractable(this, 32);
+            closest = world.GetNearestInteractable(this, new Padding(10, 5));
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            #region test
+            /*  GameObject source = this;
+            Padding radius = new Padding(10, 5);
+
+            Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), radius.Left + radius.Right , radius.Top + radius.Bottom * 2);
+            spriteBatch.Draw(KhvGame.Temp, r, Color.Red);*/
+            #endregion
             spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Turquoise);
             base.Draw(spriteBatch);
         }
