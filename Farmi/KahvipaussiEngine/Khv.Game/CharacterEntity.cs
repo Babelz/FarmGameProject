@@ -10,12 +10,10 @@ namespace Khv.Game
 {
     public abstract class CharacterEntity : DrawableGameObject, IEntity
     {
-
         #region Vars
 
 
         #endregion
-
 
         #region Properties
 
@@ -26,7 +24,6 @@ namespace Khv.Game
         }
 
         #endregion
-
 
         protected CharacterEntity(KhvGame game)
             : base(game)

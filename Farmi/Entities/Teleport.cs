@@ -156,8 +156,8 @@ namespace Farmi.Entities
                                              .First();
 
             // Koittaa hakea teleportin aluksi suoraan kartan objekti listasta.
-            Teleport teleport = objectManager.GetGameObject<Teleport>(o => 
-                o.mapToTeleport == this.mapContainedIn);
+            Teleport teleport = objectManager.GetGameObject<Teleport>(
+                o => o.mapToTeleport == this.mapContainedIn);
 
             // Koska teleportti on vielä null, sen on pakko olla ovessa.
             if (teleport == null)
@@ -177,8 +177,8 @@ namespace Farmi.Entities
         /// </summary>
         public void Port()
         {
-            FarmWorld world = (game.GameStateManager.States.First
-                              (c => c is GameplayScreen) as GameplayScreen).World;
+            FarmWorld world = (game.GameStateManager.States.First(
+                c => c is GameplayScreen) as GameplayScreen).World;
 
             if (world != null)
             {

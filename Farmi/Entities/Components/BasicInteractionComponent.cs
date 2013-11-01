@@ -67,7 +67,6 @@ namespace Farmi.Entities.Components
             }
             
         }
-
         public virtual void Interact(GameObject with)
         {
             if (!CanInteract(with))

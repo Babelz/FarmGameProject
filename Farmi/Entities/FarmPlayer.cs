@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OpenTK.Input;
+using Farmi.Calendar;
 
 namespace Farmi.Entities
 {
@@ -95,6 +96,16 @@ namespace Farmi.Entities
             keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, speed));
             keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
+            keymapper.Map(new KeyTrigger("Next day", Keys.F1, null), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        CalendarSystem calendar = game.Components.First(
+                            c => c is CalendarSystem) as CalendarSystem;
+
+                        calendar.SkipDay(23, 45);
+                    }
+                });
 
             var padmapper = defaultInputSetup.Mapper.GetInputBindProvider<PadInputBindProvider>();
             padmapper.Map(new ButtonTrigger("Move left", Buttons.LeftThumbstickLeft, Buttons.DPadLeft), (triggered, args) => MotionEngine.GoalVelocityX = -speed);
@@ -123,11 +134,6 @@ namespace Farmi.Entities
         {
             Vector2 v2 = g.Position;
             v2.Normalize();
-            Console.WriteLine(
-                    1 - VectorHelper.DotProduct(viewComponent.ViewVector, v2)
-                );
-            Console.WriteLine(viewComponent.ViewVector);
-            Console.WriteLine(g);
         }
 
         private float VelocityFunc(InputEventArgs args, float src)
@@ -150,10 +156,16 @@ namespace Farmi.Entities
             {
                 return 0;
             }
+
             if (velY < 0)
+            {
                 viewComponent.ViewVector = new Vector2(0, -1);
+            }
             else if (velY > 0)
+            {
                 viewComponent.ViewVector = new Vector2(0, 1);
+            }
+
             return velY;
         }
 
@@ -164,11 +176,19 @@ namespace Farmi.Entities
                 return 0;
             }
             if (velX != 0 && (Velocity.Y > 0 || Velocity.Y < 0))
+            {
                 return 0;
+            }
+            
             if (velX < 0)
+            {
                 viewComponent.ViewVector = new Vector2(-1, 0);
+            }
             else if (velX > 0)
+            {
                 viewComponent.ViewVector = new Vector2(1, 0);
+            }
+
             return velX;
         }
 

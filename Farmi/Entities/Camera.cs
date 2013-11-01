@@ -81,13 +81,10 @@ namespace Farmi.Entities
             Position = v;
 
         }
-
-
         public void Follow(GameObject who)
         {
             FollowedObject = who;
         }
-
         public void StopFollowing()
         {
             FollowedObject = null;

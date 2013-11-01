@@ -53,6 +53,7 @@ namespace Farmi.Datasets
         {
             ParseValuesFrom(xElement);
         }
+
         public void ParseValuesFrom(XElement xElement)
         {
             this.xElement = xElement;

@@ -20,17 +20,15 @@ namespace Farmi.World
     public sealed class FarmWorld : Khv.Game.World
     {
         #region Properties
-
         public FarmPlayer Player
         {
             get;
             private set;
         }
-
-
         #endregion
 
-        public FarmWorld(KhvGame game) : base(game)
+        public FarmWorld(KhvGame game) 
+            : base(game)
         {
 
         }
@@ -59,7 +57,6 @@ namespace Farmi.World
             {
                 gameobject.Update(gameTime);
             }
-           
         }
 
         /// <summary>
@@ -72,8 +69,7 @@ namespace Farmi.World
         {
             List<GameObject> gobs = GetNearGameObjects(source, radius);
             var objects = gobs.Where(
-                 o => o.Components.ContainsComponent(c => c is IInteractionComponent))
-                .ToList();
+                o => o.Components.ContainsComponent(c => c is IInteractionComponent)).ToList();
 
             return objects;
         }
@@ -94,7 +90,7 @@ namespace Farmi.World
 
             gobs.AddRange(WorldObjects.AllObjects());
             Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), source.Size.Width + radius.Right * 2, source.Size.Height + radius.Bottom * 2);
-           // Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), radius.Left + radius.Right, radius.Top + radius.Bottom * 2);
+            //Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), radius.Left + radius.Right, radius.Top + radius.Bottom * 2);
 
             var objects = gobs.Where(
                 o => !ReferenceEquals(o, source) && r.Intersects(new Rectangle((int)o.Position.X, (int)o.Position.Y, o.Size.Width, o.Size.Height))).ToList();
@@ -121,7 +117,6 @@ namespace Farmi.World
         /// <returns>Null jos listan koko on 0, muuten lähimmän objektin</returns>
         public GameObject GetNearestGameObject(List<GameObject> objects, GameObject source)
         {
-
             if (objects.Count == 0)
             {
                 return null;
@@ -132,8 +127,6 @@ namespace Farmi.World
             }
 
             Rectangle search = new Rectangle((int)source.Position.X, (int)source.Position.Y, source.Size.Width, source.Size.Height);
-
-
 
             Vector2[] tocheck = new Vector2[objects.Count];
             for (int index = 0; index < objects.Count; index++)
@@ -199,14 +192,15 @@ namespace Farmi.World
                 MapManager.ActiveMap.Draw(spriteBatch);
             }
 
-            var gameobjects = WorldObjects.GameObjectsOfType<DrawableGameObject>(g => g is DrawableGameObject);
+            var gameobjects = WorldObjects.GameObjectsOfType<DrawableGameObject>();
 
             foreach (var gameobject in gameobjects)
             {
                gameobject.Draw(spriteBatch);
             }
 
-            gameobjects.First(o => o is FarmPlayer).Draw(spriteBatch);
+            gameobjects.First(
+                o => o is FarmPlayer).Draw(spriteBatch);
         }
     }
 }
