@@ -66,8 +66,10 @@
     <Compile Include="Entities\Door.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
     <Compile Include="Entities\ISaveable.cs" />
+    <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Scripts\AnimalBehaviourScript.cs" />
     <Compile Include="Entities\Teleport.cs" />
+    <Compile Include="Entities\Tool.cs" />
     <Compile Include="FarmGame.cs" />
     <Compile Include="Entities\Components\IInteractionComponent.cs" />
     <Compile Include="GameDataExporter.cs" />
@@ -280,17 +282,17 @@
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptClasses\IScriptService.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptEngine.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptObserver.cs" />
+    <Compile Include="Repositories\AnimalRepository.cs" />
+    <Compile Include="SpriteSheetAnimation.cs" />
+    <Compile Include="XmlParsers\XAtributeReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\AnimalRepository.cs" />
     <Compile Include="Repositories\BuildingRepository.cs" />
     <Compile Include="Repositories\RepositoryManager.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\StartScreen.cs" />
-    <Compile Include="SpriteSheetAnimation.cs" />
     <Compile Include="FarmWorld.cs" />
-    <Compile Include="XmlParsers\XAtributeReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -350,9 +352,7 @@
     <None Include="dat\mps\forest.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="dat\default.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="dat\default.db" />
     <None Include="dat\mps\playerhouseindoors1.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -362,14 +362,19 @@
     <Content Include="Content\Sounds\woof.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\ukko.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="KahvipaussiEngine\Khv.Gui\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Gui\TODO.txt" />
     <Content Include="KahvipaussiEngine\Khv.Maps\config.xml" />
     <Content Include="KahvipaussiEngine\Khv.Maps\README.txt" />
-    <Content Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\csharpscriptengine_README.txt" />
+    <Content Include="KahvipaussiEngine\Khv.Scripts\csharpscriptengine_README.txt" />
+    <None Include="dat\repos\items.db" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="dat\items\" />
     <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
   </ItemGroup>
   <ItemGroup>
