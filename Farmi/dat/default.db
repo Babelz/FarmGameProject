@@ -2,7 +2,7 @@
 
 <Defaults>
   
-  <!-- Teleport at map -->
+  <!-- Teleport in map -->
   <MapObject>
     <Name>Teleport</Name>
     <Valuepairs>
@@ -21,11 +21,11 @@
     </Valuepairs>
   </MapObject>
 
-  <!-- Teleport at db -->
+  <!-- Teleport in db -->
   <Teleport X="0,0" Y="-32,0" Width="0" Height="0"
             TeleportTo="playerhouseindoors1"/>
 
-  <!-- Building at map -->
+  <!-- Building in map -->
   <MapObject>
     <Name>Building</Name>
     <Valuepairs>
@@ -40,7 +40,7 @@
     </Valuepairs>
   </MapObject>
 
-  <!-- Building at db -->
+  <!-- Building in db -->
   <Building Name="" Width="0" Height="0" AssetName="">
     <Collider X="0,0f" Y="0,0" Width="0" Height="0"/>
     <Scripts>
@@ -52,5 +52,29 @@
       </Door>
     </Doors>
   </Building>
+  
+  <!-- Animal in map -->
+  <MapObject>
+    <Name>Animal</Name>
+    <Valuepairs>
+      <Pair>
+        <Name>Type</Name>
+        <Value>Dog</Value>
+      </Pair>
+    </Valuepairs>
+  </MapObject>
+
+  <!-- Animal in db -->
+  <Animal Name="" Type="Dog" Width="128" Height="128" AssetName="dogsheet">
+    <Collider X="0" Y="0" Width="0" Height="0"/>
+    <Birthday Season="Spring" Year="1" Day="1"/>
+    <Behaviours>
+      <Behaviour Name="DogBehaviour"/>
+    </Behaviours>
+    <LootTable>
+      <Item Name="Dog meat"/>
+    </LootTable>
+  </Animal>
+  
   
 </Defaults>

@@ -5,6 +5,7 @@ using System.Text;
 using Khv.Engine.Structs;
 using Microsoft.Xna.Framework;
 using System.Xml.Linq;
+using Farmi.XmlParsers;
 
 namespace Farmi.Datasets
 {
@@ -54,43 +55,35 @@ namespace Farmi.Datasets
             ParseValuesFrom(xElement);
         }
 
-        public void ParseValuesFrom(XElement xElement)
-        {
-            this.xElement = xElement;
-
-            GetBasicValues(xElement);
-            GetPositionValues(xElement);
-            GetSizeValues(xElement);
-            GetTeleportValues(xElement);
-        }
-        public XElement AsXElement()
-        {
-            return xElement;
-        }
-
         private void GetTeleportValues(XElement xElement)
         {
-            if (xElement.Element("Teleport") != null)
-            {
-                XElement teleportElement = xElement.Element("Teleport");
+            XElement teleportElement = xElement.Element("Teleport");
 
+            if (teleportElement != null)
+            {
                 TeleportDataset = new TeleportDataset();
                 TeleportDataset.ParseValuesFrom(teleportElement);
             }
         }
         private void GetBasicValues(XElement xElement)
         {
-            AssetName = xElement.Attribute("AssetName").Value;
+            XAtributeReader reader = new XAtributeReader(xElement);
+
+            AssetName = reader.ReadAttribute("AssetName", AtributeValueType.String);
+            Position = reader.ReadVector();
+            Size = reader.ReadSize();
         }
-        private void GetPositionValues(XElement xElement)
+
+        public void ParseValuesFrom(XElement xElement)
         {
-            Position = new Vector2(float.Parse(xElement.Attribute("X").Value),
-                                   float.Parse(xElement.Attribute("Y").Value));
+            this.xElement = xElement;
+
+            GetBasicValues(xElement);
+            GetTeleportValues(xElement);
         }
-        private void GetSizeValues(XElement xElement)
+        public XElement AsXElement()
         {
-            Size = new Size(int.Parse(xElement.Attribute("Width").Value),
-                            int.Parse(xElement.Attribute("Height").Value));
+            return xElement;
         }
     }
 }

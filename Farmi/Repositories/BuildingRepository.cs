@@ -20,24 +20,24 @@ namespace Farmi.Repositories
         }
 
         // Palauttaa kaikki rakennus elementit tiedostosta.
-        private IEnumerable<XElement> GetBuildingDatas(XDocument repository)
+        private IEnumerable<XElement> GetBuildingElements(XDocument repository)
         {
-            var buildingDatas = from items in repository.Descendants("Items")
+            var buildingElements = from items in repository.Descendants("Items")
                                 from item in items.Elements()
                                 where item.Name == "Building"
                                 select item;
 
-            return buildingDatas;
+            return buildingElements;
         }
 
         public override void Load(XDocument repository)
         {
-            var buildingDatas = GetBuildingDatas(repository);
+            var buildingElements = GetBuildingElements(repository);
 
-            foreach (var buildingData in buildingDatas)
+            foreach (var buildingElement in buildingElements)
             {
                 BuildingDataset buildingDataset = new BuildingDataset();
-                buildingDataset.ParseValuesFrom(buildingData);
+                buildingDataset.ParseValuesFrom(buildingElement);
 
                 items.Add(buildingDataset);
             }

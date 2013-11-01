@@ -1,25 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using Farmi.Entities.Components;
-using Farmi.KahvipaussiEngine.Khv.Game.Collision;
+using Farmi.Datasets;
+using Farmi.Repositories;
 using Farmi.Screens;
 using Farmi.World;
+using Khv.Engine;
 using Khv.Engine.Structs;
 using Khv.Game.Collision;
 using Khv.Game.GameObjects;
-using Khv.Engine;
-using Khv.Input;
 using Khv.Maps.MapClasses.Managers;
-using Microsoft.Xna.Framework.Input;
-using SerializedDataTypes.MapObjects;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using Khv.Maps.MapClasses.Processors;
-using Farmi.Repositories;
-using Farmi.Datasets;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities.Buildings
 {
@@ -28,7 +20,7 @@ namespace Farmi.Entities.Buildings
         #region Vars
         private Texture2D texture;
         private Color color;
-        private readonly FarmWorld world;
+        private FarmWorld world;
         private string mapContainedIn;
         #endregion
 
@@ -46,24 +38,19 @@ namespace Farmi.Entities.Buildings
         public Building(KhvGame game, MapObjectArguments mapObjectArguments)
             : base(game)
         {
-            world = (game.GameStateManager.States.First(
-                s => s is GameplayScreen) as GameplayScreen).World;
-
-            MakeFromMapData(mapObjectArguments);
-            //Components.Add(new BasicInteractionComponent());
+            Initialize(mapObjectArguments);
         }
         public Building(KhvGame game)
             : base(game)
         {
-            world = (game.GameStateManager.States.First(
-                s => s is GameplayScreen) as GameplayScreen).World;
+            Initialize(null);
         }
 
         // Testi metodi initille.
-        private void MakeFromMapData(MapObjectArguments mapObjectArguments)
+        private void Initialize(MapObjectArguments mapObjectArguments)
         {
-            Components.Add(new PushableComponent(this));
-            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
+            world = (game.GameStateManager.States
+                .First(c => c is GameplayScreen) as GameplayScreen).World;
 
             if (mapObjectArguments == null)
             {
@@ -74,9 +61,11 @@ namespace Farmi.Entities.Buildings
                 position = mapObjectArguments.Origin;
             }
 
+            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
+
             // Hakee tiedot repoista.
-            RepositoryManager repositoryManager = game.Components.First(
-                c => c is RepositoryManager) as RepositoryManager;
+            RepositoryManager repositoryManager = game.Components
+                .First(c => c is RepositoryManager) as RepositoryManager;
 
             BuildingDataset dataset = repositoryManager.GetDataSet<BuildingDataset>(
                 s => s.Name == mapObjectArguments.SerializedData.valuepairs[1].Value);

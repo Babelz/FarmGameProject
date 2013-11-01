@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using System.Collections.Generic;
 
 namespace Khv.Scripts.CSharpScriptEngine.Containers
 {
@@ -10,6 +11,11 @@ namespace Khv.Scripts.CSharpScriptEngine.Containers
     /// </summary>
     public class ScriptDepencyContainer
     {
+        #region Constants
+        private const string KW_THIS = "this";
+        private const string KW_MY = "myassemblies";
+        #endregion
+
         #region Properties
         public string[] ScriptDepencies
         {
@@ -33,9 +39,21 @@ namespace Khv.Scripts.CSharpScriptEngine.Containers
         }
         private void ReplaceKeywords()
         {
-            if (ScriptDepencies.Contains("this"))
+            if (ScriptDepencies.Contains(KW_THIS))
             {
-                ScriptDepencies[Array.IndexOf<string>(ScriptDepencies, "this")] = Assembly.GetCallingAssembly().Location;
+                ScriptDepencies[Array.IndexOf<string>(ScriptDepencies, KW_THIS)] = Assembly.GetCallingAssembly().Location;
+            }
+            if (ScriptDepencies.Contains(KW_MY))
+            {
+                List<string> referencedAssemblies = Assembly.GetCallingAssembly().GetReferencedAssemblies()
+                    .Select(s => s.Name + ".dll")
+                    .ToList<string>();
+
+                List<string> assemblies = new List<string>(ScriptDepencies);
+                assemblies.AddRange(referencedAssemblies);
+                assemblies.Remove(KW_MY);
+
+                ScriptDepencies = assemblies.ToArray<string>();
             }
         }
         private void RemoveDuplicates()
