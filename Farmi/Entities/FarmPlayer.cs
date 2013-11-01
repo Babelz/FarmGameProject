@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OpenTK.Input;
 using Farmi.Calendar;
+using Farmi.Entities.Animals;
 
 namespace Farmi.Entities
 {
@@ -96,7 +97,7 @@ namespace Farmi.Entities
             keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VerticalVelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VerticalVelocityFunc(args, speed));
             keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
-            keymapper.Map(new KeyTrigger("Next day", Keys.F1, null), (triggered, args) =>
+            keymapper.Map(new KeyTrigger("Next day", Keys.F1), (triggered, args) =>
                 {
                     if (args.State == InputState.Pressed)
                     {
@@ -104,6 +105,16 @@ namespace Farmi.Entities
                             c => c is CalendarSystem) as CalendarSystem;
 
                         calendar.SkipDay(23, 45);
+                    }
+                });
+            keymapper.Map(new KeyTrigger("Spawn dog", Keys.F2), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        Animal dog = new Animal(game, "Dog");
+                        dog.Position = position;
+
+                        world.WorldObjects.AddGameObject(dog);
                     }
                 });
 

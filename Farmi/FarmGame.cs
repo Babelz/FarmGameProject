@@ -58,8 +58,10 @@ namespace Farmi
             calendar.OnSeasonChanged += new CalendarEventHandler(calendar_OnSeasonChanged);
             calendar.OnDayChanged += new CalendarEventHandler(calendar_OnDayChanged);
             calendar.OnClockTick += new CalendarEventHandler(calendar_OnTimeTick);
-
+            
+            // TODO: Debug logger.
             ScriptEngine engine = new ScriptEngine(this, Path.Combine("cfg", "sengine.cfg"));
+            engine.LoggingMethod = LoggingMethod.Console;
             Components.Add(engine);
 
             InputManager.Mapper.GetInputBindProvider<KeyInputBindProvider>().Map(

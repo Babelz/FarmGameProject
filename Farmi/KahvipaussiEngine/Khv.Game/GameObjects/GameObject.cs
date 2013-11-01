@@ -24,8 +24,7 @@ namespace Khv.Game.GameObjects
         protected Size size;
 
         protected KhvGame game;
-        
-
+   
         #endregion
 
         #region Properties

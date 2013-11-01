@@ -49,6 +49,11 @@ namespace Khv.Scripts.CSharpScriptEngine.Containers
         }
         private void CheckScriptPaths()
         {
+            ScriptPaths = ScriptPaths
+                .Where(s => s.StartsWith("[root]"))
+                .Select(s => s.Replace("[root]", AppDomain.CurrentDomain.BaseDirectory))
+                .ToArray<string>();
+
             string[] nonExistingPaths = Array.FindAll<string>(ScriptPaths, s => !Directory.Exists(s));
 
             if (nonExistingPaths.Length > 0)

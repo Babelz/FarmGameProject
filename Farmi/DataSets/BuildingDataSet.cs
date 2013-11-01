@@ -5,6 +5,7 @@ using System.Text;
 using Khv.Engine.Structs;
 using Microsoft.Xna.Framework;
 using System.Xml.Linq;
+using Farmi.XmlParsers;
 
 namespace Farmi.Datasets
 {
@@ -46,7 +47,7 @@ namespace Farmi.Datasets
         public Vector2 ColliderPositionOffSet
         {
             get;
-            set;
+            private set;
         }
         /// <summary>
         /// Rakennuksen colliderin sizen offsetti.
@@ -74,6 +75,52 @@ namespace Farmi.Datasets
         }
         #endregion
 
+        private void GetDoorValues(XElement xElement)
+        {
+            IEnumerable<XElement> doorElements = xElement.Descendants("Doors");
+
+            if (doorElements != null)
+            {
+                Doors = (from doors in doorElements
+                         from door in doors.Descendants()
+                         where door.Name == "Door"
+                         select new DoorDataset(door)).ToArray();
+            }
+        }
+        private void GetScriptValues(XElement xElement)
+        {
+            IEnumerable<XElement> scriptElements = xElement.Descendants("Scripts");
+ 
+            if (scriptElements != null)
+            {
+                Scripts = (from scriptNames in scriptElements
+                           from scriptName in scriptNames.Descendants()
+                           where scriptName.Name == "Script"
+                           select scriptName.Attribute("Name").Value).ToArray<string>();
+            }
+        }
+        private void GetColliderValues(XElement xElement)
+        {
+            XElement colliderElement = xElement.Element("Collider"); 
+
+            if (colliderElement != null)
+            {
+                XAtributeReader reader = new XAtributeReader(colliderElement);
+
+                ColliderPositionOffSet = reader.ReadVector();
+                ColliderSizeOffSet = reader.ReadSize();
+            }
+        }
+        private void GetBasicValues(XElement xElement)
+        {
+            XAtributeReader reader = new XAtributeReader(xElement);
+
+            Name = reader.ReadAttribute("Name", AtributeValueType.String);
+            AssetName = reader.ReadAttribute("AssetName", AtributeValueType.String);
+
+            Size = reader.ReadSize();
+        }
+
         /// <summary>
         /// Parsii XElementistä tiedot oliolle.
         /// </summary>
@@ -92,48 +139,6 @@ namespace Farmi.Datasets
         public XElement AsXElement()
         {
             return xElement;
-        }
-
-        private void GetDoorValues(XElement xElement)
-        {
-            if (xElement.Descendants("Doors") != null)
-            {
-                Doors = (from doors in xElement.Descendants("Doors")
-                         from door in doors.Descendants()
-                         where door.Name == "Door"
-                         select new DoorDataset(door)).ToArray();
-            }
-        }
-        private void GetScriptValues(XElement xElement)
-        {
-            if (xElement.Descendants("Scripts") != null)
-            {
-                Scripts = (from scriptNames in xElement.Descendants("Scripts")
-                           from scriptName in scriptNames.Descendants()
-                           select scriptName.Attribute("Name").Value).ToArray<string>();
-            }
-        }
-        private void GetColliderValues(XElement xElement)
-        {
-            if (xElement.Element("Collider") != null)
-            {
-                var colliderData = xElement.Element("Collider");
-
-                ColliderPositionOffSet = new Vector2(float.Parse(colliderData.Attribute("X").Value),
-                                                     float.Parse(colliderData.Attribute("Y").Value));
-
-                ColliderSizeOffSet = new Size(int.Parse(colliderData.Attribute("Width").Value),
-                                              int.Parse(colliderData.Attribute("Height").Value));
-            }
-        }
-        private void GetBasicValues(XElement xElement)
-        {
-            Name = xElement.Attribute("Name").Value;
-
-            Size = new Size(int.Parse(xElement.Attribute("Width").Value),
-                            int.Parse(xElement.Attribute("Height").Value));
-
-            AssetName = xElement.Attribute("AssetName").Value;
         }
     }
 }

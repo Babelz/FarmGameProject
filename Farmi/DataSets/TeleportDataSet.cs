@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Khv.Engine.Structs;
 using System.Xml.Linq;
+using Farmi.XmlParsers;
 
 namespace Farmi.Datasets
 {
@@ -36,13 +37,12 @@ namespace Farmi.Datasets
         {
             this.xElement = xElement;
 
-            TeleportTo = xElement.Attribute("TeleportTo").Value;
+            XAtributeReader reader = new XAtributeReader(xElement);
 
-            PositionOffSet = new Vector2(float.Parse(xElement.Attribute("X").Value),
-                                         float.Parse(xElement.Attribute("Y").Value));
+            TeleportTo = reader.ReadAttribute("TeleportTo", AtributeValueType.String);
 
-            Size = new Size(int.Parse(xElement.Attribute("Width").Value),
-                            int.Parse(xElement.Attribute("Height").Value));
+            PositionOffSet = reader.ReadVector();
+            Size = reader.ReadSize();
         }
         public XElement AsXElement()
         {
