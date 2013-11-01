@@ -11,7 +11,6 @@ namespace Farmi
     public sealed class SpriteSheetAnimation
     {
         #region Vars
-        private readonly Texture2D texture;
         private readonly List<SpriteAnimationSet> sets;
         private int currentFrame;
         #endregion
@@ -36,11 +35,16 @@ namespace Farmi
                 }
             }
         }
+        public Texture2D Texture
+        {
+            get;
+            private set;
+        }
         #endregion
 
         public SpriteSheetAnimation(Texture2D texture)
         {
-            this.texture = texture;
+            Texture = texture;
             sets = new List<SpriteAnimationSet>();
         }
         public void ChangeSet(string setname)
@@ -49,9 +53,13 @@ namespace Farmi
 
             CurrentSet = sets.Find(s => s.Setname == setname);
         }
+        public void AddSets(IEnumerable<SpriteAnimationSet> sets)
+        {
+            this.sets.AddRange(sets);
+        }
         public void NextFrame()
         {
-            if (currentFrame < CurrentSet.Sources.Length)
+            if (currentFrame < CurrentSet.Sources.Length - 1)
             {
                 currentFrame++;
             }
@@ -83,7 +91,9 @@ namespace Farmi
 
         public SpriteAnimationSet(string setname, Size sourceSize, int frames, int y)
         {
-            Sources = new Rectangle[sourceSize.Width * frames];
+            Setname = setname;
+
+            Sources = new Rectangle[frames];
 
             for (int i = 0; i < Sources.Length; i++)
             {

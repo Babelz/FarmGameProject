@@ -13,6 +13,9 @@ using Farmi.Entities.Scripts;
 using Khv.Scripts.CSharpScriptEngine;
 using Khv.Scripts.CSharpScriptEngine.Builders;
 using Khv.Game.Collision;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using Khv.Maps.MapClasses.Managers;
 
 namespace Farmi.Entities.Animals
 {
@@ -20,7 +23,6 @@ namespace Farmi.Entities.Animals
     {
         #region Vars
         private FarmWorld world;
-        private string mapContainedIn;
         #endregion
 
         #region Vars
@@ -33,6 +35,11 @@ namespace Farmi.Entities.Animals
         {
             get;
             private set;
+        }
+        public string MapContainedIn
+        {
+            get;
+            set;
         }
         #endregion
 
@@ -59,11 +66,13 @@ namespace Farmi.Entities.Animals
                 typeName = mapObjectArguments.SerializedData.valuepairs
                     .First(v => v.Name == "Type").Value;
 
-                mapContainedIn = mapObjectArguments.MapContainedIn;
+                MapContainedIn = mapObjectArguments.MapContainedIn;
             }
 
             world = (game.GameStateManager.States
                 .First(c => c is GameplayScreen) as GameplayScreen).World;
+
+            world.MapManager.OnMapChanged += new Khv.Maps.MapClasses.Managers.MapEventHandler(MapManager_OnMapChanged);
 
             RepositoryManager repositoryManager = game.Components
                 .First(c => c is RepositoryManager) as RepositoryManager;
@@ -81,12 +90,24 @@ namespace Farmi.Entities.Animals
                 (new ScriptBuilder("DogBehaviour", new object[] { game, this }));
             Behaviour.Initialize();
         }
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+
+        private void MapManager_OnMapChanged(object sender, MapEventArgs e)
+        {
+            if (e.Current.Name == MapContainedIn)
+            {
+                world.WorldObjects.SafelyRemove(this);
+            }
+            else
+            {
+                world.WorldObjects.SafelyAdd(this);
+            }
+        }
+        public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             Behaviour.Update(gameTime);
         }
-        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
             Behaviour.Draw(spriteBatch);

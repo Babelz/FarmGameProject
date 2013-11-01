@@ -2,7 +2,7 @@
 
 <Repository Name="Animal repository" DatasetType="AnimalDataset" RepositoryType="AnimalRepository">
   <Items>
-    <Animal Name="Sparky" Type="Dog" Width="128" Height="128" AssetName="dogsheet">
+    <Animal Name="Sparky" Type="Dog" Width="32" Height="32" AssetName="dogsheet">
       <Tags>
         <Tag Value="CrazyAssDog"/>
       </Tags>

@@ -113,6 +113,7 @@ namespace Farmi.Entities
                     {
                         Animal dog = new Animal(game, "Dog");
                         dog.Position = position;
+                        dog.MapContainedIn = world.MapManager.ActiveMap.Name;
 
                         world.WorldObjects.AddGameObject(dog);
                     }
