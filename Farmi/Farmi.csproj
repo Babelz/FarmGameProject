@@ -332,6 +332,9 @@
     <Content Include="Content\naama.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\ukko.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="KahvipaussiEngine\Khv.Gui\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Gui\TODO.txt" />
