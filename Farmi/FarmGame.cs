@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Farmi.Repositories;
 using Farmi.Datasets;
+using Farmi.Calendar;
 #endregion
 
 namespace Farmi
@@ -50,22 +51,50 @@ namespace Farmi
             InputManager.Mapper.AddInputBindProvider(typeof(KeyInputBindProvider), new KeyInputBindProvider());
             InputManager.Mapper.AddInputBindProvider(typeof(PadInputBindProvider), new PadInputBindProvider());
 
+            CalendarSystem calendar = new CalendarSystem(this, 15);
+            Components.Add(calendar);
+
+            calendar.OnYearChanged += new CalendarEventHandler(calendar_OnYearChanged);
+            calendar.OnSeasonChanged += new CalendarEventHandler(calendar_OnSeasonChanged);
+            calendar.OnDayChanged += new CalendarEventHandler(calendar_OnDayChanged);
+            calendar.OnClockTick += new CalendarEventHandler(calendar_OnTimeTick);
+
+            ScriptEngine engine = new ScriptEngine(this, Path.Combine("cfg", "sengine.cfg"));
+            Components.Add(engine);
+
             InputManager.Mapper.GetInputBindProvider<KeyInputBindProvider>().Map(
                 new KeyTrigger("Debug exit", Keys.Escape), (triggered, args) => Exit() 
                 );
             InputManager.Mapper.GetInputBindProvider<PadInputBindProvider>().Map(
                 new ButtonTrigger("Debug exit", Buttons.Back), (triggered, args) => Exit()
                 );
-
-            ScriptEngine engine = new ScriptEngine(this, Path.Combine("cfg", "sengine.cfg"));
-            Components.Add(engine);
-
+            
             Components.Add(new RepositoryManager(@"\dat\repos",
                            new string[] { "Farmi.Datasets." },
                            new string[] { "Farmi.Repositories." }));
             GameStateManager.ChangeState(new GameplayScreen());
 
             
+        }
+
+        void calendar_OnDayChanged(object sender, CalendarEventArgs e)
+        {
+            Console.WriteLine("Päivä vaihtu...");
+        }
+
+        void calendar_OnSeasonChanged(object sender, CalendarEventArgs e)
+        {
+            Console.WriteLine("Season vaihtu..");
+        }
+
+        void calendar_OnTimeTick(object sender, CalendarEventArgs e)
+        {
+            Console.WriteLine("Aika muuttu...");
+        }
+
+        void calendar_OnYearChanged(object sender, CalendarEventArgs e)
+        {
+            Console.WriteLine("Vuosi vaihtu...");
         }
 
         /// <summary>

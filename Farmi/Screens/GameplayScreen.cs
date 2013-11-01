@@ -11,6 +11,7 @@ using Khv.Input;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Khv.Gui.Components.BaseComponents.Containers.Components;
+using Farmi.Calendar;
 
 namespace Farmi.Screens
 {
@@ -57,8 +58,15 @@ namespace Farmi.Screens
 
         public override void Draw()
         {
-            string text = "Alpha build 0.1 - SaNiEngine v1.0 - Kairatie Edition";
+            string text = (Game.Components.First(
+                c => c is CalendarSystem) as CalendarSystem)
+                .GetTimeDisplayString();
+            string dateText = (Game.Components.First(
+                c => c is CalendarSystem) as CalendarSystem)
+                .GetDateDisplayString();
+
             Vector2 textSize = font.MeasureString(text);
+            Vector2 dateSize = font.MeasureString(dateText);
 
             SpriteBatch.GraphicsDevice.Clear(Color.Black);
             SpriteBatch.End();
@@ -74,6 +82,9 @@ namespace Farmi.Screens
 
             SpriteBatch.DrawString(font, text, new Vector2(camera.Position.X + camera.Viewport.Width / 2 - textSize.X / 2, 
                                                            camera.Position.Y + camera.Viewport.Height - textSize.Y * 2), Color.White);
+
+            SpriteBatch.DrawString(font, dateText, new Vector2(camera.Position.X + camera.Viewport.Width / 2 - dateSize.X / 2,
+                                                               camera.Position.Y + camera.Viewport.Height - dateSize.Y * 3), Color.White);
 
             SpriteBatch.End();
         }
