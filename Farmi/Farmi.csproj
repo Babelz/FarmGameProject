@@ -282,6 +282,7 @@
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptEngine.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptObserver.cs" />
     <Compile Include="Repositories\AnimalRepository.cs" />
+    <Compile Include="SpriteSheetAnimation.cs" />
     <Compile Include="XmlParsers\XAtributeReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
