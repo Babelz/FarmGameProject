@@ -8,7 +8,6 @@ using Khv.Game.GameObjects;
 using Farmi.Repositories;
 using Khv.Engine.Structs;
 using Khv.Game.Collision;
-using Farmi.World;
 using Farmi.Screens;
 using Khv.Maps.MapClasses.Managers;
 using Microsoft.Xna.Framework;

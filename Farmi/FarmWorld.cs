@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Khv.Gui.Components.BaseComponents.Containers.Components;
 
-namespace Farmi.World
+namespace Farmi
 {
     public sealed class FarmWorld : Khv.Game.World
     {

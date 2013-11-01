@@ -5,7 +5,6 @@ using System.Text;
 using Khv.Game.GameObjects;
 using Khv.Engine;
 using Khv.Maps.MapClasses.Processors;
-using Farmi.World;
 using Farmi.Screens;
 using Farmi.Datasets;
 using Farmi.Repositories;
@@ -16,6 +15,9 @@ using Khv.Game.Collision;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Khv.Maps.MapClasses.Managers;
+using Khv.Game;
+using Farmi.KahvipaussiEngine.Khv.Game.Collision;
+using Farmi.Entities.Components;
 
 namespace Farmi.Entities.Animals
 {
@@ -26,6 +28,11 @@ namespace Farmi.Entities.Animals
         #endregion
 
         #region Vars
+        public MotionEngine MotionEngine
+        {
+            get;
+            private set;
+        }
         public AnimalBehaviourScript Behaviour
         {
             get;
@@ -69,6 +76,8 @@ namespace Farmi.Entities.Animals
                 MapContainedIn = mapObjectArguments.MapContainedIn;
             }
 
+            MotionEngine = new MotionEngine(this);
+
             world = (game.GameStateManager.States
                 .First(c => c is GameplayScreen) as GameplayScreen).World;
 
@@ -81,13 +90,16 @@ namespace Farmi.Entities.Animals
                 d => d.Type == typeName && d.Name == "Sparky");
 
             size = Dataset.Size;
-            Collider = new BoxCollider(world, this);
+            Collider = new BoxCollider(world, this,
+                new BasicObjectCollisionQuerier(),
+                new BasicTileCollisionQuerier());
 
             ScriptEngine scriptEngine = game.Components
                 .First(c => c is ScriptEngine) as ScriptEngine;
 
             Behaviour = scriptEngine.GetScript<AnimalBehaviourScript>
                 (new ScriptBuilder("DogBehaviour", new object[] { game, this }));
+
             Behaviour.Initialize();
         }
 
@@ -95,16 +107,19 @@ namespace Farmi.Entities.Animals
         {
             if (e.Current.Name == MapContainedIn)
             {
-                world.WorldObjects.SafelyRemove(this);
+                world.WorldObjects.SafelyAdd(this);
             }
             else
             {
-                world.WorldObjects.SafelyAdd(this);
+                world.WorldObjects.SafelyRemove(this);
             }
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            Collider.Update(gameTime);
+            MotionEngine.Update(gameTime);
             Behaviour.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)

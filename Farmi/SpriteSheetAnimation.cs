@@ -13,6 +13,7 @@ namespace Farmi
         #region Vars
         private readonly List<SpriteAnimationSet> sets;
         private int currentFrame;
+        private int elapsed;
         #endregion
 
         #region Properties
@@ -57,6 +58,17 @@ namespace Farmi
         {
             this.sets.AddRange(sets);
         }
+        public void Update(GameTime gameTime)
+        {
+            elapsed += gameTime.ElapsedGameTime.Milliseconds;
+
+            if (elapsed > CurrentSet.FrameTime)
+            {
+                NextFrame();
+
+                elapsed = 0;
+            }
+        }
         public void NextFrame()
         {
             if (currentFrame < CurrentSet.Sources.Length - 1)
@@ -86,6 +98,11 @@ namespace Farmi
             get;
             private set;
         }
+        public int FrameTime
+        {
+            get;
+            set;
+        }
         #endregion
 
 
@@ -100,6 +117,8 @@ namespace Farmi
                 Sources[i] = new Rectangle(i * sourceSize.Width, y, 
                     sourceSize.Width, sourceSize.Height);
             }
+
+            FrameTime = 0;
         }
     }
 }

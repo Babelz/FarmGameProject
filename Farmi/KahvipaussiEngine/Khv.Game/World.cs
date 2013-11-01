@@ -15,7 +15,6 @@ namespace Khv.Game
     /// </summary>
     public abstract class World : IGameComponent
     {
-
         #region Properties
 
         /// <summary>

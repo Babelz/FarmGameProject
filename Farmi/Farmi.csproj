@@ -59,6 +59,7 @@
     <Compile Include="Entities\Buildings\Building.cs" />
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\Components\ExclamationMarkDrawer.cs" />
+    <Compile Include="Entities\Components\FiniteStateMachine.cs" />
     <Compile Include="Entities\Components\PushableComponent.cs" />
     <Compile Include="Entities\Components\ViewComponent.cs" />
     <Compile Include="Entities\CropSpot.cs" />
@@ -288,7 +289,7 @@
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\StartScreen.cs" />
     <Compile Include="SpriteSheetAnimation.cs" />
-    <Compile Include="World\FarmWorld.cs" />
+    <Compile Include="FarmWorld.cs" />
     <Compile Include="XmlParsers\XAtributeReader.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -356,6 +357,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Content\naama.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sounds\woof.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />

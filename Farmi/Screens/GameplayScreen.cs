@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Farmi.World;
 using Khv.Engine.State;
 using Microsoft.Xna.Framework;
 using Farmi.Entities;

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using Khv.Game.GameObjects;
 using Khv.Maps.MapClasses.Managers;
+using Khv.Game;
 
 namespace Farmi.KahvipaussiEngine.Khv.Game.Collision
 {
     public class BasicObjectCollisionQuerier : IObjectCollisionQuerier
     {
-        public IEnumerable<GameObject> Query(global::Khv.Game.World world, GameObject source)
+        public IEnumerable<GameObject> Query(World world, GameObject source)
         {
             List<GameObject> nearGameObjects = world.WorldObjects.AllObjects().ToList();
 

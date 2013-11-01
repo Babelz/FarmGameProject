@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Farmi.World;
-using Khv.Engine.Structs;
-using Khv.Game.Collision;
+﻿using System.Linq;
+using Khv.Game;
 using Khv.Game.GameObjects;
-using Khv.Maps.MapClasses.Layers;
 using Khv.Maps.MapClasses.Layers.Tiles;
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Khv.Maps.MapClasses.Layers;
 
 namespace Farmi.KahvipaussiEngine.Khv.Game.Collision
 {
     public class BasicTileCollisionQuerier : ITileCollisionQuerier
     {
-        public IEnumerable<RuleTile> Query(global::Khv.Game.World world, GameObject source)
+        public IEnumerable<RuleTile> Query(World world, GameObject source)
         {
             Layer<RuleTile> rules = world.MapManager.ActiveMap.LayerManager.AllLayers().First(l => l is Layer<RuleTile>) as Layer<RuleTile>;
 

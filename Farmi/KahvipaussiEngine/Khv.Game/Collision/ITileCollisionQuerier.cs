@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Farmi.World;
 using Khv.Game.Collision;
 using Khv.Game.GameObjects;
 using Khv.Maps.MapClasses.Layers.Tiles;
