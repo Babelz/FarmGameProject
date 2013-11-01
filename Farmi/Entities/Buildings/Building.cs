@@ -28,7 +28,7 @@ namespace Farmi.Entities.Buildings
         #region Vars
         private Texture2D texture;
         private Color color;
-        private FarmWorld world;
+        private readonly FarmWorld world;
         private string mapContainedIn;
         #endregion
 
