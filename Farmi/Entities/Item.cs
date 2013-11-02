@@ -11,9 +11,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities
 {
-    class Item : DrawableGameObject
+    internal sealed class Item : DrawableGameObject
     {
-
         #region Properties
 
         public string Name { get; protected set; }
