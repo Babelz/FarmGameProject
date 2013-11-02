@@ -78,6 +78,12 @@ namespace Khv.Game.GameObjects
             private set;
         }
 
+        public bool Destroyed
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
         protected GameObject(KhvGame game)
@@ -85,6 +91,12 @@ namespace Khv.Game.GameObjects
             this.game = game;
 
             Components = new ObjectComponentCollection();
+
+            Destroyed = false;
+        }
+
+        protected virtual void OnDestroy()
+        {
         }
 
         public virtual void Update(GameTime gameTime)
@@ -92,6 +104,14 @@ namespace Khv.Game.GameObjects
             foreach (IObjectComponent objectComponent in Components.AllComponents())
             {
                 objectComponent.Update(gameTime);
+            }
+        }
+        public void Destroy()
+        {
+            if (!Destroyed)
+            {
+                OnDestroy();
+                Destroyed = true;
             }
         }
     }

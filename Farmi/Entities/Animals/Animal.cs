@@ -21,7 +21,7 @@ using Farmi.Entities.Components;
 
 namespace Farmi.Entities.Animals
 {
-    public sealed class Animal : DrawableGameObject
+    public sealed class Animal : DrawableGameObject, ILoadableMapObject, ILoadableRepositoryObject<AnimalDataset>
     {
         #region Vars
         private FarmWorld world;
@@ -53,41 +53,47 @@ namespace Farmi.Entities.Animals
         public Animal(KhvGame game, MapObjectArguments mapObjectArguments)
             : base(game)
         {
-            Initialize(string.Empty, mapObjectArguments);
+            InitializeFromMapData(mapObjectArguments);
         }
-        public Animal(KhvGame game, string typeName)
+        public Animal(KhvGame game, AnimalDataset animalDataset)
             : base(game)
         {
-            Initialize(typeName, null);
-        }
-        public Animal(KhvGame game)
-            : base(game)
-        {
-            Initialize(string.Empty, null);
+            Dataset = animalDataset;
+
+            InitializeFromDataset(animalDataset);
         }
 
-        private void Initialize(string typeName, MapObjectArguments mapObjectArguments)
+        protected override void OnDestroy()
         {
-            if (mapObjectArguments != null)
+            world.MapManager.OnMapChanged -= MapManager_OnMapChanged;
+        }
+
+        #region Event handlers
+        private void MapManager_OnMapChanged(object sender, MapEventArgs e)
+        {
+            if (e.Current.Name == MapContainedIn)
             {
-                typeName = mapObjectArguments.SerializedData.valuepairs
-                    .First(v => v.Name == "Type").Value;
-
-                MapContainedIn = mapObjectArguments.MapContainedIn;
+                world.WorldObjects.SafelyAdd(this);
             }
+            else
+            {
+                world.WorldObjects.SafelyRemove(this);
+            }
+        }
+        #endregion
 
+        #region Initializers
+        private void Initialize(AnimalDataset dataset)
+        {
             MotionEngine = new MotionEngine(this);
 
             world = (game.GameStateManager.States
                 .First(c => c is GameplayScreen) as GameplayScreen).World;
 
-            world.MapManager.OnMapChanged += new Khv.Maps.MapClasses.Managers.MapEventHandler(MapManager_OnMapChanged);
+            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
 
             RepositoryManager repositoryManager = game.Components
                 .First(c => c is RepositoryManager) as RepositoryManager;
-
-            Dataset = repositoryManager.GetDataSet<AnimalDataset>(
-                d => d.Type == typeName && d.Name == "Sparky");
 
             size = Dataset.Size;
             Collider = new BoxCollider(world, this,
@@ -102,18 +108,26 @@ namespace Farmi.Entities.Animals
 
             Behaviour.Initialize();
         }
-
-        private void MapManager_OnMapChanged(object sender, MapEventArgs e)
+        public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
-            if (e.Current.Name == MapContainedIn)
-            {
-                world.WorldObjects.SafelyAdd(this);
-            }
-            else
-            {
-                world.WorldObjects.SafelyRemove(this);
-            }
+            string typeName = mapObjectArguments.SerializedData.valuepairs
+                .First(v => v.Name == "Type").Value;
+
+            Dataset = (game.Components.First(c => c is RepositoryManager) as RepositoryManager)
+                .GetDataSet<AnimalDataset>(d => d.Type == typeName);
+
+            Initialize(Dataset);
+
+            MapContainedIn = mapObjectArguments.MapContainedIn;
         }
+        public void InitializeFromDataset(AnimalDataset dataset)
+        {
+            Initialize(dataset);
+
+            MapContainedIn = world.MapManager.ActiveMap.Name;
+        }
+        #endregion
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);

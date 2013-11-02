@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities.Buildings
 {
-    internal sealed class Building : DrawableGameObject
+    internal sealed class Building : DrawableGameObject, ILoadableMapObject, ILoadableRepositoryObject<BuildingDataset>
     {
         #region Vars
         private Texture2D texture;
@@ -37,38 +37,41 @@ namespace Farmi.Entities.Buildings
         public Building(KhvGame game, MapObjectArguments mapObjectArguments)
             : base(game)
         {
-            Initialize(mapObjectArguments);
+            InitializeFromMapData(mapObjectArguments);
         }
-        public Building(KhvGame game)
+        public Building(KhvGame game, BuildingDataset buildingDataset)
             : base(game)
         {
-            Initialize(null);
+            InitializeFromDataset(buildingDataset);
         }
 
-        // Testi metodi initille.
-        private void Initialize(MapObjectArguments mapObjectArguments)
+        protected override void OnDestroy()
         {
-            world = (game.GameStateManager.States
-                .First(c => c is GameplayScreen) as GameplayScreen).World;
+            world.WorldObjects.SafelyRemove<Door>(Doors);
+        }
 
-            if (mapObjectArguments == null)
+        #region Event handlers
+        private void MapManager_OnMapChanged(object sender, MapEventArgs e)
+        {
+            if (e.Current.Name == mapContainedIn)
             {
-                position = Vector2.Zero;
+                world.WorldObjects.SafelyRemove<Door>(Doors);
             }
             else
             {
-                position = mapObjectArguments.Origin;
+                world.WorldObjects.SafelyAddMany(Doors);
             }
+        }
+        #endregion
 
-            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
-
-            // Hakee tiedot repoista.
-            RepositoryManager repositoryManager = game.Components
-                .First(c => c is RepositoryManager) as RepositoryManager;
-
-            BuildingDataset dataset = repositoryManager.GetDataSet<BuildingDataset>(
-                s => s.Name == mapObjectArguments.SerializedData.valuepairs[1].Value);
-            
+        #region Initializers
+        private void GetWorld()
+        {
+            world = (game.GameStateManager.States
+                .First(c => c is GameplayScreen) as GameplayScreen).World;
+        }
+        private void Initialize(BuildingDataset dataset)
+        {
             if (dataset != null)
             {
                 texture = game.Content.Load<Texture2D>(@"Buildings\" + dataset.AssetName);
@@ -79,7 +82,7 @@ namespace Farmi.Entities.Buildings
                 for (int doorIndex = 0; doorIndex < dataset.Doors.Length; doorIndex++)
                 {
                     var doorDataset = dataset.Doors[doorIndex];
-                    Door door = new Door(game, this, doorDataset, mapObjectArguments.MapContainedIn);
+                    Door door = new Door(game, this, doorDataset, mapContainedIn);
                     Doors[doorIndex] = door;
                 }
 
@@ -96,17 +99,27 @@ namespace Farmi.Entities.Buildings
             Collider = new BoxCollider(world, this);
         }
 
-        #region Event handlers
-        private void MapManager_OnMapChanged(object sender, MapEventArgs e)
+        public void InitializeFromDataset(BuildingDataset dataset)
         {
-            if (e.Current.Name == mapContainedIn)
-            {
-                world.WorldObjects.SafelyRemove<Door>(Doors);
-            }
-            else
-            {
-                world.WorldObjects.SafelyAddMany(Doors);
-            }
+            GetWorld();
+
+            mapContainedIn = world.MapManager.ActiveMap.Name;
+
+            Initialize(dataset);
+        }
+        public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
+        {
+            GetWorld();
+
+            mapContainedIn = mapObjectArguments.MapContainedIn;
+
+            position = mapObjectArguments.Origin;
+
+            BuildingDataset dataset = (game.Components.First(
+                c => c is RepositoryManager) as RepositoryManager).GetDataSet<BuildingDataset>(
+                d => d.Name == mapObjectArguments.SerializedData.valuepairs[1].Value);
+
+            Initialize(dataset);
         }
         #endregion
 

@@ -18,6 +18,8 @@ using Microsoft.Xna.Framework.Input;
 using OpenTK.Input;
 using Farmi.Calendar;
 using Farmi.Entities.Animals;
+using Farmi.Repositories;
+using Farmi.Datasets;
 
 namespace Farmi.Entities
 {
@@ -110,7 +112,10 @@ namespace Farmi.Entities
                 {
                     if (args.State == InputState.Pressed)
                     {
-                        Animal dog = new Animal(game, "Dog");
+                        AnimalDataset dataset = (game.Components.First(
+                            c => c is RepositoryManager) as RepositoryManager).GetDataSet<AnimalDataset>(p => p.Type == "Dog");
+
+                        Animal dog = new Animal(game, dataset);
                         dog.Position = position;
                         dog.MapContainedIn = world.MapManager.ActiveMap.Name;
 

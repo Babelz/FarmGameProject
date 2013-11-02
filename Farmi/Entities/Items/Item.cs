@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities.Items
 {
-    class Item : DrawableGameObject, ISaveable
+    class Item : DrawableGameObject
     {
 
         #region Properties
@@ -21,7 +21,8 @@ namespace Farmi.Entities.Items
 
         #endregion
 
-        public Item(KhvGame game, string name) : base(game)
+        public Item(KhvGame game, string name) 
+            : base(game)
         {
             Name = name;
             var repositoryManager = game.Components.First(c => c is RepositoryManager) as RepositoryManager;

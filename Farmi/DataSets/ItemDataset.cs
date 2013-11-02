@@ -8,7 +8,9 @@ namespace Farmi.Datasets
 {
     internal sealed class ItemDataset : IDataset
     {
+        #region Vars
         private XElement xElement;
+        #endregion
 
         #region Properties
         /// <summary>

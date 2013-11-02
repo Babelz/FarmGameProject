@@ -17,7 +17,7 @@ namespace Farmi.Calendar
         Winter
     }
 
-    internal sealed class CalendarSystem : GameComponent, ISaveable
+    internal sealed class CalendarSystem : GameComponent
     {
         #region Vars
         // Kaikki tämän kuukauden kalenteri merkinnät.

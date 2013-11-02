@@ -14,10 +14,11 @@ using Farmi.Screens;
 
 namespace Farmi.Entities
 {
-    class Door : DrawableGameObject
+    class Door : DrawableGameObject, ILoadableRepositoryObject<DoorDataset>
     {
         #region Vars
         private Texture2D texture;
+        private string mapContainedIn;
         #endregion
 
         #region Properties
@@ -36,27 +37,34 @@ namespace Farmi.Entities
         public Door(KhvGame game, Building owningBuilding, DoorDataset doorDataset, string mapContainedIn)
             : base(game)
         {
+            this.mapContainedIn = mapContainedIn;
             OwningBuilding = owningBuilding;
-            Position = owningBuilding.Position + doorDataset.Position;
-            Size = doorDataset.Size;
+
+            InitializeFromDataset(doorDataset);
 
             GameplayScreen screen = game.GameStateManager.Current as GameplayScreen;
 
-            Teleport = new Teleport(game, doorDataset.TeleportDataset, mapContainedIn);
-            Teleport.Position = position;
-
             Collider = new BoxCollider(null, this);
             DoorInteractionComponent doorInteractionComponent = new DoorInteractionComponent(this);
-
-            // Joku tekstuuri ois kiva.
-            texture = KhvGame.Temp;
-
             Components.Add(doorInteractionComponent);
+
+            texture = KhvGame.Temp;
         }
+
+        #region Initializers
+        public void InitializeFromDataset(DoorDataset dataset)
+        {
+            position = OwningBuilding.Position + dataset.Position;
+            size = dataset.Size;
+
+            Teleport = new Teleport(game, dataset.TeleportDataset, mapContainedIn);
+            Teleport.Position = position;
+        }
+        #endregion
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle((int) position.X, (int) position.Y, size.Width, size.Height), Color.Black);
+            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Black);
         }
-
     }
 }
