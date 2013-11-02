@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities.Items
 {
-    class Item : DrawableGameObject
+    abstract class Item : DrawableGameObject
     {
 
         #region Properties
@@ -19,38 +19,22 @@ namespace Farmi.Entities.Items
         public string Name { get; protected set; }
         public Texture2D Texture { get; set; }
 
+        protected RepositoryManager RepositoryManager
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
-        public Item(KhvGame game, string name) 
+        protected Item(KhvGame game, string name) 
             : base(game)
         {
             Name = name;
-            var repositoryManager = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
-            ItemDataset dataset = repositoryManager.GetDataSet<ItemDataset>(d => d.Name == name);
-            if (dataset == null)
-            {
-                throw new InvalidOperationException(String.Format("Ei löydy item datasettiä nimellä: {0}", name));
-            }
-            MakeFromData(dataset);
+            RepositoryManager = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
         }
 
-        protected void MakeFromData(ItemDataset dataset)
-        {
-            Name = dataset.Name;
-            Texture = game.Content.Load<Texture2D>(Path.Combine("Items", dataset.AssetName));
-            //TODO muut
-        }
-
-        
-
-        public virtual void Import(GameDataImporter importer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Export(GameDataExporter exporter)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Import(GameDataImporter importer);
+        public abstract void Export(GameDataExporter exporter);
     }
 }

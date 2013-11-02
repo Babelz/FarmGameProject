@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Farmi.Datasets
 {
-    internal sealed class ItemDataset : IDataset
+    internal class ItemDataset : IDataset
     {
         #region Vars
         private XElement xElement;

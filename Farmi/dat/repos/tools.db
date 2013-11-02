@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Repository Name="Tool Repository" DatasetType="ToolDataset" RepositoryType="ToolRepository">
+  <Items>
+    <Tool Name="Hoe" AssetName="hoe" Description="Wapsu panee jeesusta" />
+  </Items>
+</Repository>

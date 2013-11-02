@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Farmi.Datasets;
 using Farmi.Entities.Items.Components;
 using Khv.Engine;
 
@@ -17,6 +18,17 @@ namespace Farmi.Entities.Items
         public ConsumableItem(KhvGame game, string name) : base(game, name)
         {
             Components.Add(new ThrowableComponent(this));
+            RepositoryManager.GetDataSet<ConsumableItemDataset>(d => d.Name == name);
+        }
+
+        public override void Import(GameDataImporter importer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Export(GameDataExporter exporter)
+        {
+            throw new NotImplementedException();
         }
     }
 }
