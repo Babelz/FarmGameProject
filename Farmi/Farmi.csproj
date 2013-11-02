@@ -53,7 +53,7 @@
     <Compile Include="Datasets\BuildingDataset.cs" />
     <Compile Include="Datasets\DoorDataset.cs" />
     <Compile Include="Datasets\IDataset.cs" />
-    <Compile Include="Datasets\ItemDataset.cs" />
+    <Compile Include="Datasets\ConsumableItemDataset.cs" />
     <Compile Include="Datasets\TeleportDataset.cs" />
     <Compile Include="Entities\Components\DoorInteractionComponent.cs" />
     <Compile Include="Entities\Buildings\Building.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="Entities\Items\Item.cs" />
     <Compile Include="Entities\Items\Tool.cs" />
     <Compile Include="Entities\Scripts\AnimalBehaviourScript.cs" />
+    <Compile Include="Entities\Scripts\ItemScript.cs" />
     <Compile Include="Entities\Teleport.cs" />
     <Compile Include="FarmGame.cs" />
     <Compile Include="Entities\Components\IInteractionComponent.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptEngine.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptObserver.cs" />
     <Compile Include="Repositories\AnimalRepository.cs" />
+    <Compile Include="Repositories\ConsumableItemsRepository.cs" />
     <Compile Include="SpriteSheetAnimation.cs" />
     <Compile Include="XmlParsers\XAtributeReader.cs" />
     <Compile Include="Program.cs" />
@@ -373,9 +375,12 @@
     <Content Include="KahvipaussiEngine\Khv.Maps\config.xml" />
     <Content Include="KahvipaussiEngine\Khv.Maps\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Scripts\csharpscriptengine_README.txt" />
-    <None Include="dat\repos\items.db" />
+    <None Include="dat\repos\consumableitems.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Items\" />
     <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
   </ItemGroup>
   <ItemGroup>

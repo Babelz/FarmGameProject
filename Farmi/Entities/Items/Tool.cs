@@ -11,8 +11,14 @@ namespace Farmi.Entities.Items
     /// </summary>
     internal sealed class Tool : Item
     {
-        public Tool(KhvGame game, string name) : base(game, name)
+        public Tool(KhvGame game)
+            : base(game)
         {
+        }
+
+        public override void DrawToInventory(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Vector2 position, Khv.Engine.Structs.Size size)
+        {
+            throw new NotImplementedException();
         }
     }
 }

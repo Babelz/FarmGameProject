@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Repository Name="Item repository" DatasetType="ConsumableItemDataset" RepositoryType="ConsumableItemsRepository">
+  <Items>
+    <Item Name="Carrot" AssetName="carrot" Description="Carrod mofog.."
+          AddedStamina="0" RecoveredStamina="10"
+          Value="32" Width="32" Height="32"/>
+  </Items>
+</Repository>
