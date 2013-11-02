@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-
-<Repository Name="Consumable Item Repository" DatasetType="ConsumableItemDataset" RepositoryType="ConsumableItemRepository">
-  <Items>
-    <Item Name="Carrot" AssetName="carrot" Description="Porkkana tappaa" />
-  </Items>
-</Repository>

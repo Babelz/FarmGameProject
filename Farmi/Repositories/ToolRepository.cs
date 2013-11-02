@@ -15,7 +15,7 @@ namespace Farmi.Repositories
 
         public override void Load(XDocument repository)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

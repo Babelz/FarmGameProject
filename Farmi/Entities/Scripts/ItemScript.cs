@@ -3,31 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Khv.Scripts.CSharpScriptEngine.ScriptClasses;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Farmi.Entities.Animals;
+using Microsoft.Xna.Framework;
 using Khv.Engine;
+using Farmi.Entities.Items;
 
 namespace Farmi.Entities.Scripts
 {
-    public abstract class AnimalBehaviourScript : IScript
+    public abstract class ItemScript : IScript
     {
         #region Vars
         protected readonly KhvGame game;
-        protected readonly Animal owner;
+        protected readonly ConsumableItem owner;
         #endregion
 
-        public AnimalBehaviourScript(KhvGame game, Animal owner)
+        public ItemScript(KhvGame game, ConsumableItem owner)
         {
             this.game = game;
             this.owner = owner;
         }
 
         #region Abstract members
-        public abstract void Initialize();
-
         public abstract void Update(GameTime gameTime);
-        public abstract void Draw(SpriteBatch spriteBatch);
         #endregion
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+        }
     }
 }

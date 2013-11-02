@@ -80,7 +80,7 @@ namespace Farmi.Entities
             viewComponent = new ViewComponent(new Vector2(0, 1));
             Components.Add(viewComponent);
 
-            ToolInHand = new Tool(game, "hakku");
+            //ToolInHand = new Tool(game, "hakku");
         }
 
         void Collider_OnCollision(object sender, CollisionEventArgs result)

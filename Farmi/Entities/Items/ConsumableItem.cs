@@ -5,6 +5,14 @@ using System.Text;
 using Farmi.Datasets;
 using Farmi.Entities.Items.Components;
 using Khv.Engine;
+using Farmi.Datasets;
+using Microsoft.Xna.Framework.Graphics;
+using Khv.Scripts.CSharpScriptEngine.ScriptClasses;
+using Farmi.Entities.Scripts;
+using Khv.Scripts.CSharpScriptEngine;
+using Khv.Scripts.CSharpScriptEngine.Builders;
+using Microsoft.Xna.Framework;
+using Khv.Engine.Structs;
 
 namespace Farmi.Entities.Items
 {
@@ -12,23 +20,71 @@ namespace Farmi.Entities.Items
     /// Kuvaa itemiä jonka voi syödä. Jokaista consumable
     /// itemiä voidaan heittää.
     /// </summary>
-    internal sealed class ConsumableItem : Item
+    public sealed class ConsumableItem : Item, ILoadableRepositoryObject<ConsumableItemDataset>
     {
+        #region Properties
+        public ItemScript Script
+        {
+            get;
+            private set;
+        }
+        public int MaxStamina
+        {
+            get;
+            private set;
+        }
+        public int Stamina
+        {
+            get;
+            private set;
+        }
+        #endregion
 
-        public ConsumableItem(KhvGame game, string name) : base(game, name)
+        public ConsumableItem(KhvGame game, ConsumableItemDataset itemDataset) 
+            : base(game)
         {
             Components.Add(new ThrowableComponent(this));
-            RepositoryManager.GetDataSet<ConsumableItemDataset>(d => d.Name == name);
+            InitializeFromDataset(itemDataset);
         }
 
-        public override void Import(GameDataImporter importer)
-        {
-            throw new NotImplementedException();
-        }
 
-        public override void Export(GameDataExporter exporter)
+        public void InitializeFromDataset(ConsumableItemDataset dataset)
         {
-            throw new NotImplementedException();
+            Name = dataset.Name;
+
+            Texture = game.Content.Load<Texture2D>(@"Items\" + dataset.AssetName);
+            Description = dataset.Description;
+
+            MaxStamina = dataset.AddedStamina;
+            Stamina = dataset.RecoveredStamina;
+
+            if (dataset.Size.Width == 0 && dataset.Size.Height == 0)
+            {
+                size = new Size(32, 32);
+            }
+            else
+            {
+                size = dataset.Size;
+            }
+
+            if (!string.IsNullOrEmpty(dataset.Script))
+            {
+                ScriptEngine scriptEngine = game.Components.First(
+                    c => c is ScriptEngine) as ScriptEngine;
+
+                Script = scriptEngine.GetScript<ItemScript>(
+                    new ScriptBuilder(dataset.Script, new object[] { game, this }));
+            }
+        }
+        public override void DrawToInventory(SpriteBatch spriteBatch, Vector2 position, Size size)
+        {
+            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
+            spriteBatch.Draw(Texture, rectangle, Color.White);
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
+            spriteBatch.Draw(Texture, rectangle, Color.White);
         }
     }
 }

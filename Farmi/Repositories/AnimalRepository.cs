@@ -14,7 +14,7 @@ namespace Farmi.Repositories
         {
         }
 
-        public IEnumerable<XElement> GetAnimalElements(XDocument repository)
+        private IEnumerable<XElement> GetAnimalElements(XDocument repository)
         {
             var animalElements = from items in repository.Descendants("Items")
                                  from item in items.Elements()

@@ -16,25 +16,20 @@ namespace Farmi.Entities.Items
     /// </summary>
     internal sealed class Tool : Item
     {
-        public Tool(KhvGame game, string name) : base(game, name)
+        public Tool(KhvGame game, ToolDataset dataset)
+            : base(game)
         {
-            ToolDataset dataset = RepositoryManager.GetDataSet<ToolDataset>(d => d.Name == name);
             MakeFromData(dataset);
         }
 
         private void MakeFromData(ToolDataset dataset)
         {
-            Name = dataset.Name;
+            
             Texture = game.Content.Load<Texture2D>(Path.Combine("Items", dataset.AssetName));
     
         }
 
-        public override void Import(GameDataImporter importer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Export(GameDataExporter exporter)
+        public override void DrawToInventory(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Vector2 position, Khv.Engine.Structs.Size size)
         {
             throw new NotImplementedException();
         }

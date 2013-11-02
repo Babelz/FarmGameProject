@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Farmi.Datasets
 {
-    internal interface IDataset
+    public interface IDataset
     {
         void ParseValuesFrom(XElement xElement);
         XElement AsXElement();
