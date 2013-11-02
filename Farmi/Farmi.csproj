@@ -374,7 +374,6 @@
     <None Include="dat\repos\items.db" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="dat\items\" />
     <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
   </ItemGroup>
   <ItemGroup>

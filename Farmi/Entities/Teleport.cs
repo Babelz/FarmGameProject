@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Khv.Engine;
-using Khv.Maps.MapClasses.Processors;
-using Khv.Game.GameObjects;
-using Farmi.Repositories;
-using Khv.Engine.Structs;
-using Khv.Game.Collision;
-using Farmi.Screens;
-using Khv.Maps.MapClasses.Managers;
-using Microsoft.Xna.Framework;
-using SerializedDataTypes.Components;
+using System.Text.RegularExpressions;
 using Farmi.Datasets;
 using Farmi.Entities.Buildings;
-using System.Text.RegularExpressions;
+using Farmi.Screens;
+using Khv.Engine;
+using Khv.Engine.Structs;
+using Khv.Game.Collision;
+using Khv.Game.GameObjects;
+using Khv.Maps.MapClasses.Managers;
+using Khv.Maps.MapClasses.Processors;
+using Microsoft.Xna.Framework;
+using SerializedDataTypes.Components;
 
 namespace Farmi.Entities
 {
-    internal sealed class Teleport : GameObject
+    internal sealed class Teleport : GameObject, ILoadableMapObject, ILoadableRepositoryObject<TeleportDataset>
     {
         #region Vars
         // Kartta johon teleportataan.
@@ -38,7 +35,7 @@ namespace Farmi.Entities
         public Teleport(KhvGame game, MapObjectArguments mapObjectArguments)
             : base(game)
         {
-            MakeFromMapData(mapObjectArguments);
+            InitializeFromMapData(mapObjectArguments);
         }
         /// <summary>
         /// Alustaa uuden teleportin.
@@ -50,37 +47,23 @@ namespace Farmi.Entities
             : base(game)
         {
             this.mapContainedIn = mapContainedIn;
-            MakeFromDataset(teleportDataset);
+            InitializeFromDataset(teleportDataset);
         }
 
-        /// <summary>
-        /// Parsii datat suoraan kartan tiedoista ja hookkaa
-        /// collision eventin.
-        /// </summary>
-        private void MakeFromMapData(MapObjectArguments mapObjectArguments)
+        protected override void OnDestroy()
         {
-            size = GetSize(mapObjectArguments);
-            mapToTeleport = GetMapToTeleport(mapObjectArguments);
-            positionOffSet = GetPositionOffSet(mapObjectArguments);
-            position = mapObjectArguments.Origin;
-
-            mapContainedIn = mapObjectArguments.MapContainedIn;
-
-            Collider = new BoxCollider(null, this);
-            Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
+            Collider.OnCollision -= Collider_OnCollision;
         }
-        /// <summary>
-        /// Parsii datat suoraan datasetistä, ei hookkaa
-        /// collision eventtiä.
-        /// </summary>
-        private void MakeFromDataset(TeleportDataset teleportDataset)
+
+        #region Event handlers
+        private void Collider_OnCollision(object sender, CollisionEventArgs result)
         {
-            size = teleportDataset.Size;
-            mapToTeleport = teleportDataset.TeleportTo;
-            positionOffSet = teleportDataset.PositionOffSet;
-
-            Collider = new BoxCollider(null, this);
+            if (result.CollidingObject is FarmPlayer)
+            {
+                Port();
+            }
         }
+        #endregion
 
         #region Value parsing methods
         // Hakee karttadatasta positionin offsetin.
@@ -144,8 +127,6 @@ namespace Farmi.Entities
 
             return size;
         }
-        #endregion
-
         // Hakee kartalta joka on vaihdettu vastakkaisen teleportin.
         private Teleport ResolveOpposite(MapManager mapManager)
         {
@@ -162,14 +143,40 @@ namespace Farmi.Entities
             if (teleport == null)
             {
                 // Hakee rakennuksen jossa teleportti on.
-                 teleport = objectManager.GetGameObject<Building>(
-                     b => Array.Find<Door>(b.Doors, 
-                         d => d.Teleport.mapToTeleport == this.mapContainedIn) != null)
-                         .Doors.First(d => d.Teleport.mapToTeleport == this.mapContainedIn).Teleport;
+                teleport = objectManager.GetGameObject<Building>(
+                    b => Array.Find<Door>(b.Doors,
+                        d => d.Teleport.mapToTeleport == this.mapContainedIn) != null)
+                        .Doors.First(d => d.Teleport.mapToTeleport == this.mapContainedIn).Teleport;
             }
 
             return teleport;
         }
+        #endregion
+
+        #region Initializers
+        public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
+        {
+            size = GetSize(mapObjectArguments);
+            mapToTeleport = GetMapToTeleport(mapObjectArguments);
+            positionOffSet = GetPositionOffSet(mapObjectArguments);
+            position = mapObjectArguments.Origin;
+
+            mapContainedIn = mapObjectArguments.MapContainedIn;
+
+            Collider = new BoxCollider(null, this);
+            Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
+        }
+        public void InitializeFromDataset(TeleportDataset dataset)
+        {
+            TeleportDataset teleportDataset = dataset as TeleportDataset;
+
+            size = teleportDataset.Size;
+            mapToTeleport = teleportDataset.TeleportTo;
+            positionOffSet = teleportDataset.PositionOffSet;
+
+            Collider = new BoxCollider(null, this);
+        }
+        #endregion
 
         /// <summary>
         /// Teleporttaa playerin uudelle kartalle.
@@ -208,15 +215,5 @@ namespace Farmi.Entities
                 world.Player.Position = teleport.position + teleport.positionOffSet;
             }
         }
-
-        #region Event handlers
-        private void Collider_OnCollision(object sender, CollisionEventArgs result)
-        {
-            if (result.CollidingObject is FarmPlayer)
-            {
-                Port();
-            }
-        }
-        #endregion
     }
 }

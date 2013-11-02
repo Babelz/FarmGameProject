@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Farmi.Datasets;
+using Khv.Maps.MapClasses.Processors;
 
 namespace Farmi.Entities
 {
     internal interface ISaveable
     {
-        /// <summary>
-        /// Hakee importterista tiedot itselleen.
-        /// </summary>
-        void Import(GameDataImporter gameDataImporter);
-
-        /// <summary>
-        /// Antaa exportterille tiedot itsestään.
-        /// </summary>
-        void Export(GameDataExporter gameDataExporter);
+        void Import(IDataset dataset);
+        IDataset Export();
+    }
+    internal interface ILoadableRepositoryObject<T> where T : IDataset
+    {
+        void InitializeFromDataset(T dataset);
+    }
+    internal interface ILoadableMapObject
+    {
+        void InitializeFromMapData(MapObjectArguments mapObjectArguments);
     }
 }

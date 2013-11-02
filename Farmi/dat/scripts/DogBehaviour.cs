@@ -82,8 +82,8 @@ namespace Script
             }
             else
             {
-                owner.MotionEngine.GoalVelocityX += 0.01f;
-                owner.MotionEngine.GoalVelocityY += 0.01f;
+                owner.MotionEngine.GoalVelocityX += 0.0001f;
+                owner.MotionEngine.GoalVelocityY += 0.0001f;
             }
         }
         private void Idle()
@@ -95,8 +95,7 @@ namespace Script
             }
             if (idleTime > 2500 * 2 * currentModifier)
             {
-                owner.MotionEngine.GoalVelocityX = oldvelocity.X;
-                owner.MotionEngine.GoalVelocityY = oldvelocity.Y;
+                RandomizeSpeed();
 
                 brain.PopState();
                 brain.PushState(Bark);
