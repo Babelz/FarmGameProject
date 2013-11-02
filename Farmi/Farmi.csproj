@@ -66,10 +66,12 @@
     <Compile Include="Entities\Door.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
     <Compile Include="Entities\ISaveable.cs" />
-    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\Items\Components\ThrowableComponent.cs" />
+    <Compile Include="Entities\Items\ConsumableItem.cs" />
+    <Compile Include="Entities\Items\Item.cs" />
+    <Compile Include="Entities\Items\Tool.cs" />
     <Compile Include="Entities\Scripts\AnimalBehaviourScript.cs" />
     <Compile Include="Entities\Teleport.cs" />
-    <Compile Include="Entities\Tool.cs" />
     <Compile Include="FarmGame.cs" />
     <Compile Include="Entities\Components\IInteractionComponent.cs" />
     <Compile Include="GameDataExporter.cs" />

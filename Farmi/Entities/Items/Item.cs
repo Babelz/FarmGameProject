@@ -9,7 +9,7 @@ using Khv.Engine;
 using Khv.Game.GameObjects;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Farmi.Entities
+namespace Farmi.Entities.Items
 {
     class Item : DrawableGameObject, ISaveable
     {
