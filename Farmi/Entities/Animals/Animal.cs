@@ -132,8 +132,8 @@ namespace Farmi.Entities.Animals
         {
             base.Update(gameTime);
 
-            Collider.Update(gameTime);
             MotionEngine.Update(gameTime);
+            Collider.Update(gameTime);
             Behaviour.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)

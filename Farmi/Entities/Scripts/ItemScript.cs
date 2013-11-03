@@ -27,6 +27,10 @@ namespace Farmi.Entities.Scripts
         public abstract void Update(GameTime gameTime);
         #endregion
 
+        /// <summary>
+        /// Virtual drawi jottei tarvitse implementoida tyhjää kutsua perivissä 
+        /// scripti luokissa.
+        /// </summary>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
         }
