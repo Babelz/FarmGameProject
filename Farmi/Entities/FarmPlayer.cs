@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Farmi.Entities.Components;
+using Farmi.Entities.Items;
 using Farmi.KahvipaussiEngine.Khv.Game.Collision;
 using Khv.Engine;
 using Khv.Engine.Helpers;
@@ -15,7 +16,6 @@ using Khv.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using OpenTK.Input;
 using Farmi.Calendar;
 using Farmi.Entities.Animals;
 using Farmi.Repositories;
@@ -52,6 +52,13 @@ namespace Farmi.Entities
             get;
             set;
         }
+
+        internal Tool ToolInHand
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         public FarmPlayer(KhvGame game, FarmWorld world, PlayerIndex index = PlayerIndex.One)
@@ -72,6 +79,8 @@ namespace Farmi.Entities
             Collider.OnCollision += Collider_OnCollision;
             viewComponent = new ViewComponent(new Vector2(0, 1));
             Components.Add(viewComponent);
+
+            //ToolInHand = new Tool(game, "hakku");
         }
 
         void Collider_OnCollision(object sender, CollisionEventArgs result)

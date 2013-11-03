@@ -44,6 +44,7 @@
     <Compile Include="Datasets\CalendarDataset.cs" />
     <Compile Include="Datasets\CalendarentryDataset.cs" />
     <Compile Include="Datasets\DateDataset.cs" />
+    <Compile Include="Datasets\ToolDataset.cs" />
     <Compile Include="dat\scripts\DogBehaviour.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -286,6 +287,7 @@
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptEngine.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptObserver.cs" />
     <Compile Include="Repositories\AnimalRepository.cs" />
+    <Compile Include="Repositories\ToolRepository.cs" />
     <Compile Include="Repositories\ConsumableItemsRepository.cs" />
     <Compile Include="SpriteSheetAnimation.cs" />
     <Compile Include="XmlParsers\XAtributeReader.cs" />
@@ -375,6 +377,9 @@
     <Content Include="KahvipaussiEngine\Khv.Maps\config.xml" />
     <Content Include="KahvipaussiEngine\Khv.Maps\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Scripts\csharpscriptengine_README.txt" />
+    <None Include="dat\repos\tools.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="dat\repos\consumableitems.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

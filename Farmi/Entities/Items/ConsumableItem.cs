@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Farmi.Datasets;
 using Farmi.Entities.Items.Components;
 using Khv.Engine;
 using Farmi.Datasets;
@@ -43,9 +44,9 @@ namespace Farmi.Entities.Items
             : base(game)
         {
             Components.Add(new ThrowableComponent(this));
-
             InitializeFromDataset(itemDataset);
         }
+
 
         public void InitializeFromDataset(ConsumableItemDataset dataset)
         {
