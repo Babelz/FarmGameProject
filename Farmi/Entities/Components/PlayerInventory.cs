@@ -115,23 +115,28 @@ namespace Farmi.Entities.Components
                 ItemInHands = item;
             }
         }
-        public void ThrowItem()
+        public Item ThrowItem()
         {
+            Item item = null;
+
             if (HasItemInHands)
             {
                 items.Remove(ItemInHands);
+                item = ItemInHands;
                 ItemInHands = null;
             }
+
+            return item;
         }
 
         public void Update(GameTime gametime)
         {
-            // TODO: nothing...
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             if (HasItemInHands)
             {
+                ItemInHands.Position = new Vector2(player.Position.X, player.Position.Y - ItemInHands.Size.Height);
                 ItemInHands.Draw(spriteBatch);
             }
         }
