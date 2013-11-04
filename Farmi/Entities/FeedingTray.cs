@@ -14,18 +14,18 @@ using Khv.Maps.MapClasses.Managers;
 using Farmi.Entities.Items;
 using Farmi.Datasets;
 using Farmi.Repositories;
+using Farmi.Entities.Components;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities
 {
-    internal sealed class FeedingTray : GameObject, ILoadableMapObject
+    internal sealed class FeedingTray : DrawableGameObject, ILoadableMapObject
     {
         #region Vars
-        private FeedDataset feedDataset;
         private FarmWorld world;
+        private AnimalFeedItem feed;
 
         private string mapContainedIn;
-        private bool hasFeed;
-        private int feedCount;
         #endregion
 
         #region Properties
@@ -33,6 +33,13 @@ namespace Farmi.Entities
         {
             get;
             private set;
+        }
+        public bool ContainsFeed
+        {
+            get
+            {
+                return feed != null;
+            }
         }
         #endregion
 
@@ -54,12 +61,37 @@ namespace Farmi.Entities
             FeedType = reader.ReadFeedType();
 
             Collider = new BoxCollider(world, this);
+
+            Components.Add(new FeedingTrayInteractionComponent(this));
         }
+
+        public void InsertFeed(AnimalFeedItem feedItem)
+        {
+            feed = feedItem;
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
             Collider.Update(gameTime);
+
+            if (feed != null)
+            {
+                Vector2 feedPosition = new Vector2(this.position.X + feed.Size.Width / 2,
+                                                   this.position.Y - feed.Size.Height / 2);
+                feed.Position = feedPosition;
+            }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            if (feed != null)
+            {
+                feed.Draw(spriteBatch);
+            }
         }
     }
 }

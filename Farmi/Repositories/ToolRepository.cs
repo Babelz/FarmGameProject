@@ -9,13 +9,32 @@ namespace Farmi.Repositories
 {
     internal sealed class ToolRepository : Repository<ToolDataset>
     {
-        public ToolRepository(string name) : base(name)
+        public ToolRepository(string name) 
+            : base(name)
         {
+        }
+
+        private IEnumerable<XElement> GetToolElements(XDocument repository)
+        {
+            var toolElements = from tools in repository.Descendants("Items")
+                               from tool in tools.Descendants()
+                               where tool.Name == "Tool"
+                               select tool;
+
+            return toolElements;
         }
 
         public override void Load(XDocument repository)
         {
-            //throw new NotImplementedException();
+            var toolElements = GetToolElements(repository);
+
+            foreach (var toolElement in toolElements)
+            {
+                ToolDataset toolDataset = new ToolDataset();
+                toolDataset.ParseValuesFrom(toolElement);
+
+                items.Add(toolDataset);
+            }
         }
     }
 }

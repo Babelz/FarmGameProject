@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using Farmi.Calendar;
+using Farmi.Datasets;
+using Farmi.Entities.Animals;
 using Farmi.Entities.Components;
-using Farmi.Entities.Items;
+using Farmi.Repositories;
 using Khv.Engine;
-using Khv.Engine.Helpers;
 using Khv.Engine.Structs;
 using Khv.Game;
 using Khv.Game.Collision;
@@ -16,10 +15,6 @@ using Khv.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Farmi.Calendar;
-using Farmi.Entities.Animals;
-using Farmi.Repositories;
-using Farmi.Datasets;
 
 namespace Farmi.Entities
 {
@@ -44,7 +39,18 @@ namespace Farmi.Entities
         {
             get
             {
-                return ClosestInteractable != null;
+                if (ClosestInteractable == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    InteractionComponent component = ClosestInteractable
+                        .Components.GetComponent(c => c is InteractionComponent)
+                        as InteractionComponent;
+
+                    return component.CanInteract(this);
+                }
             }
         }
         public GameObject ClosestInteractable
@@ -157,7 +163,6 @@ namespace Farmi.Entities
             }
 
             (ClosestInteractable.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent).Interact(this);
-
         }
 
         private float VelocityFunc(InputEventArgs args, float src)
@@ -245,10 +250,11 @@ namespace Farmi.Entities
             spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.White);
             base.Draw(spriteBatch);
 
-            if (Inventory.HasItemInHands)
+            if (ClosestInteractable != null)
             {
-                Inventory.ItemInHands.Position = new Vector2(position.X, position.Y - Inventory.ItemInHands.Size.Height);
-                Inventory.ItemInHands.Draw(spriteBatch);
+                Rectangle r = new Rectangle((int)ClosestInteractable.Position.X, (int)ClosestInteractable.Position.Y, ClosestInteractable.Size.Width, ClosestInteractable.Size.Height);
+
+                spriteBatch.Draw(KhvGame.Temp, r, Color.Red);
             }
         }
 
