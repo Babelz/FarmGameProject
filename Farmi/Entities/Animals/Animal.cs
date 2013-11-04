@@ -102,17 +102,9 @@ namespace Farmi.Entities.Animals
             ScriptEngine scriptEngine = game.Components
                 .First(c => c is ScriptEngine) as ScriptEngine;
 
-            scriptEngine.MakeScript<AnimalBehaviourScript>(
-                new ParallelScriptBuilder(
-                    "DogBehaviour",
-                    new object[] { game, this },
-                    this,
-                    (script, builder) =>
-                    {
-                        Behaviour = script as AnimalBehaviourScript;
-
-                        Behaviour.Initialize();
-                    }));
+            Behaviour = scriptEngine.GetScript<AnimalBehaviourScript>(
+                new ScriptBuilder("DogBehaviour", new object[] { game, this }));
+            Behaviour.Initialize();
         }
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
@@ -140,20 +132,14 @@ namespace Farmi.Entities.Animals
 
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
-            
-            if (Behaviour != null)
-            {
-                Behaviour.Update(gameTime);
-            }
+
+            Behaviour.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
 
-            if (Behaviour != null)
-            {
-                Behaviour.Draw(spriteBatch);
-            }
+            Behaviour.Draw(spriteBatch);
         }
     }
 }

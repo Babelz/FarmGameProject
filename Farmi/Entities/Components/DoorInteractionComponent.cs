@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
-    internal class DoorInteractionComponent : BasicInteractionComponent
+    internal class DoorInteractionComponent : InteractionComponent
     {
         #region Vars
         private readonly Door owner;
@@ -25,9 +25,9 @@ namespace Farmi.Entities.Components
 
             IsInteracting = false;
         }
-        public override bool CanInteract(GameObject source)
+        public override bool CanInteract(GameObject with)
         {
-            return source as FarmPlayer != null;
+            return with is FarmPlayer;
         }
     }
 }

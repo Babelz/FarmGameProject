@@ -2343,7 +2343,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2364,7 +2364,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2385,7 +2385,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2406,7 +2406,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2427,7 +2427,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2448,7 +2448,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2469,7 +2469,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2490,7 +2490,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2511,7 +2511,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2532,7 +2532,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2553,7 +2553,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2574,7 +2574,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2595,7 +2595,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2616,7 +2616,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2637,7 +2637,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2658,7 +2658,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2679,7 +2679,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2700,7 +2700,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>
@@ -2721,7 +2721,7 @@
               </Pair>
               <Pair>
                 <Name>FoodType</Name>
-                <Value>CowFeed</Value>
+                <Value>HayFeed</Value>
               </Pair>
             </Valuepairs>
           </MapObject>

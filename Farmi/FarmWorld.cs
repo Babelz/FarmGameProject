@@ -17,7 +17,7 @@ using Khv.Gui.Components.BaseComponents.Containers.Components;
 
 namespace Farmi
 {
-    public sealed class FarmWorld : Khv.Game.World
+    internal sealed class FarmWorld : Khv.Game.World
     {
         #region Properties
         public FarmPlayer Player

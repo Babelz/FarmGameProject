@@ -23,7 +23,7 @@ using Farmi.Datasets;
 
 namespace Farmi.Entities
 {
-    public sealed class FarmPlayer : Player
+    internal sealed class FarmPlayer : Player
     {
         #region Vars
         private readonly FarmWorld world;
@@ -52,9 +52,11 @@ namespace Farmi.Entities
             get;
             set;
         }
-
-        public Item ItemInHand { get; private set; }
-
+        public PlayerInventory Inventory
+        {
+            get;
+            private set;
+        }
         #endregion
 
         #region Ctor
@@ -75,7 +77,11 @@ namespace Farmi.Entities
             viewComponent = new ViewComponent(new Vector2(0, 1));
             Components.Add(viewComponent);
 
-            ItemInHand = new Tool(game, null);
+            Inventory = new PlayerInventory(this);
+            Components.Add(Inventory);
+
+            MessageBoxComponent messageBoxComponent = new MessageBoxComponent(game, this);
+            Components.Add(messageBoxComponent);
         }
         #endregion
 
@@ -171,19 +177,21 @@ namespace Farmi.Entities
         /// <param name="args"></param>
         private void InteractWithTool(Keys triggered, InputEventArgs args)
         {
-            Tool toolInHand = ItemInHand as Tool;
-            // jos ei ole työkalu kädessä niin lähetään kotia
-            if (toolInHand == null)
+            if (!Inventory.HasToolSelected)
+            {
                 return;
+            }
 
-            var powerUpComponent = toolInHand.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
+
+            var powerUpComponent = Inventory.SelectedTool.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
             Console.WriteLine("interact with " + powerUpComponent.CurrentPow + " power");
             powerUpComponent.Disable();
 
-            var interactionComponent = toolInHand.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
+            var interactionComponent = Inventory.SelectedTool.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
             // jotain meni vikaan, jokaisella työkalulla PITÄISI olla interaktion komponentti
             if (interactionComponent == null)
                 return;
+             
 
             GameObject nearestObject = world.GetNearestGameObject(this, new Padding(100));
             // jos ei ole lähellä mitään
@@ -200,14 +208,18 @@ namespace Farmi.Entities
         /// <param name="args"></param>
         private void PowerUpTool(Keys triggered, InputEventArgs args)
         {
-            Tool toolInHand = ItemInHand as Tool;
-            // jos ei ole työkalu kädessä niin lähetään kotia
-            if (toolInHand == null)
+            if (!Inventory.HasToolSelected)
+            {
                 return;
-            var powerUpComponent = toolInHand.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
+            }
+
+            var powerUpComponent = Inventory.SelectedTool.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
+            
             // jos ei tarvi poweruppia niin lähetään pois
             if (powerUpComponent == null)
+            {
                 return;
+            }
 
             if (!powerUpComponent.Enabled && !powerUpComponent.IsMaximumMet)
             {
@@ -226,28 +238,22 @@ namespace Farmi.Entities
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
-            if (ItemInHand != null) ItemInHand.Update(gameTime);
-            //if (ClosestInteractable != null)
-            //    CanSee(ClosestInteractable);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            #region test
-            /*  GameObject source = this;
-            Padding radius = new Padding(10, 5);
-
-            Rectangle r = new Rectangle((int)(source.Position.X - radius.Left), (int)(source.Position.Y - radius.Top), radius.Left + radius.Right , radius.Top + radius.Bottom * 2);
-            spriteBatch.Draw(KhvGame.Temp, r, Color.Red);*/
-            #endregion
-            //spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Turquoise);
             spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.White);
             base.Draw(spriteBatch);
+
+            if (Inventory.HasItemInHands)
+            {
+                Inventory.ItemInHands.Position = new Vector2(position.X, position.Y - Inventory.ItemInHands.Size.Height);
+                Inventory.ItemInHands.Draw(spriteBatch);
+            }
         }
 
         #endregion
 
         #endregion
-
     }
 }

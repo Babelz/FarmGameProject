@@ -9,11 +9,22 @@ using Farmi.XmlParsers;
 using Khv.Engine.Structs;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Khv.Game.Collision;
+using Farmi.Screens;
+using Farmi.Entities.Components;
+using Farmi.Repositories;
+using Farmi.Datasets;
+using Farmi.Entities.Items;
 
 namespace Farmi.Entities
 {
     internal sealed class AnimalFeedDispenser : DrawableGameObject, ILoadableMapObject
     {
+        #region Vars
+        private FeedDataset feedDataset;
+        private int feedCount;
+        #endregion
+
         #region Properties
         public int FeedContained
         {
@@ -24,6 +35,13 @@ namespace Farmi.Entities
         {
             get;
             private set;
+        }
+        public bool HasFeed
+        {
+            get
+            {
+                return feedCount > 0;
+            }
         }
         #endregion
 
@@ -39,6 +57,33 @@ namespace Farmi.Entities
 
             size = new Size(32, 32);
             FeedType = reader.ReadFeedType();
+            position = mapObjectArguments.Origin;
+
+            FarmWorld world = (game.GameStateManager.Current as GameplayScreen).World;
+
+            Components.Add(new FeedDispenserComponent(this));
+
+            feedDataset = (game.Components.First(c => c is RepositoryManager)
+                as RepositoryManager).GetDataSet<FeedDataset>(d => d.Type == FeedType);
+
+            InsertFeed(100);
+        }
+
+        public AnimalFeedItem GetFeed()
+        {
+            AnimalFeedItem feed = null;
+
+            if (feedCount > 0)
+            {
+                feed = new AnimalFeedItem(game, feedDataset);
+                feedCount--;
+            }
+
+            return feed;
+        }
+        public void InsertFeed(int amount)
+        {
+            feedCount += amount;
         }
 
         public override void Update(GameTime gameTime)

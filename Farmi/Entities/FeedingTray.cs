@@ -11,15 +11,21 @@ using Khv.Game.Collision;
 using Farmi.Screens;
 using Microsoft.Xna.Framework;
 using Khv.Maps.MapClasses.Managers;
+using Farmi.Entities.Items;
+using Farmi.Datasets;
+using Farmi.Repositories;
 
 namespace Farmi.Entities
 {
     internal sealed class FeedingTray : GameObject, ILoadableMapObject
     {
         #region Vars
+        private FeedDataset feedDataset;
         private FarmWorld world;
+
         private string mapContainedIn;
         private bool hasFeed;
+        private int feedCount;
         #endregion
 
         #region Properties
@@ -27,13 +33,6 @@ namespace Farmi.Entities
         {
             get;
             private set;
-        }
-        public bool HasFeed
-        {
-            get
-            {
-                return hasFeed;
-            }
         }
         #endregion
 
@@ -43,31 +42,11 @@ namespace Farmi.Entities
             InitializeFromMapData(mapObjectArguments);
         }
 
-        protected override void OnDestroy()
-        {
-            world.MapManager.OnMapChanged -= MapManager_OnMapChanged;
-        }
-
-        #region Event handlers
-        private void MapManager_OnMapChanged(object sender, MapEventArgs e)
-        {
-            if(e.Current.Name == mapContainedIn)
-            {
-                world.WorldObjects.SafelyAdd(this);
-            }
-            else 
-            {
-                world.WorldObjects.SafelyRemove(this);
-            }
-        }
-        #endregion
-
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
             MapObjectArgumentReader reader = new MapObjectArgumentReader(mapObjectArguments);
 
             world = (game.GameStateManager.Current as GameplayScreen).World;
-            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
 
             mapContainedIn = mapObjectArguments.MapContainedIn;
             size = reader.ReadSize();
@@ -76,10 +55,10 @@ namespace Farmi.Entities
 
             Collider = new BoxCollider(world, this);
         }
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
             Collider.Update(gameTime);
         }
     }

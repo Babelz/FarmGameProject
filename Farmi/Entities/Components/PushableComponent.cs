@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
-    class PushableComponent : BasicInteractionComponent
+    class PushableComponent : InteractionComponent
     {
         #region Vars
         private readonly GameObject toMove;

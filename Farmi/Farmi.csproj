@@ -44,6 +44,7 @@
     <Compile Include="Datasets\CalendarDataset.cs" />
     <Compile Include="Datasets\CalendarentryDataset.cs" />
     <Compile Include="Datasets\DateDataset.cs" />
+    <Compile Include="Datasets\FeedDataset.cs" />
     <Compile Include="Datasets\ToolDataset.cs" />
     <Compile Include="dat\scripts\CowBehaviour.cs" />
     <Compile Include="dat\scripts\DogBehaviour.cs">
@@ -51,7 +52,8 @@
     </Compile>
     <Compile Include="Entities\AnimalFeedDispenser.cs" />
     <Compile Include="Entities\Animals\Animal.cs" />
-    <Compile Include="Entities\Components\BasicInteractionComponent.cs" />
+    <Compile Include="Entities\Components\FeedTrayComponent.cs" />
+    <Compile Include="Entities\Components\InteractionComponent.cs" />
     <Compile Include="Datasets\AnimalDataset.cs" />
     <Compile Include="Datasets\BuildingDataset.cs" />
     <Compile Include="Datasets\DoorDataset.cs" />
@@ -62,7 +64,10 @@
     <Compile Include="Entities\Buildings\Building.cs" />
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\Components\ExclamationMarkDrawer.cs" />
+    <Compile Include="Entities\Components\FeedDispenserComponent.cs" />
     <Compile Include="Entities\Components\FiniteStateMachine.cs" />
+    <Compile Include="Entities\Components\MessageBoxComponent.cs" />
+    <Compile Include="Entities\Components\PlayerInventory.cs" />
     <Compile Include="Entities\Components\PowerUpComponent.cs" />
     <Compile Include="Entities\Components\PushableComponent.cs" />
     <Compile Include="Entities\Components\ToolInteractionComponent.cs" />
@@ -72,6 +77,7 @@
     <Compile Include="Entities\FarmPlayer.cs" />
     <Compile Include="Entities\FeedingTray.cs" />
     <Compile Include="Entities\ISaveable.cs" />
+    <Compile Include="Entities\Items\AnimalFeedItem.cs" />
     <Compile Include="Entities\Items\Components\ThrowableComponent.cs" />
     <Compile Include="Entities\Items\ConsumableItem.cs" />
     <Compile Include="Entities\Items\Item.cs" />
@@ -292,6 +298,7 @@
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptClasses\IScriptService.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptEngine.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptObserver.cs" />
+    <Compile Include="Repositories\AnimalFeedRepository.cs" />
     <Compile Include="Repositories\AnimalRepository.cs" />
     <Compile Include="Repositories\ToolRepository.cs" />
     <Compile Include="Repositories\ConsumableItemsRepository.cs" />
@@ -336,6 +343,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\exclamation.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\hayfeed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\MapTileSets\2s0fn00.jpg">
@@ -396,12 +406,15 @@
     <Content Include="Content\Sounds\woof.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\ukko.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="dat\mps\barnindoors1.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="dat\repos\animalfeeds.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\ukko.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="KahvipaussiEngine\Khv.Gui\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Gui\TODO.txt" />
@@ -417,7 +430,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Items\" />
     <Folder Include="Content\Tools\" />
     <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
   </ItemGroup>
