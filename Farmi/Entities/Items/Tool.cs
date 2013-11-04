@@ -9,30 +9,77 @@ using Farmi.Repositories;
 using Khv.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Khv.Engine.Structs;
+using Farmi.Entities.Scripts;
+using Khv.Scripts.CSharpScriptEngine;
+using Khv.Scripts.CSharpScriptEngine.Builders;
 
 namespace Farmi.Entities.Items
 {
     /// <summary>
     /// Kuvaa työkalua jota voi käyttää
     /// </summary>
-    internal sealed class Tool : Item
+    public sealed class Tool : Item, ILoadableRepositoryObject<ToolDataset>
     {
+        #region Properties
+        public ToolBehaviourScript Behaviour
+        {
+            get;
+            private set;
+        }
+        public ToolDataset Dataset
+        {
+            get;
+            private set;
+        }
+        #endregion
+
         public Tool(KhvGame game, ToolDataset dataset)
             : base(game)
         {
-            MakeFromData(dataset);
+            Dataset = dataset;
+
+            InitializeFromDataset(dataset);
         }
 
-        private void MakeFromData(ToolDataset dataset)
+        public void InitializeFromDataset(ToolDataset dataset)
         {
-            
-            //Texture = game.Content.Load<Texture2D>(Path.Combine("Items", dataset.AssetName));
-            Components.Add(new PowerUpComponent(this, 30, 100));
+            return; 
+            Texture = game.Content.Load<Texture2D>(Path.Combine("Tools", dataset.AssetName));
+
+            PowerUpComponent powComponent = new PowerUpComponent(this,
+                dataset.MinPow,
+                dataset.MaxPow,
+                dataset.PowTimestep);
+
+            Components.Add(powComponent);
+
+            ScriptEngine scriptEngine = game.Components.First(
+                c => c is ScriptEngine) as ScriptEngine;
+
+            Behaviour = scriptEngine.GetScript<ToolBehaviourScript>(
+                new ScriptBuilder(dataset.Behaviour, new object[] { game, this }));
+            Behaviour.Initialize();
         }
 
-        public override void DrawToInventory(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Vector2 position, Khv.Engine.Structs.Size size)
+        public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            return;
+            base.Update(gameTime);
+            Behaviour.Update(gameTime);
+        }
+
+        public override void DrawToInventory(SpriteBatch spriteBatch, Vector2 position, Size size)
+        {
+            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
+
+            spriteBatch.Draw(Texture, rectangle, Color.White);
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            return;
+            base.Draw(spriteBatch);
+            Behaviour.Draw(spriteBatch);
         }
     }
 }

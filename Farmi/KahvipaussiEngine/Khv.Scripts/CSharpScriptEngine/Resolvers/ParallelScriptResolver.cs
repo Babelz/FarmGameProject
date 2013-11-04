@@ -13,7 +13,7 @@ namespace Khv.Scripts.CSharpScriptEngine.Resolvers
     public class ParallelScriptResolver : ScriptResolver
     {
         #region Vars 
-        private List<ParallelWorkItem> pendingResolves;
+        private List<BaseParallelWorkItem> pendingResolves;
         #endregion
 
         #region Properties
@@ -32,7 +32,7 @@ namespace Khv.Scripts.CSharpScriptEngine.Resolvers
         public ParallelScriptResolver(ScriptPathContainer scriptPathContainer, ScriptDepencyContainer scriptDepencyContainer, ScriptAssemblyContainer scriptAssemblyContainer)
             : base(scriptPathContainer, scriptDepencyContainer, scriptAssemblyContainer)
         {
-            pendingResolves = new List<ParallelWorkItem>();
+            pendingResolves = new List<BaseParallelWorkItem>();
         }
 
         // Ottaa resolvatun scriptin sisään ja scriptbuilderin jota käytettiin resolvauksessa.
@@ -47,9 +47,9 @@ namespace Khv.Scripts.CSharpScriptEngine.Resolvers
 
         public void Update()
         {
-            foreach (ParallelWorkItem parallelWorkItem in pendingResolves.Where(i => i.AsyncResult.IsCompleted))
+            foreach (BaseParallelWorkItem parallelWorkItem in pendingResolves.Where(i => i.AsyncResult.IsCompleted))
             {
-                IScript script = parallelWorkItem.ParallelResolveDelegate.EndInvoke(parallelWorkItem.AsyncResult);
+                IScript script = parallelWorkItem.GetParalleWorkResults();
 
                 if (script != null)
                 {
@@ -63,10 +63,10 @@ namespace Khv.Scripts.CSharpScriptEngine.Resolvers
         {
             ParallelResolverDelegate<T> resolverDelegate = StartResolving<T>;
 
-            ParallelWorkItem parallelScriptWorker = new ParallelWorkItem()
+            ParallelWorkItem<T> parallelScriptWorker = new ParallelWorkItem<T>()
             {
                 ParallelScriptBuilder = scriptBuilder,
-                ParallelResolveDelegate = resolverDelegate as ParallelResolverDelegate<IScript>,
+                ParallelResolveDelegate = resolverDelegate,
                 AsyncResult = resolverDelegate.BeginInvoke(scriptBuilder, null, null)
             };
 
@@ -75,18 +75,11 @@ namespace Khv.Scripts.CSharpScriptEngine.Resolvers
 
         private delegate T ParallelResolverDelegate<T>(ScriptBuilder scriptBuilder) where T : IScript;
 
-        /// <summary>
-        /// Luokka joka wräppää parallel resolvauksen aikana tarvittavia tietoja itseensä.
-        /// </summary>
-        private class ParallelWorkItem
+
+        private abstract class BaseParallelWorkItem
         {
             #region Properties
             public ParallelScriptBuilder ParallelScriptBuilder
-            {
-                get;
-                set;
-            }
-            public ParallelResolverDelegate<IScript> ParallelResolveDelegate
             {
                 get;
                 set;
@@ -97,6 +90,27 @@ namespace Khv.Scripts.CSharpScriptEngine.Resolvers
                 set;
             }
             #endregion
+
+            public abstract IScript GetParalleWorkResults();
+        }
+
+        /// <summary>
+        /// Luokka joka wräppää parallel resolvauksen aikana tarvittavia tietoja itseensä.
+        /// </summary>
+        private class ParallelWorkItem<T> : BaseParallelWorkItem where T : IScript
+        {
+            #region Properties
+            public ParallelResolverDelegate<T> ParallelResolveDelegate
+            {
+                get;
+                set;
+            }
+            #endregion
+
+            public override IScript GetParalleWorkResults()
+            {
+                return ParallelResolveDelegate.EndInvoke(AsyncResult);
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ using Farmi.XmlParsers;
 
 namespace Farmi.Datasets
 {
-    internal sealed class TeleportDataset : IDataset
+    public sealed class TeleportDataset : IDataset
     {
         #region Vars
         private XElement xElement;
@@ -37,9 +37,9 @@ namespace Farmi.Datasets
         {
             this.xElement = xElement;
 
-            XAtributeReader reader = new XAtributeReader(xElement);
+            XAttributeReader reader = new XAttributeReader(xElement);
 
-            TeleportTo = reader.ReadAttribute("TeleportTo", AtributeValueType.String);
+            TeleportTo = reader.ReadAttribute("TeleportTo", AttributeValueType.String);
 
             PositionOffSet = reader.ReadVector();
             Size = reader.ReadSize();

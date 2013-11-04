@@ -5,10 +5,12 @@ using System.Text;
 using Khv.Game.Collision;
 using Khv.Game.GameObjects;
 using Khv.Maps.MapClasses.Layers.Tiles;
-namespace Farmi.KahvipaussiEngine.Khv.Game.Collision
+using Khv.Game;
+
+namespace Khv.Game.Collision
 {
     public interface ITileCollisionQuerier
     {
-        IEnumerable<RuleTile> Query(global::Khv.Game.World world, GameObject source);
+        IEnumerable<RuleTile> Query(World world, GameObject source);
     }
 }

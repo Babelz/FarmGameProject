@@ -5,7 +5,7 @@ using System.Text;
 using Khv.Game.GameObjects;
 using Khv.Game;
 
-namespace Farmi.KahvipaussiEngine.Khv.Game.Collision
+namespace Khv.Game.Collision
 {
     public interface IObjectCollisionQuerier
     {

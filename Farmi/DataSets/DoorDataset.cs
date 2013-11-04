@@ -9,7 +9,7 @@ using Farmi.XmlParsers;
 
 namespace Farmi.Datasets
 {
-    internal sealed class DoorDataset : IDataset
+    public sealed class DoorDataset : IDataset
     {
         #region Vars
         private XElement xElement;
@@ -67,9 +67,9 @@ namespace Farmi.Datasets
         }
         private void GetBasicValues(XElement xElement)
         {
-            XAtributeReader reader = new XAtributeReader(xElement);
+            XAttributeReader reader = new XAttributeReader(xElement);
 
-            AssetName = reader.ReadAttribute("AssetName", AtributeValueType.String);
+            AssetName = reader.ReadAttribute("AssetName", AttributeValueType.String);
             Position = reader.ReadVector();
             Size = reader.ReadSize();
         }

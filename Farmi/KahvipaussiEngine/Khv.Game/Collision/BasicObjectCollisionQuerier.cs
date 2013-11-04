@@ -6,7 +6,7 @@ using Khv.Game.GameObjects;
 using Khv.Maps.MapClasses.Managers;
 using Khv.Game;
 
-namespace Farmi.KahvipaussiEngine.Khv.Game.Collision
+namespace Khv.Game.Collision
 {
     public class BasicObjectCollisionQuerier : IObjectCollisionQuerier
     {

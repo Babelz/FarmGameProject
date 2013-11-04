@@ -16,7 +16,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Khv.Maps.MapClasses.Managers;
 using Khv.Game;
-using Farmi.KahvipaussiEngine.Khv.Game.Collision;
 using Farmi.Entities.Components;
 
 namespace Farmi.Entities.Animals
@@ -103,10 +102,17 @@ namespace Farmi.Entities.Animals
             ScriptEngine scriptEngine = game.Components
                 .First(c => c is ScriptEngine) as ScriptEngine;
 
-            Behaviour = scriptEngine.GetScript<AnimalBehaviourScript>
-                (new ScriptBuilder("DogBehaviour", new object[] { game, this }));
+            scriptEngine.MakeScript<AnimalBehaviourScript>(
+                new ParallelScriptBuilder(
+                    "DogBehaviour",
+                    new object[] { game, this },
+                    this,
+                    (script, builder) =>
+                    {
+                        Behaviour = script as AnimalBehaviourScript;
 
-            Behaviour.Initialize();
+                        Behaviour.Initialize();
+                    }));
         }
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
@@ -134,12 +140,20 @@ namespace Farmi.Entities.Animals
 
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
-            Behaviour.Update(gameTime);
+            
+            if (Behaviour != null)
+            {
+                Behaviour.Update(gameTime);
+            }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            Behaviour.Draw(spriteBatch);
+
+            if (Behaviour != null)
+            {
+                Behaviour.Draw(spriteBatch);
+            }
         }
     }
 }

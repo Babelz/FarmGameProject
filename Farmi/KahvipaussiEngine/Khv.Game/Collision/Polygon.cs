@@ -8,25 +8,17 @@ namespace Khv.Game.Collision
 {
     public class Polygon
     {
-
+        #region Properties
         public List<Vector2> Vertices
         {
             get;
             set;
         }
-
         public List<Vector2> Edges
         {
             get;
             set;
         }
-
-        public Polygon()
-        {
-            Vertices = new List<Vector2>();
-            Edges = new List<Vector2>();
-        }
-
         public Vector2 Center
         {
             get
@@ -40,6 +32,13 @@ namespace Khv.Game.Collision
                 });
                 return new Vector2(x / (float)Vertices.Count, y / (float)Vertices.Count);
             }
+        }
+        #endregion
+
+        public Polygon()
+        {
+            Vertices = new List<Vector2>();
+            Edges = new List<Vector2>();
         }
 
         public void BuildEdges()

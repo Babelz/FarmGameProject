@@ -14,6 +14,7 @@ using Khv.Game.Collision;
 using Khv.Maps.MapClasses.Layers.Tiles;
 using Microsoft.Xna.Framework.Audio;
 using Farmi.Entities;
+using System.IO;
 
 namespace Script
 {
@@ -119,10 +120,10 @@ namespace Script
         {
             InitializeBrain();
 
-            Texture2D texture = game.Content.Load<Texture2D>(@"Entities\" + owner.Dataset.AssetName);
+            Texture2D texture = game.Content.Load<Texture2D>(Path.Combine("Entities", owner.Dataset.AssetName));
             animation = new SpriteSheetAnimation(texture);
 
-            effect = game.Content.Load<SoundEffect>(@"Sounds\woof");
+            effect = game.Content.Load<SoundEffect>(Path.Combine("Sounds", "woof"));
 
             animation.AddSets(new SpriteAnimationSet[]
             {

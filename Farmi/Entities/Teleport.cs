@@ -12,10 +12,11 @@ using Khv.Maps.MapClasses.Managers;
 using Khv.Maps.MapClasses.Processors;
 using Microsoft.Xna.Framework;
 using SerializedDataTypes.Components;
+using Farmi.XmlParsers;
 
 namespace Farmi.Entities
 {
-    internal sealed class Teleport : GameObject, ILoadableMapObject, ILoadableRepositoryObject<TeleportDataset>
+    public sealed class Teleport : GameObject, ILoadableMapObject, ILoadableRepositoryObject<TeleportDataset>
     {
         #region Vars
         // Kartta johon teleportataan.
@@ -65,68 +66,6 @@ namespace Farmi.Entities
         }
         #endregion
 
-        #region Value parsing methods
-        // Hakee karttadatasta positionin offsetin.
-        private Vector2 GetPositionOffSet(MapObjectArguments mapObjectArguments)
-        {
-            Vector2 position = Vector2.Zero;
-
-            Valuepair valuepair = mapObjectArguments.SerializedData.valuepairs
-                                  .Find(v => v.Name == "PositionOffSet");
-
-            if (valuepair != null)
-            {
-                string[] tokens = valuepair.Value.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-
-                string x = Array.Find<string>(tokens, s => s.Contains("X"));
-                x = x.Trim().Substring(x.IndexOf("=") + 1).Trim();
-
-                string y = Array.Find<string>(tokens, s => s.Contains("Y"));
-                y = y.Trim().Substring(y.IndexOf("=") + 1).Trim();
-
-                position = new Vector2(float.Parse(x), float.Parse(y));
-            }
-
-            return position;
-        }
-        // Hakee serialisoidusta karttadatasta mapin minne tulisi teleportata.
-        private string GetMapToTeleport(MapObjectArguments mapObjectArguments)
-        {
-            string mapName = string.Empty;
-
-            Valuepair valuepair = mapObjectArguments.SerializedData.valuepairs
-                                  .Find(v => v.Name == "To");
-
-            if (valuepair != null)
-            {
-                mapName = valuepair.Value.Trim();
-            }
-
-            return mapName;
-        }
-        // Hakee serialisoidusta karttadatasta teleportin koon.
-        private Size GetSize(MapObjectArguments mapObjectArguments)
-        {
-            Size size = new Size(0, 0);
-
-            Valuepair valuePair = mapObjectArguments.SerializedData.valuepairs
-                                  .Find(v => v.Name == "Size");
-
-            if (valuePair != null)
-            {
-                string[] tokens = valuePair.Value.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-
-                string width = Array.Find<string>(tokens, s => s.Contains("Width"));
-                width = width.Trim().Substring(width.IndexOf("=") + 1).Trim();
-
-                string height = Array.Find<string>(tokens, s => s.Contains("Height"));
-                height = height.Trim().Substring(height.IndexOf("=") + 1).Trim();
-
-                size = new Size(int.Parse(width), int.Parse(height));
-            }
-
-            return size;
-        }
         // Hakee kartalta joka on vaihdettu vastakkaisen teleportin.
         private Teleport ResolveOpposite(MapManager mapManager)
         {
@@ -151,15 +90,16 @@ namespace Farmi.Entities
 
             return teleport;
         }
-        #endregion
 
         #region Initializers
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
-            size = GetSize(mapObjectArguments);
-            mapToTeleport = GetMapToTeleport(mapObjectArguments);
-            positionOffSet = GetPositionOffSet(mapObjectArguments);
-            position = mapObjectArguments.Origin;
+            MapObjectArgumentReader reader = new MapObjectArgumentReader(mapObjectArguments);
+
+            size = reader.ReadSize();
+            mapToTeleport = reader.ReadMapToTeleport();
+            positionOffSet = reader.ReadPositionOffSet();
+            position = mapObjectArguments.Origin + reader.ReadPosition();
 
             mapContainedIn = mapObjectArguments.MapContainedIn;
 
@@ -199,7 +139,9 @@ namespace Farmi.Entities
 
                 // Katotaan tässä kaikki mapit jotka tulisi pitää muistissa eikä disposata.
                 // Jos kartta on "tärkeä" se tulee laittaa taustalle.
-                if (mapManager.ActiveMap.Name == "farm" || Regex.IsMatch(mapManager.ActiveMap.Name, "playerhouseindoors[0-9]"))
+
+                if (mapManager.ActiveMap.Name == "farm" || Regex.IsMatch(mapManager.ActiveMap.Name, "playerhouseindoors[0-9]") ||
+                    Regex.IsMatch(mapManager.ActiveMap.Name, "barnindoors[0-9]"))
                 {
                     action = MapChangeAction.MoveCurrentToBackground;
                 }

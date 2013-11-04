@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using Farmi.Entities.Components;
 using Farmi.Entities.Items;
-using Farmi.KahvipaussiEngine.Khv.Game.Collision;
 using Khv.Engine;
 using Khv.Engine.Helpers;
 using Khv.Engine.Structs;
@@ -68,7 +67,7 @@ namespace Farmi.Entities
             this.world = world;
             Position = new Vector2(500, 200);
 
-            Size = new Size(32, 32);
+            Size = new Size(29, 37);
 
             Collider = new BoxCollider(world, this,
                 new BasicObjectCollisionQuerier(),
@@ -178,8 +177,8 @@ namespace Farmi.Entities
                 return;
 
             var powerUpComponent = toolInHand.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
-            Console.WriteLine("interact with " + powerUpComponent.CurrentPower + " power");
-            powerUpComponent.Reset();
+            Console.WriteLine("interact with " + powerUpComponent.CurrentPow + " power");
+            powerUpComponent.Disable();
 
             var interactionComponent = toolInHand.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
             // jotain meni vikaan, jokaisella työkalulla PITÄISI olla interaktion komponentti
@@ -212,7 +211,7 @@ namespace Farmi.Entities
 
             if (!powerUpComponent.Enabled && !powerUpComponent.IsMaximumMet)
             {
-                powerUpComponent.Reset();
+                powerUpComponent.Disable();
                 powerUpComponent.Enable();
             }
         }
@@ -242,7 +241,7 @@ namespace Farmi.Entities
             spriteBatch.Draw(KhvGame.Temp, r, Color.Red);*/
             #endregion
             //spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Turquoise);
-            spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero, 1f, viewComponent.Effects, 1f);
+            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.White);
             base.Draw(spriteBatch);
         }
 

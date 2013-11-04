@@ -8,6 +8,7 @@ using System.Text;
 
 using KhvGame = Khv.Engine.KhvGame;
 using Game = Microsoft.Xna.Framework.Game;
+using Khv.Engine.Args;
 
 namespace Khv.Game.GameObjects
 {
@@ -25,6 +26,10 @@ namespace Khv.Game.GameObjects
 
         protected KhvGame game;
    
+        #endregion
+
+        #region Events
+        public event GameObjectEventHandler OnDestroyed;
         #endregion
 
         #region Properties
@@ -112,7 +117,14 @@ namespace Khv.Game.GameObjects
             {
                 OnDestroy();
                 Destroyed = true;
+
+                if (OnDestroyed != null)
+                {
+                    OnDestroyed(this, new GameEventArgs());
+                }
             }
         }
     }
+
+    public delegate void GameObjectEventHandler(object sender, GameEventArgs e);
 }

@@ -2,7 +2,7 @@
 
 <Repository Name="Building repository" DatasetType="BuildingDataset" RepositoryType="BuildingRepository">
   <Items>
-    <Building Name="playerhouse1" Width="256" Height="128" AssetName="playerhouse1">
+    <Building Name="playerhouse1" Width="192" Height="96" AssetName="playerhouse1">
       <!-- Rakennuksen colliderin offset valuet. -->
       <Collider X="10,0" Y="0,0" Width="0" Height="0"/>
       <Scripts>
@@ -10,9 +10,17 @@
       </Scripts>
       <Doors>
         <!-- Kaikki rakennuksen ovet tulee alustaa tässä. -->
-        <Door X="50,0" Y="96,0" Width="50" Height="32" AssetName="door1">
-          <Teleport X="0,0" Y="64,0" Width="0" Height="0" 
+        <Door X="128" Y="59" Width="29" Height="37" AssetName="door1">
+          <Teleport X="0,0" Y="0" Width="0" Height="0" 
                     TeleportTo="playerhouseindoors1"/>
+        </Door>
+      </Doors>
+    </Building>
+    <Building Name="barn1" Width="128" Height="160" AssetName="barn1">
+      <Doors>
+        <Door X="23" Y="133" Width="83" Height="27">
+          <Teleport X="0" Y="0" Width="0" Height="0"
+                    TeleportTo="barnindoors1"/>
         </Door>
       </Doors>
     </Building>

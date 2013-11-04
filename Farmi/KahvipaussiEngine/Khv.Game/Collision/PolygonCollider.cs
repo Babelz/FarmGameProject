@@ -10,12 +10,9 @@ namespace Khv.Game.Collision
 {
     public abstract class PolygonCollider : Collider
     {
-        
-        
-
-        protected PolygonCollider(GameObject g)
+        protected PolygonCollider(GameObject gameObject)
         {
-            Instance = g;
+            Instance = gameObject;
         }
 
         #region Properties

@@ -8,31 +8,69 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
-    class PowerUpComponent : IObjectComponent
+    internal sealed class PowerUpComponent : IObjectComponent
     {
-        public float MinPower { get; private set; }
-        public float MaxPower { get; private set; }
-        public float CurrentPower { get; private set; }
-        public bool Enabled { get; private set; }
-        public float PowerStep { get; private set; }
-
-
-        
-
+        #region Vars
+        private int elapsed;
         private readonly Tool tool;
+        #endregion
 
-        public PowerUpComponent(Tool tool, float minPower, float maxPower)
+        #region Properties
+        public float MinPow
         {
-            MinPower = minPower;
-            MaxPower = maxPower;
+            get;
+            private set;
+        }
+        public int MaxPow
+        {
+            get;
+            private set;
+        }
+        public int CurrentPow
+        {
+            get;
+            private set;
+        }
+        public bool Enabled
+        {
+            get;
+            private set;
+        }
+        public int PowTimestep
+        {
+            get;
+            private set;
+        }
+        public bool IsMinimiumMet
+        {
+            get
+            {
+                return CurrentPow >= MinPow;
+            }
+        }
+        public bool IsMaximumMet
+        {
+            get
+            {
+                return CurrentPow >= MaxPow;
+            }
+        }
+        #endregion
+
+        public PowerUpComponent(Tool tool, int minPower, int maxPower, int powTimestep)
+        {
             this.tool = tool;
-            PowerStep = 1f;
-            Reset();
+
+            MinPow = minPower;
+            MaxPow = maxPower;
+            PowTimestep = powTimestep;
+            
+            Disable();
         }
 
-        public void Reset()
+        public void Disable()
         {
-            CurrentPower = 0f;
+            CurrentPow = 0;
             Enabled = false;
         }
 
@@ -44,26 +82,23 @@ namespace Farmi.Entities.Components
         public void Update(GameTime gametime)
         {
             if (!Enabled)
+            {
                 return;
-            if (CurrentPower < MaxPower)
-                CurrentPower += PowerStep;
-            else
-                Enabled = false;
-        }
-
-        public bool IsMinimiumMet
-        {
-            get
-            {
-                return CurrentPower >= MinPower;
             }
-        }
 
-        public bool IsMaximumMet
-        {
-            get
+            if (CurrentPow < MaxPow)
             {
-                return CurrentPower >= MaxPower;
+                elapsed += gametime.ElapsedGameTime.Milliseconds;
+
+                if (elapsed > PowTimestep)
+                {
+                    CurrentPow++;
+                    elapsed = 0;
+                }
+            }
+            else
+            {
+                Enabled = false;
             }
         }
     }

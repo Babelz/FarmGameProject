@@ -11,10 +11,11 @@ using Khv.Maps.MapClasses.Managers;
 using Khv.Maps.MapClasses.Processors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace Farmi.Entities.Buildings
 {
-    internal sealed class Building : DrawableGameObject, ILoadableMapObject, ILoadableRepositoryObject<BuildingDataset>
+    public sealed class Building : DrawableGameObject, ILoadableMapObject, ILoadableRepositoryObject<BuildingDataset>
     {
         #region Vars
         private Texture2D texture;
@@ -74,7 +75,7 @@ namespace Farmi.Entities.Buildings
         {
             if (dataset != null)
             {
-                texture = game.Content.Load<Texture2D>(@"Buildings\" + dataset.AssetName);
+                texture = game.Content.Load<Texture2D>(Path.Combine(@"Buildings" ,dataset.AssetName));
                 size = dataset.Size;
                 color = Color.White;
                 Doors = new Door[dataset.Doors.Length];

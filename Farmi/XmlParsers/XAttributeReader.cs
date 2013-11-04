@@ -8,13 +8,13 @@ using Khv.Engine.Structs;
 
 namespace Farmi.XmlParsers
 {
-    internal enum AtributeValueType
+    internal enum AttributeValueType
     {
         Number,
         String
     }
 
-    internal sealed class XAtributeReader
+    internal sealed class XAttributeReader
     {
         #region Properties
         public XElement CurrentElement
@@ -24,12 +24,12 @@ namespace Farmi.XmlParsers
         }
         #endregion
 
-        public XAtributeReader(XElement startElement)
+        public XAttributeReader(XElement startElement)
         {
             CurrentElement = startElement;
         }
 
-        public string ReadAttribute(string attributeName, AtributeValueType valueType)
+        public string ReadAttribute(string attributeName, AttributeValueType valueType)
         {
             XAttribute attribute = CurrentElement.Attribute(attributeName);
 
@@ -37,9 +37,9 @@ namespace Farmi.XmlParsers
             {
                 switch (valueType)
                 {
-                    case AtributeValueType.Number:
+                    case AttributeValueType.Number:
                         return "0";
-                    case AtributeValueType.String:
+                    case AttributeValueType.String:
                         return string.Empty;
                     default:
                         throw new NotImplementedException("Unkown value type.");
@@ -50,13 +50,13 @@ namespace Farmi.XmlParsers
         }
         public Size ReadSize()
         {
-            return new Size(int.Parse(ReadAttribute("Width", AtributeValueType.Number)),
-                            int.Parse(ReadAttribute("Height", AtributeValueType.Number)));
+            return new Size(int.Parse(ReadAttribute("Width", AttributeValueType.Number)),
+                            int.Parse(ReadAttribute("Height", AttributeValueType.Number)));
         }
         public Vector2 ReadVector()
         {
-            return new Vector2(float.Parse(ReadAttribute("X", AtributeValueType.Number)),
-                               float.Parse(ReadAttribute("Y", AtributeValueType.Number)));
+            return new Vector2(float.Parse(ReadAttribute("X", AttributeValueType.Number)),
+                               float.Parse(ReadAttribute("Y", AttributeValueType.Number)));
         }
     }
 }

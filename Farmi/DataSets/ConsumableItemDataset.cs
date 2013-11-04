@@ -70,21 +70,21 @@ namespace Farmi.Datasets
         {
             this.xElement = xElement;
 
-            XAtributeReader reader = new XAtributeReader(xElement);
+            XAttributeReader reader = new XAttributeReader(xElement);
 
-            Name = reader.ReadAttribute("Name", AtributeValueType.String);
-            AssetName = reader.ReadAttribute("AssetName", AtributeValueType.String);
-            Description = reader.ReadAttribute("Description", AtributeValueType.String);
+            Name = reader.ReadAttribute("Name", AttributeValueType.String);
+            AssetName = reader.ReadAttribute("AssetName", AttributeValueType.String);
+            Description = reader.ReadAttribute("Description", AttributeValueType.String);
 
-            AddedStamina = int.Parse(reader.ReadAttribute("MaxStamina", AtributeValueType.Number));
-            RecoveredStamina = int.Parse(reader.ReadAttribute("Stamina", AtributeValueType.Number));
+            AddedStamina = int.Parse(reader.ReadAttribute("MaxStamina", AttributeValueType.Number));
+            RecoveredStamina = int.Parse(reader.ReadAttribute("Stamina", AttributeValueType.Number));
 
-            Script = reader.ReadAttribute("Script", AtributeValueType.String);
+            Script = reader.ReadAttribute("Script", AttributeValueType.String);
 
-            Value = int.Parse(reader.ReadAttribute("Value", AtributeValueType.Number));
+            Value = int.Parse(reader.ReadAttribute("Value", AttributeValueType.Number));
 
-            Size = new Size(int.Parse(reader.ReadAttribute("Width", AtributeValueType.Number)),
-                            int.Parse(reader.ReadAttribute("Height", AtributeValueType.Number)));
+            Size = new Size(int.Parse(reader.ReadAttribute("Width", AttributeValueType.Number)),
+                            int.Parse(reader.ReadAttribute("Height", AttributeValueType.Number)));
         }
         public XElement AsXElement()
         {

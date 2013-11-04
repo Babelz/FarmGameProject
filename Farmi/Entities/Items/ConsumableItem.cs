@@ -13,6 +13,7 @@ using Khv.Scripts.CSharpScriptEngine;
 using Khv.Scripts.CSharpScriptEngine.Builders;
 using Microsoft.Xna.Framework;
 using Khv.Engine.Structs;
+using System.IO;
 
 namespace Farmi.Entities.Items
 {
@@ -52,7 +53,7 @@ namespace Farmi.Entities.Items
         {
             Name = dataset.Name;
 
-            Texture = game.Content.Load<Texture2D>(@"Items\" + dataset.AssetName);
+            Texture = game.Content.Load<Texture2D>(Path.Combine("Items", dataset.AssetName));
             Description = dataset.Description;
 
             MaxStamina = dataset.AddedStamina;

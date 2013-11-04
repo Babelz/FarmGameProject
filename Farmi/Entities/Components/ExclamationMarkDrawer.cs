@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Khv.Engine;
 using Khv.Engine.Structs;
 using Khv.Particles;
+using System.IO;
 
 namespace Farmi.Entities.Components
 {
@@ -26,7 +27,7 @@ namespace Farmi.Entities.Components
         {
             this.farmPlayer = farmPlayer;
 
-            texture = game.Content.Load<Texture2D>(@"Entities\exclamation");
+            texture = game.Content.Load<Texture2D>(Path.Combine("Entities", "exclamation"));
             size = new Size(texture.Width, texture.Height);
         }
 

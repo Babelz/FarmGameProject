@@ -113,7 +113,7 @@ namespace Farmi.Datasets
 
             if (colliderElement != null)
             {
-                XAtributeReader reader = new XAtributeReader(colliderElement);
+                XAttributeReader reader = new XAttributeReader(colliderElement);
 
                 ColliderPositionOffSet = reader.ReadVector();
                 ColliderSizeOffSet = reader.ReadSize();
@@ -121,11 +121,11 @@ namespace Farmi.Datasets
         }
         private void GetBasicValues(XElement xElement)
         {
-            XAtributeReader reader = new XAtributeReader(xElement);
+            XAttributeReader reader = new XAttributeReader(xElement);
 
-            Name = reader.ReadAttribute("Name", AtributeValueType.String);
-            Type = reader.ReadAttribute("Type", AtributeValueType.String);
-            AssetName = reader.ReadAttribute("AssetName", AtributeValueType.String);
+            Name = reader.ReadAttribute("Name", AttributeValueType.String);
+            Type = reader.ReadAttribute("Type", AttributeValueType.String);
+            AssetName = reader.ReadAttribute("AssetName", AttributeValueType.String);
 
             Size = reader.ReadSize();
         }

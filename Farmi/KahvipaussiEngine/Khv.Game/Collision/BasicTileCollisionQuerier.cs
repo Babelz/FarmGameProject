@@ -5,7 +5,7 @@ using Khv.Maps.MapClasses.Layers.Tiles;
 using System.Collections.Generic;
 using Khv.Maps.MapClasses.Layers;
 
-namespace Farmi.KahvipaussiEngine.Khv.Game.Collision
+namespace Khv.Game.Collision
 {
     public class BasicTileCollisionQuerier : ITileCollisionQuerier
     {

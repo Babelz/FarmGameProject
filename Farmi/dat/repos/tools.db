@@ -2,6 +2,8 @@
 
 <Repository Name="Tool Repository" DatasetType="ToolDataset" RepositoryType="ToolRepository">
   <Items>
-    <Tool Name="Hoe" AssetName="hoe" Description="Wapsu panee jeesusta" />
+    <Tool Name="Hoe" AssetName="hoe" Description="Wapsu panee jeesusta"
+          MinPow="1" MaxPow="1" PowTimestep="0"
+          Behaviour="HoeBehaviour"/>
   </Items>
 </Repository>
