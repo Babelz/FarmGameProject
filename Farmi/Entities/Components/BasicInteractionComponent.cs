@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
-    abstract class BasicInteractionComponent : IInteractionComponent
+    public abstract class BasicInteractionComponent : IInteractionComponent
     {
         #region Vars
         private GameObject interactWith;

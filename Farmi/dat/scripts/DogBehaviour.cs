@@ -21,7 +21,6 @@ namespace Script
     {
         #region Vars
         private SpriteSheetAnimation animation;
-        private FiniteStateMachine brain;
 
         private int followTime;
         private int runawayTime;
@@ -41,7 +40,6 @@ namespace Script
 
         private void InitializeBrain()
         {
-            brain = new FiniteStateMachine();
             brain.PushState(Move);
 
             random = new Random();
