@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Farmi.Datasets;
+using Farmi.Entities.Components;
 using Farmi.Repositories;
 using Khv.Engine;
 using Microsoft.Xna.Framework;
@@ -25,8 +26,8 @@ namespace Farmi.Entities.Items
         private void MakeFromData(ToolDataset dataset)
         {
             
-            Texture = game.Content.Load<Texture2D>(Path.Combine("Items", dataset.AssetName));
-    
+            //Texture = game.Content.Load<Texture2D>(Path.Combine("Items", dataset.AssetName));
+            Components.Add(new PowerUpComponent(this, 30, 100));
         }
 
         public override void DrawToInventory(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Vector2 position, Khv.Engine.Structs.Size size)

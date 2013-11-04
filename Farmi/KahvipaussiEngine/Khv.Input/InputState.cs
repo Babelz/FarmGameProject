@@ -5,28 +5,29 @@ using System.Text;
 
 namespace Khv.Input
 {
+    [Flags]
     public enum InputState
     {
         /// <summary>
         /// default
         /// </summary>
-        None,
+        None = 0x0,
         /// <summary>
         /// kun nappi on juuri painettu
         /// </summary>
-        Pressed,
+        Pressed = 0x1,
         /// <summary>
         /// Kun nappi on ollut pohjassa ainakin 2 framea
         /// </summary>
-        Down,
+        Down = 0x2,
         /// <summary>
         /// Kun nappi oli viime framella pohjassa mutta nykyisellä ei
         /// </summary>
-        Released,
+        Released = 0x4,
         /// <summary>
         /// Kun nappi on ollut vähintään 2 framea ylhäällä
         /// </summary>
-        Up
+        Up = 0x8
         
     }
 }

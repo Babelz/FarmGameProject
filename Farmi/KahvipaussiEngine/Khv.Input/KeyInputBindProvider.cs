@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -23,7 +24,7 @@ namespace Khv.Input
             keyBinds = new Dictionary<string, Keys[]>();
         }
 
-        public void Map(KeyTrigger trigger, KeyboardInputCallback callback)
+        public void Map(KeyTrigger trigger, KeyboardInputCallback callback, InputState inputCondition = (InputState.Down | InputState.Pressed | InputState.Released | InputState.Up))
         {
 
             if (!Bindings.ContainsKey(trigger.Name))
@@ -31,6 +32,7 @@ namespace Khv.Input
                 KeyboardBinding binding = new KeyboardBinding(trigger.Name);
                 Bindings.Add(trigger.Name, binding);
                 Bindings[trigger.Name].AddAction(callback);
+                Bindings[trigger.Name].Condition = inputCondition;
             }
 
             if (keyBinds.ContainsKey(trigger.Name))
@@ -84,6 +86,9 @@ namespace Khv.Input
                     {
                         inputState = InputState.Released;
                     }
+
+                    
+                    if ((inputState & binding.Condition) != inputState) continue;
                     
                     InputEventArgs args = new InputEventArgs(binding.HoldTime, inputState, gt);
                     KeyboardInputCallbacker cb = new KeyboardInputCallbacker(key, args, binding.Callbacks);

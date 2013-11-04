@@ -92,5 +92,7 @@ namespace Khv.Input
         {
             get { return callbacks;  }
         }
+
+        public InputState Condition { get; set; }
     }
 }

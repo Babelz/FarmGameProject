@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Farmi.Entities.Components;
@@ -53,14 +54,11 @@ namespace Farmi.Entities
             set;
         }
 
-        internal Tool ToolInHand
-        {
-            get;
-            set;
-        }
+        public Item ItemInHand { get; private set; }
 
         #endregion
 
+        #region Ctor
         public FarmPlayer(KhvGame game, FarmWorld world, PlayerIndex index = PlayerIndex.One)
             : base(game, index)
         {
@@ -75,19 +73,16 @@ namespace Farmi.Entities
             Collider = new BoxCollider(world, this,
                 new BasicObjectCollisionQuerier(),
                 new BasicTileCollisionQuerier());
-
-            Collider.OnCollision += Collider_OnCollision;
             viewComponent = new ViewComponent(new Vector2(0, 1));
             Components.Add(viewComponent);
 
-            //ToolInHand = new Tool(game, "hakku");
+            ItemInHand = new Tool(game, null);
         }
+        #endregion
 
-        void Collider_OnCollision(object sender, CollisionEventArgs result)
-        {
-            //Console.WriteLine(sender);
-        }
+        #region Methods
 
+        #region Init
         public void Initialize()
         {
             controller = new InputController(game.InputManager);
@@ -98,7 +93,6 @@ namespace Farmi.Entities
             texture = game.Content.Load<Texture2D>("ukko");
         }
 
-
         private void InitDefaultSetup()
         {
             var keymapper = defaultInputSetup.Mapper.GetInputBindProvider<KeyInputBindProvider>();
@@ -108,29 +102,31 @@ namespace Farmi.Entities
             keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, speed));
             keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
             keymapper.Map(new KeyTrigger("Next day", Keys.F1), (triggered, args) =>
+            {
+                if (args.State == InputState.Pressed)
                 {
-                    if (args.State == InputState.Pressed)
-                    {
-                        CalendarSystem calendar = game.Components.First(
-                            c => c is CalendarSystem) as CalendarSystem;
+                    CalendarSystem calendar = game.Components.First(
+                        c => c is CalendarSystem) as CalendarSystem;
 
-                        calendar.SkipDay(23, 45);
-                    }
-                });
+                    calendar.SkipDay(23, 45);
+                }
+            });
             keymapper.Map(new KeyTrigger("Spawn dog", Keys.F2), (triggered, args) =>
+            {
+                if (args.State == InputState.Pressed)
                 {
-                    if (args.State == InputState.Pressed)
-                    {
-                        AnimalDataset dataset = (game.Components.First(
-                            c => c is RepositoryManager) as RepositoryManager).GetDataSet<AnimalDataset>(p => p.Type == "Dog");
+                    AnimalDataset dataset = (game.Components.First(
+                        c => c is RepositoryManager) as RepositoryManager).GetDataSet<AnimalDataset>(p => p.Type == "Dog");
 
-                        Animal dog = new Animal(game, dataset);
-                        dog.Position = position;
-                        dog.MapContainedIn = world.MapManager.ActiveMap.Name;
+                    Animal dog = new Animal(game, dataset);
+                    dog.Position = position;
+                    dog.MapContainedIn = world.MapManager.ActiveMap.Name;
 
-                        world.WorldObjects.AddGameObject(dog);
-                    }
-                });
+                    world.WorldObjects.AddGameObject(dog);
+                }
+            });
+            keymapper.Map(new KeyTrigger("Power tool", Keys.Z), PowerUpTool, InputState.Pressed | InputState.Down);
+            keymapper.Map(new KeyTrigger("Interact with tool", Keys.Z), InteractWithTool, InputState.Released);
 
             var padmapper = defaultInputSetup.Mapper.GetInputBindProvider<PadInputBindProvider>();
             padmapper.Map(new ButtonTrigger("Move left", Buttons.LeftThumbstickLeft, Buttons.DPadLeft), (triggered, args) => MotionEngine.GoalVelocityX = -speed);
@@ -138,6 +134,10 @@ namespace Farmi.Entities
             padmapper.Map(new ButtonTrigger("Move up", Buttons.LeftThumbstickUp, Buttons.DPadUp), (triggered, args) => MotionEngine.GoalVelocityY = -speed);
             padmapper.Map(new ButtonTrigger("Move down", Buttons.LeftThumbstickDown, Buttons.DPadDown), (triggered, args) => MotionEngine.GoalVelocityX = speed);
         }
+
+        #endregion
+
+        #region Input callbacks
 
         private void TryInteract(InputEventArgs args)
         {
@@ -155,12 +155,6 @@ namespace Farmi.Entities
 
         }
 
-        public void CanSee(GameObject g)
-        {
-            Vector2 v2 = g.Position;
-            v2.Normalize();
-        }
-
         private float VelocityFunc(InputEventArgs args, float src)
         {
             if (args.State == InputState.Released)
@@ -171,51 +165,61 @@ namespace Farmi.Entities
             return src;
         }
 
-        private float VerticalVelocityFunc(InputEventArgs args, float velY)
+        /// <summary>
+        /// Interactaa työkalulla callback inputtiin
+        /// </summary>
+        /// <param name="triggered"></param>
+        /// <param name="args"></param>
+        private void InteractWithTool(Keys triggered, InputEventArgs args)
         {
-            if (args.State == InputState.Released)
-            {
-                return 0;
-            }
-            if (velY != 0 && (Velocity.X > 0 || Velocity.X < 0))
-            {
-                return 0;
-            }
+            Tool toolInHand = ItemInHand as Tool;
+            // jos ei ole työkalu kädessä niin lähetään kotia
+            if (toolInHand == null)
+                return;
 
-            if (velY < 0)
-            {
-                viewComponent.ViewVector = new Vector2(0, -1);
-            }
-            else if (velY > 0)
-            {
-                viewComponent.ViewVector = new Vector2(0, 1);
-            }
+            var powerUpComponent = toolInHand.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
+            Console.WriteLine("interact with " + powerUpComponent.CurrentPower + " power");
+            powerUpComponent.Reset();
 
-            return velY;
+            var interactionComponent = toolInHand.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
+            // jotain meni vikaan, jokaisella työkalulla PITÄISI olla interaktion komponentti
+            if (interactionComponent == null)
+                return;
+
+            GameObject nearestObject = world.GetNearestGameObject(this, new Padding(100));
+            // jos ei ole lähellä mitään
+            if (nearestObject == null)
+                return;
+
+            interactionComponent.Interact(nearestObject);
         }
 
-        private float HorizontalVelocityFunc(InputEventArgs args, float velX)
+        /// <summary>
+        /// PowerUp työkaluun callback inputtiin
+        /// </summary>
+        /// <param name="triggered"></param>
+        /// <param name="args"></param>
+        private void PowerUpTool(Keys triggered, InputEventArgs args)
         {
-            if (args.State == InputState.Released)
-            {
-                return 0;
-            }
-            if (velX != 0 && (Velocity.Y > 0 || Velocity.Y < 0))
-            {
-                return 0;
-            }
-            
-            if (velX < 0)
-            {
-                viewComponent.ViewVector = new Vector2(-1, 0);
-            }
-            else if (velX > 0)
-            {
-                viewComponent.ViewVector = new Vector2(1, 0);
-            }
+            Tool toolInHand = ItemInHand as Tool;
+            // jos ei ole työkalu kädessä niin lähetään kotia
+            if (toolInHand == null)
+                return;
+            var powerUpComponent = toolInHand.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
+            // jos ei tarvi poweruppia niin lähetään pois
+            if (powerUpComponent == null)
+                return;
 
-            return velX;
+            if (!powerUpComponent.Enabled && !powerUpComponent.IsMaximumMet)
+            {
+                powerUpComponent.Reset();
+                powerUpComponent.Enable();
+            }
         }
+
+        #endregion
+
+        #region Overrides
 
         public override void Update(GameTime gameTime)
         {
@@ -223,6 +227,7 @@ namespace Farmi.Entities
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
+            if (ItemInHand != null) ItemInHand.Update(gameTime);
             //if (ClosestInteractable != null)
             //    CanSee(ClosestInteractable);
         }
@@ -237,8 +242,13 @@ namespace Farmi.Entities
             spriteBatch.Draw(KhvGame.Temp, r, Color.Red);*/
             #endregion
             //spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Turquoise);
-            spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero,1f, viewComponent.Effects ,1f);
+            spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero, 1f, viewComponent.Effects, 1f);
             base.Draw(spriteBatch);
         }
+
+        #endregion
+
+        #endregion
+
     }
 }
