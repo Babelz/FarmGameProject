@@ -82,6 +82,9 @@ namespace Farmi.Entities
 
             MessageBoxComponent messageBoxComponent = new MessageBoxComponent(game, this);
             Components.Add(messageBoxComponent);
+
+            RepositoryManager r = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
+            ToolDataset toolDataset = r.GetDataSet<ToolDataset>(t => t.Name == "Hoe");
         }
         #endregion
 
@@ -116,6 +119,8 @@ namespace Farmi.Entities
                     calendar.SkipDay(23, 45);
                 }
             });
+            keymapper.Map(new KeyTrigger("Previous item", Keys.Q), (triggered, args) => Inventory.PreviousItem() , InputState.Released);
+            keymapper.Map(new KeyTrigger("Next item", Keys.E), (triggered, args) => Inventory.NextItem(), InputState.Released);
             keymapper.Map(new KeyTrigger("Spawn dog", Keys.F2), (triggered, args) =>
             {
                 if (args.State == InputState.Pressed)
