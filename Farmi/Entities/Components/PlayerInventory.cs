@@ -66,7 +66,7 @@ namespace Farmi.Entities.Components
         public void NextItem()
         {
             itemIndex++;
-            if (itemIndex > items.Count)
+            if (itemIndex >= items.Count)
             {
                 itemIndex = 0;
             }
@@ -86,7 +86,7 @@ namespace Farmi.Entities.Components
         public void NextTool()
         {
             toolIndex++;
-            if (toolIndex > tools.Count)
+            if (toolIndex >= tools.Count)
             {
                 toolIndex = 0;
             }
@@ -138,6 +138,8 @@ namespace Farmi.Entities.Components
 
         public void Update(GameTime gametime)
         {
+            if (HasToolSelected)
+                SelectedTool.Update(gametime);
         }
         public void Draw(SpriteBatch spriteBatch)
         {

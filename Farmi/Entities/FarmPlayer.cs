@@ -4,6 +4,7 @@ using Farmi.Calendar;
 using Farmi.Datasets;
 using Farmi.Entities.Animals;
 using Farmi.Entities.Components;
+using Farmi.Entities.Items;
 using Farmi.Repositories;
 using Khv.Engine;
 using Khv.Engine.Structs;
@@ -79,6 +80,11 @@ namespace Farmi.Entities
             Collider = new BoxCollider(world, this,
                 new BasicObjectCollisionQuerier(),
                 new BasicTileCollisionQuerier());
+            viewComponent = new ViewComponent(new Vector2(0, 1));
+            Components.Add(viewComponent);
+
+            MessageBoxComponent messageBoxComponent = new MessageBoxComponent(game, this);
+            Components.Add(messageBoxComponent);
         }
 
         private void AddComponents()
@@ -87,6 +93,10 @@ namespace Farmi.Entities
             Components.Add(new MessageBoxComponent(game, this));
             Components.Add(Inventory = new PlayerInventory(this));
             Components.Add(viewComponent = new ViewComponent(new Vector2(0, 1)));
+
+            RepositoryManager r = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
+            Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Hoe")));
+            Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Seed")));
         }
         private void InitDefaultSetup()
         {
@@ -106,6 +116,8 @@ namespace Farmi.Entities
                     calendar.SkipDay(23, 45);
                 }
             });
+            keymapper.Map(new KeyTrigger("Previous tool", Keys.Q), (triggered, args) => Inventory.PreviousTool() , InputState.Released);
+            keymapper.Map(new KeyTrigger("Next tool", Keys.E), (triggered, args) => Inventory.NextTool(), InputState.Released);
             keymapper.Map(new KeyTrigger("Spawn dog", Keys.F2), (triggered, args) =>
             {
                 if (args.State == InputState.Pressed)
@@ -155,6 +167,7 @@ namespace Farmi.Entities
 
 
             GameObject nearestObject = world.GetNearestGameObject(this, new Padding(100));
+            Console.WriteLine(nearestObject);
             // jos ei ole lähellä mitään
             if (nearestObject == null)
                 return;
