@@ -19,9 +19,9 @@ namespace Khv.Game.GameObjects
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            foreach (IDrawableObjectComponent drawableComponent in Components.DrawableComponents())
+            foreach (IDrawableObjectComponent component in Components.DrawableComponents().OrderBy(d => d.DrawOrder))
             {
-                drawableComponent.Draw(spriteBatch);
+                component.Draw(spriteBatch);
             }
         }
     }

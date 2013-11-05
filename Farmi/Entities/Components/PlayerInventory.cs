@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities.Components
 {
-    internal sealed class PlayerInventory : IDrawableObjectComponent
+    public sealed class PlayerInventory : IDrawableObjectComponent
     {
         #region Vars
         private int itemIndex;
@@ -47,11 +47,18 @@ namespace Farmi.Entities.Components
                 return SelectedTool != null;
             }
         }
+        public int DrawOrder
+        {
+            get;
+            set;
+        }
         #endregion
 
         public PlayerInventory(FarmPlayer player)
         {
             this.player = player;
+
+            DrawOrder = 0;
 
             items = new List<Item>();
             tools = new List<Tool>();

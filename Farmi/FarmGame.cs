@@ -53,11 +53,6 @@ namespace Farmi
 
             CalendarSystem calendar = new CalendarSystem(this, 15);
             Components.Add(calendar);
-
-            calendar.OnYearChanged += new CalendarEventHandler(calendar_OnYearChanged);
-            calendar.OnSeasonChanged += new CalendarEventHandler(calendar_OnSeasonChanged);
-            calendar.OnDayChanged += new CalendarEventHandler(calendar_OnDayChanged);
-            calendar.OnClockTick += new CalendarEventHandler(calendar_OnTimeTick);
             
             // TODO: Debug logger.
             ScriptEngine engine = new ScriptEngine(this, Path.Combine("cfg", "sengine.cfg"));
@@ -75,28 +70,6 @@ namespace Farmi
                            new string[] { "Farmi.Datasets." },
                            new string[] { "Farmi.Repositories." }));
             GameStateManager.ChangeState(new GameplayScreen());
-
-            
-        }
-
-        void calendar_OnDayChanged(object sender, CalendarEventArgs e)
-        {
-            Console.WriteLine("Päivä vaihtu...");
-        }
-
-        void calendar_OnSeasonChanged(object sender, CalendarEventArgs e)
-        {
-            Console.WriteLine("Season vaihtu..");
-        }
-
-        void calendar_OnTimeTick(object sender, CalendarEventArgs e)
-        {
-            Console.WriteLine("Aika muuttu...");
-        }
-
-        void calendar_OnYearChanged(object sender, CalendarEventArgs e)
-        {
-            Console.WriteLine("Vuosi vaihtu...");
         }
 
         /// <summary>

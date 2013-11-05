@@ -52,8 +52,8 @@
     </Compile>
     <Compile Include="Entities\AnimalFeedDispenser.cs" />
     <Compile Include="Entities\Animals\Animal.cs" />
+    <Compile Include="Entities\Components\DispenserInformerComponent.cs" />
     <Compile Include="Entities\Components\FeedingTrayInteractionComponent.cs" />
-    <Compile Include="Entities\Components\FeedTrayComponent.cs" />
     <Compile Include="Entities\Components\InteractionComponent.cs" />
     <Compile Include="Datasets\AnimalDataset.cs" />
     <Compile Include="Datasets\BuildingDataset.cs" />
@@ -76,6 +76,7 @@
     <Compile Include="Entities\CropSpot.cs" />
     <Compile Include="Entities\Door.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
+    <Compile Include="Entities\FeedDispinserInformer.cs" />
     <Compile Include="Entities\FeedingTray.cs" />
     <Compile Include="Entities\ISaveable.cs" />
     <Compile Include="Entities\Items\AnimalFeedItem.cs" />
@@ -344,6 +345,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\exclamation.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\info.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Items\hayfeed.png">

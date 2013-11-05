@@ -68,6 +68,7 @@ namespace Farmi.Entities
         public void InsertFeed(AnimalFeedItem feedItem)
         {
             feed = feedItem;
+            feedItem.Size = new Size(feedItem.Size.Width, feedItem.Size.Height / 2);
         }
 
         public override void Update(GameTime gameTime)
@@ -79,7 +80,7 @@ namespace Farmi.Entities
             if (feed != null)
             {
                 Vector2 feedPosition = new Vector2(this.position.X + feed.Size.Width / 2,
-                                                   this.position.Y - feed.Size.Height / 2);
+                                                   this.position.Y);
                 feed.Position = feedPosition;
             }
         }

@@ -15,14 +15,18 @@ using Farmi.Entities.Components;
 using Farmi.Repositories;
 using Farmi.Datasets;
 using Farmi.Entities.Items;
+using Khv.Maps.MapClasses.Managers;
 
 namespace Farmi.Entities
 {
     internal sealed class AnimalFeedDispenser : DrawableGameObject, ILoadableMapObject
     {
         #region Vars
+        private FarmWorld world;
+        private FeedDispinserInformer informer;
         private FeedDataset feedDataset;
-        private int feedCount;
+        private string mapContainedIn;
+        private int feedContained;
         #endregion
 
         #region Properties
@@ -40,7 +44,14 @@ namespace Farmi.Entities
         {
             get
             {
-                return feedCount > 0;
+                return feedContained > 0;
+            }
+        }
+        public int TotalFeedContained
+        {
+            get
+            {
+                return feedContained;
             }
         }
         #endregion
@@ -48,8 +59,28 @@ namespace Farmi.Entities
         public AnimalFeedDispenser(KhvGame game, MapObjectArguments mapObjectArguments)
             : base(game)
         {
+            mapContainedIn = mapObjectArguments.MapContainedIn;
             InitializeFromMapData(mapObjectArguments);
         }
+
+        protected override void OnDestroy()
+        {
+            world.MapManager.OnMapChanged -= MapManager_OnMapChanged;
+        }
+
+        #region Event handlers
+        private void MapManager_OnMapChanged(object sender, Khv.Maps.MapClasses.Managers.MapEventArgs e)
+        {
+            if (e.Current.Name == mapContainedIn)
+            {
+                world.WorldObjects.SafelyAdd(informer);
+            }
+            else
+            {
+                world.WorldObjects.SafelyRemove(informer);
+            }
+        }
+        #endregion
 
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
@@ -59,7 +90,10 @@ namespace Farmi.Entities
             FeedType = reader.ReadFeedType();
             position = mapObjectArguments.Origin;
 
-            FarmWorld world = (game.GameStateManager.Current as GameplayScreen).World;
+            informer = new FeedDispinserInformer(game, this);
+
+            world = (game.GameStateManager.Current as GameplayScreen).World;
+            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
 
             Components.Add(new FeedDispenserComponent(this));
 
@@ -68,24 +102,22 @@ namespace Farmi.Entities
 
             InsertFeed(100);
         }
-
         public AnimalFeedItem GetFeed()
         {
             AnimalFeedItem feed = null;
 
-            if (feedCount > 0)
+            if (feedContained > 0)
             {
                 feed = new AnimalFeedItem(game, feedDataset);
-                feedCount--;
+                feedContained--;
             }
 
             return feed;
         }
         public void InsertFeed(int amount)
         {
-            feedCount += amount;
+            feedContained += amount;
         }
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);

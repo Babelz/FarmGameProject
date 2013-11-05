@@ -16,6 +16,7 @@ namespace Farmi.Entities.Components
     internal class MessageBoxComponent : IDrawableObjectComponent
     {
         #region Vars
+        private ExclamationMarkDrawer exclamationMarkDrawer;
         private FarmPlayer player;
         private SpriteFont font;
 
@@ -33,27 +34,40 @@ namespace Farmi.Entities.Components
                 return currentMessage.Length > 0;
             }
         }
+        public int DrawOrder
+        {
+            get;
+            set;
+        }
         #endregion
 
         public MessageBoxComponent(KhvGame game, FarmPlayer player)
         {
             this.player = player;
 
+            DrawOrder = 1;
             font = game.Content.Load<SpriteFont>("arial");
 
             currentMessage = string.Empty;
+
+            exclamationMarkDrawer = player.Components.GetComponent(
+                c => c is ExclamationMarkDrawer) as ExclamationMarkDrawer;
         }
 
         public void DrawMessage(string message, int timeInMillis)
         {
             currentMessage = message;
             timeToDraw = timeInMillis;
+
+            exclamationMarkDrawer.StopDrawing();
         }
         public void StopDraw()
         {
             currentMessage = string.Empty;
             timeToDraw = 0;
             elapsed = 0;
+
+            exclamationMarkDrawer.ResumeDrawing();
         }
 
         public void Update(GameTime gametime)

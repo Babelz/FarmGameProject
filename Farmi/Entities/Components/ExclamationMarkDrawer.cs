@@ -21,20 +21,39 @@ namespace Farmi.Entities.Components
         private Rectangle rectangle;
 
         private bool isDrawing;
+        private bool cancelDraws;
+        #endregion
+
+        #region Vars
+        public int DrawOrder
+        {
+            get;
+            set;
+        }
         #endregion
 
         public ExclamationMarkDrawer(KhvGame game, FarmPlayer farmPlayer)
         {
             this.farmPlayer = farmPlayer;
 
+            DrawOrder = 3;
+
             texture = game.Content.Load<Texture2D>(Path.Combine("Entities", "exclamation"));
             size = new Size(texture.Width, texture.Height);
         }
-
         private void InitializeRect()
         {
             rectangle = new Rectangle((int)farmPlayer.Position.X - (farmPlayer.Size.Width - size.Width / 2),
                                       (int)farmPlayer.Position.Y - size.Height, size.Width, size.Height);
+        }
+
+        public void StopDrawing()
+        {
+            cancelDraws = true;
+        }
+        public void ResumeDrawing()
+        {
+            cancelDraws = false;
         }
 
         public void Update(GameTime gametime)
@@ -45,7 +64,7 @@ namespace Farmi.Entities.Components
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (isDrawing)
+            if (isDrawing && !cancelDraws)
             {
                 InitializeRect();
                 spriteBatch.Draw(texture, rectangle, Color.White);

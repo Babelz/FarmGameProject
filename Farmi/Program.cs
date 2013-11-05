@@ -14,12 +14,14 @@ namespace Farmi
     {
         /// <summary>
         /// The main entry point for the application.
-        /// </summary>
+        /// </summary
         [STAThread]
         static void Main()
         {
-            using (var game = new FarmGame())
+            using (FarmGame game = new FarmGame())
+            {
                 game.Run();
+            }
         }
     }
 #endif
