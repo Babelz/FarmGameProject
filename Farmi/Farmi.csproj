@@ -50,6 +50,12 @@
     <Compile Include="dat\scripts\DogBehaviour.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="dat\scripts\HoeBehaviour.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="dat\scripts\SeedBehaviour.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Entities\AnimalFeedDispenser.cs" />
     <Compile Include="Entities\Animals\Animal.cs" />
     <Compile Include="Entities\Components\FeedingTrayInteractionComponent.cs" />
@@ -71,6 +77,7 @@
     <Compile Include="Entities\Components\PlayerInventory.cs" />
     <Compile Include="Entities\Components\PowerUpComponent.cs" />
     <Compile Include="Entities\Components\PushableComponent.cs" />
+    <Compile Include="Entities\Components\SeedInteractionComponent.cs" />
     <Compile Include="Entities\Components\ToolInteractionComponent.cs" />
     <Compile Include="Entities\Components\ViewComponent.cs" />
     <Compile Include="Entities\CropSpot.cs" />

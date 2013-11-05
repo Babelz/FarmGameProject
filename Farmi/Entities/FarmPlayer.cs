@@ -4,6 +4,7 @@ using Farmi.Calendar;
 using Farmi.Datasets;
 using Farmi.Entities.Animals;
 using Farmi.Entities.Components;
+using Farmi.Entities.Items;
 using Farmi.Repositories;
 using Khv.Engine;
 using Khv.Engine.Structs;
@@ -90,7 +91,8 @@ namespace Farmi.Entities
             Components.Add(messageBoxComponent);
 
             RepositoryManager r = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
-            ToolDataset toolDataset = r.GetDataSet<ToolDataset>(t => t.Name == "Hoe");
+            Inventory.AddToInventory(new Tool(game,r.GetDataSet<ToolDataset>(t => t.Name == "Hoe")));
+            Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Seed")));
         }
         #endregion
 
@@ -125,8 +127,8 @@ namespace Farmi.Entities
                     calendar.SkipDay(23, 45);
                 }
             });
-            keymapper.Map(new KeyTrigger("Previous item", Keys.Q), (triggered, args) => Inventory.PreviousItem() , InputState.Released);
-            keymapper.Map(new KeyTrigger("Next item", Keys.E), (triggered, args) => Inventory.NextItem(), InputState.Released);
+            keymapper.Map(new KeyTrigger("Previous tool", Keys.Q), (triggered, args) => Inventory.PreviousTool() , InputState.Released);
+            keymapper.Map(new KeyTrigger("Next tool", Keys.E), (triggered, args) => Inventory.NextTool(), InputState.Released);
             keymapper.Map(new KeyTrigger("Spawn dog", Keys.F2), (triggered, args) =>
             {
                 if (args.State == InputState.Pressed)
@@ -204,6 +206,7 @@ namespace Farmi.Entities
              
 
             GameObject nearestObject = world.GetNearestGameObject(this, new Padding(100));
+            Console.WriteLine(nearestObject);
             // jos ei ole lähellä mitään
             if (nearestObject == null)
                 return;

@@ -44,14 +44,14 @@ namespace Farmi.Entities.Items
 
         public void InitializeFromDataset(ToolDataset dataset)
         {
-            return; 
-            Texture = game.Content.Load<Texture2D>(Path.Combine("Tools", dataset.AssetName));
+           // Texture = game.Content.Load<Texture2D>(Path.Combine("Tools", dataset.AssetName));
 
             PowerUpComponent powComponent = new PowerUpComponent(this,
                 dataset.MinPow,
                 dataset.MaxPow,
                 dataset.PowTimestep);
-
+            //TODO temp
+            Size = new Size(32,32);
             Components.Add(powComponent);
 
             ScriptEngine scriptEngine = game.Components.First(
@@ -64,7 +64,6 @@ namespace Farmi.Entities.Items
 
         public override void Update(GameTime gameTime)
         {
-            return;
             base.Update(gameTime);
             Behaviour.Update(gameTime);
         }
