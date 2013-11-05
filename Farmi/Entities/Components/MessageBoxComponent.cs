@@ -16,9 +16,9 @@ namespace Farmi.Entities.Components
     internal class MessageBoxComponent : IDrawableObjectComponent
     {
         #region Vars
-        private ExclamationMarkDrawer exclamationMarkDrawer;
-        private FarmPlayer player;
-        private SpriteFont font;
+        private readonly ExclamationMarkDrawer exclamationMarkDrawer;
+        private readonly FarmPlayer player;
+        private readonly SpriteFont font;
 
         private int elapsed;
 
@@ -88,7 +88,7 @@ namespace Farmi.Entities.Components
             {
                 Vector2 size = font.MeasureString(currentMessage);
                 Vector2 position = new Vector2(player.Position.X - size.X / 2,
-                                                   player.Position.Y - size.Y);
+                                               player.Position.Y - size.Y);
 
                 spriteBatch.DrawString(font, currentMessage, position, Color.White);
             }

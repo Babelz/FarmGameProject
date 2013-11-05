@@ -80,11 +80,6 @@ namespace Farmi.Entities
             Collider = new BoxCollider(world, this,
                 new BasicObjectCollisionQuerier(),
                 new BasicTileCollisionQuerier());
-            viewComponent = new ViewComponent(new Vector2(0, 1));
-            Components.Add(viewComponent);
-
-            MessageBoxComponent messageBoxComponent = new MessageBoxComponent(game, this);
-            Components.Add(messageBoxComponent);
         }
 
         private void AddComponents()
