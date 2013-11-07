@@ -16,30 +16,37 @@ namespace Farmi.Entities.Items
     public abstract class Item : DrawableGameObject
     {
         #region Properties
-
-        public string Name { get; protected set; }
-        public Texture2D Texture { get; set; }
+        public string Name
+        {
+            get;
+            protected set;
+        }
         public string Description
         {
             get;
             protected set;
         }
-
+        public Texture2D Texture
+        {
+            get;
+            set;
+        }
         #endregion
 
         protected Item(KhvGame game, string name)
             : base(game)
         {
             Name = name;
-            
         }
-
         public Item(KhvGame game)
-            : base(game)
+            : this(game, "")
         {
         }
 
-        public abstract void DrawToInventory(SpriteBatch spriteBatch, Vector2 position, Size size);
-
+        public virtual void DrawToInventory(SpriteBatch spriteBatch, Vector2 position, Size size)
+        {
+            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
+            spriteBatch.Draw(Texture, rectangle, Color.White);
+        }
     }
 }

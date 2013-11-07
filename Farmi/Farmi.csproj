@@ -46,7 +46,9 @@
     <Compile Include="Datasets\DateDataset.cs" />
     <Compile Include="Datasets\FeedDataset.cs" />
     <Compile Include="Datasets\ToolDataset.cs" />
-    <Compile Include="dat\scripts\CowBehaviour.cs" />
+    <Compile Include="dat\scripts\CowBehaviour.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="dat\scripts\DogBehaviour.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

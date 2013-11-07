@@ -5,7 +5,6 @@ using System.Text;
 using Farmi.Datasets;
 using Farmi.Entities.Items.Components;
 using Khv.Engine;
-using Farmi.Datasets;
 using Microsoft.Xna.Framework.Graphics;
 using Khv.Scripts.CSharpScriptEngine.ScriptClasses;
 using Farmi.Entities.Scripts;
@@ -48,7 +47,6 @@ namespace Farmi.Entities.Items
             InitializeFromDataset(itemDataset);
         }
 
-
         public void InitializeFromDataset(ConsumableItemDataset dataset)
         {
             Name = dataset.Name;
@@ -76,11 +74,6 @@ namespace Farmi.Entities.Items
                 Script = scriptEngine.GetScript<ItemScript>(
                     new ScriptBuilder(dataset.Script, new object[] { game, this }));
             }
-        }
-        public override void DrawToInventory(SpriteBatch spriteBatch, Vector2 position, Size size)
-        {
-            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
-            spriteBatch.Draw(Texture, rectangle, Color.White);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

@@ -13,8 +13,13 @@ namespace Farmi.Entities.Items
 {
     internal sealed class AnimalFeedItem : Item, ILoadableRepositoryObject<FeedDataset>
     {
-        #region Vars
-        public string Type
+        #region Properties
+        public FeedDataset Dataset
+        {
+            get;
+            private set;
+        }
+        public string FeedType
         {
             get;
             private set;
@@ -24,22 +29,20 @@ namespace Farmi.Entities.Items
         public AnimalFeedItem(KhvGame game, FeedDataset feedDataset)
             : base(game)
         {
+            Dataset = feedDataset;
+
             InitializeFromDataset(feedDataset);
         }
 
         public void InitializeFromDataset(FeedDataset dataset)
         {
             Name = dataset.Name;
-            Type = dataset.Type;
+            FeedType = dataset.Type;
             Description = dataset.Type;
 
             size = new Size(32, 32);
 
             Texture = game.Content.Load<Texture2D>(Path.Combine("Items", dataset.AssetName));
-        }
-        public override void DrawToInventory(SpriteBatch spriteBatch, Vector2 position, Size size)
-        {
-            throw new NotImplementedException();
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

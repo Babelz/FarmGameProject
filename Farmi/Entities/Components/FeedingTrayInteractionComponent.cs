@@ -47,7 +47,7 @@ namespace Farmi.Entities.Components
 
                 if (feedItem != null)
                 {
-                    if (feedItem.Type == owner.FeedType)
+                    if (feedItem.FeedType == owner.FeedType)
                     {
                         return true;
                     }

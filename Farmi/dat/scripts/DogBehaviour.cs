@@ -15,6 +15,7 @@ using Khv.Maps.MapClasses.Layers.Tiles;
 using Microsoft.Xna.Framework.Audio;
 using Farmi.Entities;
 using System.IO;
+using Khv.Game.GameObjects;
 
 namespace Script
 {
@@ -22,109 +23,26 @@ namespace Script
     {
         #region Vars
         private SpriteSheetAnimation animation;
-
-        private int followTime;
-        private int runawayTime;
-        private int idleTime;
-
+        private SoundEffect effect;
+        private SpriteEffects flip;
         private Random random;
-        private double currentModifier;
-        private Vector2 oldvelocity;
 
-        SoundEffect effect;
+        private BaseTile lastTileCollidedWith;
+        private GameObject lastObjectCollidedWith;
+        private Animal lastDogCollidedWith;
+
+        private int stateTime;
         #endregion
 
         public DogBehaviour(KhvGame game, Animal owner)
             : base(game, owner)
         {
-        }
-
-        private void InitializeBrain()
-        {
-            brain.PushState(Move);
-
             random = new Random();
-            currentModifier = random.NextDouble();
-
-            RandomizeSpeed();
-        }
-
-        #region Brain states
-        private void Move()
-        {
-        }
-        private void AvoidPlayer()
-        {
-        }
-        private void FollowAndBark()
-        {
-            if (followTime > 3500 * currentModifier)
-            {
-                brain.PopState();
-                brain.PushState(Move);
-
-                followTime = 0;
-
-                currentModifier = random.NextDouble();
-            }
-        }
-        private void RunAwayFromTiles()
-        {
-            if (runawayTime > 2500 * 2 * currentModifier)
-            {
-                brain.PopState();
-                brain.PushState(Idle);
-
-                runawayTime = 0;
-
-                currentModifier = random.NextDouble();
-            }
-            else
-            {
-                owner.MotionEngine.GoalVelocityX += 0.0001f;
-                owner.MotionEngine.GoalVelocityY += 0.0001f;
-            }
-        }
-        private void Idle()
-        {
-            if (owner.MotionEngine.GoalVelocityX > 0) 
-            {
-                oldvelocity = owner.MotionEngine.GoalVelocity;
-                owner.MotionEngine.GoalVelocity = Vector2.Zero;
-            }
-            if (idleTime > 2500 * 2 * currentModifier)
-            {
-                RandomizeSpeed();
-
-                brain.PopState();
-                brain.PushState(Bark);
-
-                idleTime = 0;
-
-                currentModifier = random.NextDouble();
-            }
-            else
-            {
-            }
-        }
-        private void Bark()
-        {
-            effect.Play();
-
-            brain.PopState();
-            brain.PushState(RunAwayFromTiles);
-        }
-        #endregion
-
-        public override void Initialize()
-        {
-            InitializeBrain();
 
             Texture2D texture = game.Content.Load<Texture2D>(Path.Combine("Entities", owner.Dataset.AssetName));
-            animation = new SpriteSheetAnimation(texture);
-
             effect = game.Content.Load<SoundEffect>(Path.Combine("Sounds", "woof"));
 
+            animation = new SpriteSheetAnimation(texture);
             animation.AddSets(new SpriteAnimationSet[]
             {
                 new SpriteAnimationSet("idle", new Size(32, 32), 2, 0)
@@ -132,26 +50,157 @@ namespace Script
                     FrameTime = 100 * 3
                 }
             });
-
             animation.ChangeSet("idle");
 
             owner.Collider.OnCollision += new CollisionEventHandler(Collider_OnCollision);
+
+            brain.PushState(Walking);
         }
+
+        #region Brain states
+        private void Idle()
+        {
+            if (stateTime > 3500)
+            {
+                stateTime = 0;
+                brain.PopState();
+
+                RandomizeGoalVector();
+
+                brain.PushState(Walking);
+            }
+            else
+            {
+                owner.MotionEngine.GoalVelocityX = 0;
+                owner.MotionEngine.GoalVelocityY = 0;
+            }
+        }
+        private void Walking()
+        {
+            if (stateTime > 2000)
+            {
+                stateTime = 0;
+                brain.PopState();
+
+                brain.PushState(Idle);
+            }
+            else
+            {
+                if (stateTime % 250 == 0)
+                {
+                    RandomizeGoalVector();
+                }
+            }
+        }
+        private void RunAwayFromTile()
+        {
+            if (stateTime > 3000)
+            {
+                stateTime = 0;
+                brain.PopState();
+            }
+            else
+            {
+                if (owner.Position.X > lastTileCollidedWith.Position.X)
+                {
+                    owner.MotionEngine.GoalVelocityX = 1.0f;
+                }
+                else
+                {
+                    owner.MotionEngine.GoalVelocityX = -1.0f;
+                }
+
+                if (owner.Position.Y > lastTileCollidedWith.Position.Y)
+                {
+                    owner.MotionEngine.GoalVelocityY = 1.0f;
+                }
+                else
+                {
+                    owner.MotionEngine.GoalVelocityY = -1.0f;
+                }
+            }
+        }
+        private void RunAwayFromOtherObject()
+        {
+            if (stateTime > 1250)
+            {
+                stateTime = 0;
+                brain.PopState();
+            }
+            else
+            {
+                if (owner.Position.X > lastObjectCollidedWith.Position.X)
+                {
+                    owner.MotionEngine.GoalVelocityX = 1.0f;
+                }
+                else
+                {
+                    owner.MotionEngine.GoalVelocityX = -1.0f;
+                }
+
+                if (owner.Position.Y > lastObjectCollidedWith.Position.Y)
+                {
+                    owner.MotionEngine.GoalVelocityY = 1.0f;
+                }
+                else
+                {
+                    owner.MotionEngine.GoalVelocityY = -1.0f;
+                }
+            }
+        }
+        private void PlayWithOtherDog()
+        {
+            if (stateTime > 2000)
+            {
+                stateTime = 0;
+                brain.PopState();
+            }
+            else
+            {
+                DogBehaviour behaviour = lastDogCollidedWith.Behaviours.First() as DogBehaviour;
+
+                if (behaviour.brain.CurrentState != RunAwayFromOtherObject && brain.CurrentState == PlayWithOtherDog)
+                {
+                    behaviour.lastDogCollidedWith = owner;
+
+                    behaviour.brain.PopState();
+                    behaviour.brain.PushState(RunAwayFromOtherObject);
+                }
+
+                if (owner.Position.X > lastObjectCollidedWith.Position.X)
+                {
+                    owner.MotionEngine.GoalVelocityX = 1.0f;
+                }
+                else
+                {
+                    owner.MotionEngine.GoalVelocityX = -1.0f;
+                }
+
+                if (owner.Position.Y > lastObjectCollidedWith.Position.Y)
+                {
+                    owner.MotionEngine.GoalVelocityY = 1.0f;
+                }
+                else
+                {
+                    owner.MotionEngine.GoalVelocityY = -1.0f;
+                }
+            }
+        }
+        #endregion
+
         public override void Update(GameTime gameTime)
         {
-            brain.Update();
+            stateTime += gameTime.ElapsedGameTime.Milliseconds;
+            flip = owner.MotionEngine.GoalVelocityX > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-            if (brain.CurrentState == FollowAndBark)
+            if (brain.HasStates)
             {
-                followTime += gameTime.ElapsedGameTime.Milliseconds;
+                brain.CurrentState();
             }
-            if (brain.CurrentState == RunAwayFromTiles)
+            else
             {
-                runawayTime += gameTime.ElapsedGameTime.Milliseconds;
-            }
-            if (brain.CurrentState == Idle)
-            {
-                idleTime += gameTime.ElapsedGameTime.Milliseconds;
+                brain.PushState(Idle);
+                effect.Play();
             }
 
             animation.Update(gameTime);
@@ -160,40 +209,60 @@ namespace Script
         {
             Rectangle destination = new Rectangle((int)owner.Position.X, (int)owner.Position.Y, owner.Size.Width, owner.Size.Height);
 
-            spriteBatch.Draw(animation.Texture, destination, animation.CurrentSource, Color.White);
+            spriteBatch.Draw(animation.Texture, owner.Position, animation.CurrentSource, Color.White, 0.0f, Vector2.Zero, 1.0f, flip, 0.0f);
         }
 
-        private void RandomizeSpeed()
+        #region Movement methods
+        private void RandomizeGoalVector()
         {
-            owner.MotionEngine.GoalVelocityX = (2.0f * ((float)random.NextDouble() * 2 - 1));
-            owner.MotionEngine.GoalVelocityY = (2.0f * ((float)random.NextDouble() * 2 - 1));
+            owner.MotionEngine.GoalVelocityX = 0;
+            owner.MotionEngine.GoalVelocityY = 0;
+
+            owner.MotionEngine.GoalVelocityX = random.Next(-1, 1);
+
+            if (owner.MotionEngine.GoalVelocityX == 0)
+            {
+                while (owner.MotionEngine.GoalVelocityY == 0)
+                {
+                    owner.MotionEngine.GoalVelocityY = random.Next(-1, 1);
+                }
+            }
         }
+        #endregion
 
         #region Event handlers
         private void Collider_OnCollision(object sender, CollisionEventArgs result)
         {
-            brain.PopState();
+            BaseTile tile = result.CollidingObject as BaseTile;
+            GameObject gameObject = result.CollidingObject as GameObject;
 
-            if (result.CollidingObject is BaseTile)
+            if (tile != null && brain.CurrentState != RunAwayFromTile)
             {
-                owner.MotionEngine.GoalVelocityX = -owner.MotionEngine.GoalVelocityX;
-                owner.MotionEngine.GoalVelocityY = -owner.MotionEngine.GoalVelocityY;
+                stateTime = 0;
+                lastTileCollidedWith = tile;
 
-                brain.PushState(RunAwayFromTiles);
+                brain.PushState(RunAwayFromTile);
             }
-            else if (result.CollidingObject is Animal)
+            else if (gameObject != null)
             {
-                RandomizeSpeed();
+                stateTime = 0;
+                lastObjectCollidedWith = gameObject;
 
-                brain.PushState(RunAwayFromTiles);
-            }
-            else if (result.CollidingObject is FarmPlayer)
-            {
-                RandomizeSpeed();
+                Animal animal = gameObject as Animal;
 
-                brain.PushState(Bark);
+                if (animal != null)
+                {
+                    if (animal.Dataset.Type == "Dog" && brain.CurrentState != PlayWithOtherDog)
+                    {
+                        lastDogCollidedWith = animal;
+                        brain.PushState(PlayWithOtherDog);
+                    }
+                }
+                else if (brain.CurrentState != RunAwayFromOtherObject)
+                {
+                    brain.PushState(RunAwayFromOtherObject);
+                }
             }
-            
         }
         #endregion
     }
