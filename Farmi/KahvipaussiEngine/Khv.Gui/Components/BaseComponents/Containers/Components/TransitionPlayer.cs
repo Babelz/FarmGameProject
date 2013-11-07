@@ -189,7 +189,6 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components
                 currentTransition.PostRender(spriteBatch);
             }
         }
-
-        public delegate void TransitionEventHandler(object sender, GameEventArgs e);
     }
+    public delegate void TransitionEventHandler(object sender, GameEventArgs e);
 }

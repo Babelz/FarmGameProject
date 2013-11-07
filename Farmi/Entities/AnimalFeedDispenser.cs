@@ -26,15 +26,9 @@ namespace Farmi.Entities
         private FeedDispinserInformer informer;
         private FeedDataset feedDataset;
         private string mapContainedIn;
-        private int feedContained;
         #endregion
 
         #region Properties
-        public int FeedContained
-        {
-            get;
-            private set;
-        }
         public string FeedType
         {
             get;
@@ -44,15 +38,13 @@ namespace Farmi.Entities
         {
             get
             {
-                return feedContained > 0;
+                return FeedContained > 0;
             }
         }
-        public int TotalFeedContained
+        public int FeedContained
         {
-            get
-            {
-                return feedContained;
-            }
+            get;
+            private set;
         }
         #endregion
 
@@ -106,17 +98,17 @@ namespace Farmi.Entities
         {
             AnimalFeedItem feed = null;
 
-            if (feedContained > 0)
+            if (FeedContained > 0)
             {
                 feed = new AnimalFeedItem(game, feedDataset);
-                feedContained--;
+                FeedContained--;
             }
 
             return feed;
         }
         public void InsertFeed(int amount)
         {
-            feedContained += amount;
+            FeedContained += amount;
         }
         public override void Update(GameTime gameTime)
         {

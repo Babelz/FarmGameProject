@@ -137,8 +137,8 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components
                     Current.Enabled = false;
 
                     // Hookataan eventit joilla hallitaan ikkunoiden focusta siirtymä efektien välillä.
-                    transitionPlayer.OnInTransitionFinished += new TransitionPlayer.TransitionEventHandler(transitionPlayer_OnInTransitionFinished);
-                    transitionPlayer.OnOutTransitionFinished += new TransitionPlayer.TransitionEventHandler(transitionPlayer_OnOutTransitionFinished);
+                    transitionPlayer.OnInTransitionFinished += new TransitionEventHandler(transitionPlayer_OnInTransitionFinished);
+                    transitionPlayer.OnOutTransitionFinished += new TransitionEventHandler(transitionPlayer_OnOutTransitionFinished);
                     currentPlayer.Start();
                 }
 

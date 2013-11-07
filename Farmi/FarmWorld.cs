@@ -19,6 +19,10 @@ namespace Farmi
 {
     public sealed class FarmWorld : Khv.Game.World
     {
+        #region Vars
+
+        #endregion
+
         #region Properties
         public FarmPlayer Player
         {

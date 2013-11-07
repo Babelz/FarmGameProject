@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Khv.Gui.Components.BaseComponents.Containers.Components;
 using Farmi.Calendar;
+using Farmi.Entities.Components;
 
 namespace Farmi.Screens
 {
@@ -20,6 +21,7 @@ namespace Farmi.Screens
         private Camera camera;
 
         private SpriteFont font;
+        private DrawingFiniteStateMachine drawingFiniteStateMachine;
         #endregion
 
         #region Properties
@@ -27,6 +29,20 @@ namespace Farmi.Screens
         {
             get;
             private set;
+        }
+        public bool IsPlayingStateMachine
+        {
+            get
+            {
+                return drawingFiniteStateMachine != null;
+            }
+        }
+        public Camera Camera
+        {
+            get
+            {
+                return camera;
+            }
         }
         #endregion
 
@@ -41,6 +57,11 @@ namespace Farmi.Screens
             camera.Follow(player);
         }
 
+        public void StartPlayingState(DrawingFiniteStateMachine drawingFiniteStateMachine)
+        {
+            this.drawingFiniteStateMachine = drawingFiniteStateMachine;
+        }
+
         public override void LoadContent()
         {
             font = Content.Load<SpriteFont>("arial");
@@ -49,6 +70,18 @@ namespace Farmi.Screens
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (drawingFiniteStateMachine != null)
+            {
+                if (drawingFiniteStateMachine.HasFinished)
+                {
+                    drawingFiniteStateMachine = null;
+                }
+                else
+                {
+                    drawingFiniteStateMachine.CurrentState.UpdateAction(gameTime);
+                }
+            } 
 
             World.Update(gameTime);
 
@@ -84,6 +117,14 @@ namespace Farmi.Screens
 
             SpriteBatch.DrawString(font, dateText, new Vector2(camera.Position.X + camera.Viewport.Width / 2 - dateSize.X / 2,
                                                                camera.Position.Y + camera.Viewport.Height - dateSize.Y * 3), Color.White);
+
+            if (drawingFiniteStateMachine != null)
+            {
+                if (!drawingFiniteStateMachine.HasFinished)
+                {
+                    drawingFiniteStateMachine.CurrentState.DrawAction(SpriteBatch);
+                }
+            }
 
             SpriteBatch.End();
         }
