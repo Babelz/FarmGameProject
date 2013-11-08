@@ -21,10 +21,6 @@ namespace Farmi.dat.scripts
         {
         }
 
-        public override void Initialize()
-        {
-            throw new NotImplementedException();
-        }
         public override void Update(GameTime gameTime)
         {
             throw new NotImplementedException();

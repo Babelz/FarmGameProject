@@ -22,12 +22,12 @@ namespace Farmi.Entities.Items
     public class Tool : Item, ILoadableRepositoryObject<ToolDataset>
     {
         #region Properties
-        public ToolBehaviourScript Behaviour
+        public ToolDataset Dataset
         {
             get;
             private set;
         }
-        public ToolDataset Dataset
+        public ToolBehaviourScript Behaviour
         {
             get;
             private set;
@@ -61,18 +61,10 @@ namespace Farmi.Entities.Items
                 new ScriptBuilder(dataset.Behaviour, new object[] { game, this }));
             Behaviour.Initialize();
         }
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             Behaviour.Update(gameTime);
-        }
-
-        public override void DrawToInventory(SpriteBatch spriteBatch, Vector2 position, Size size)
-        {
-            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
-
-            spriteBatch.Draw(Texture, rectangle, Color.White);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

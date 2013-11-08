@@ -26,22 +26,29 @@ namespace Farmi.Entities.Animals
         private FarmWorld world;
         #endregion
 
-        #region Vars
-        public MotionEngine MotionEngine
-        {
-            get;
-            private set;
-        }
-        public AnimalBehaviourScript Behaviour
-        {
-            get;
-            private set;
-        }
+        #region Properties
         public AnimalDataset Dataset
         {
             get;
             private set;
         }
+        public MotionEngine MotionEngine
+        {
+            get;
+            private set;
+        }
+        public AnimalBehaviourScript[] Behaviours
+        {
+            get;
+            private set;
+        }
+#if DEBUG
+        public ScriptObserver<AnimalBehaviourScript>[] BehaviourObservers
+        {
+            get;
+            private set;
+        }
+#endif
         public string MapContainedIn
         {
             get;
@@ -102,9 +109,13 @@ namespace Farmi.Entities.Animals
             ScriptEngine scriptEngine = game.Components
                 .First(c => c is ScriptEngine) as ScriptEngine;
 
-            Behaviour = scriptEngine.GetScript<AnimalBehaviourScript>(
-                new ScriptBuilder("DogBehaviour", new object[] { game, this }));
-            Behaviour.Initialize();
+            Behaviours = new AnimalBehaviourScript[dataset.Behaviours.Length];
+
+            for (int i = 0; i < dataset.Behaviours.Length; i++)
+            {
+                Behaviours[i] = scriptEngine.GetScript<AnimalBehaviourScript>(
+                    new ScriptBuilder(dataset.Behaviours[i], new object[] { game, this }));
+            }
         }
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
@@ -133,13 +144,15 @@ namespace Farmi.Entities.Animals
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
 
-            Behaviour.Update(gameTime);
+            Array.ForEach<AnimalBehaviourScript>(Behaviours,
+                b => b.Update(gameTime));
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
 
-            Behaviour.Draw(spriteBatch);
+            Array.ForEach<AnimalBehaviourScript>(Behaviours,
+                b => b.Draw(spriteBatch));
         }
     }
 }
