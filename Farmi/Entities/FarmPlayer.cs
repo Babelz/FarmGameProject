@@ -237,6 +237,8 @@ namespace Farmi.Entities
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
+            if (Inventory.SelectedTool ==null) return;
+            Inventory.SelectedTool.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -61,6 +61,7 @@
     <Compile Include="Entities\Components\DispenserInformerComponent.cs" />
     <Compile Include="Entities\Components\DrawingFiniteStateMachine.cs" />
     <Compile Include="Entities\Components\FeedingTrayInteractionComponent.cs" />
+    <Compile Include="Entities\Components\HoeInteractionComponent.cs" />
     <Compile Include="Entities\Components\InteractionComponent.cs" />
     <Compile Include="Datasets\AnimalDataset.cs" />
     <Compile Include="Datasets\BuildingDataset.cs" />
@@ -82,10 +83,13 @@
     <Compile Include="Entities\Components\ToolInteractionComponent.cs" />
     <Compile Include="Entities\Components\ViewComponent.cs" />
     <Compile Include="Entities\CropSpot.cs" />
+    <Compile Include="Entities\CropSpotState.cs" />
     <Compile Include="Entities\Door.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
     <Compile Include="Entities\FeedDispinserInformer.cs" />
     <Compile Include="Entities\FeedingTray.cs" />
+    <Compile Include="Entities\Ground.cs" />
+    <Compile Include="Entities\GroundState.cs" />
     <Compile Include="Entities\ISaveable.cs" />
     <Compile Include="Entities\Items\AnimalFeedItem.cs" />
     <Compile Include="Entities\Items\Components\ThrowableComponent.cs" />
@@ -95,6 +99,7 @@
     <Compile Include="Entities\Scripts\AnimalBehaviourScript.cs" />
     <Compile Include="Entities\Scripts\ItemScript.cs" />
     <Compile Include="Entities\Scripts\ToolBehaviourScript.cs" />
+    <Compile Include="Entities\Seed.cs" />
     <Compile Include="Entities\Teleport.cs" />
     <Compile Include="FarmGame.cs" />
     <Compile Include="Entities\Components\IInteractionComponent.cs" />

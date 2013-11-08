@@ -10,44 +10,69 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities
 {
-    internal sealed class CropSpot : DrawableGameObject
+    public sealed class CropSpot : DrawableGameObject
     {
         private DrawableGameObject plantedItem = null;
         public CropSpot(KhvGame game, MapObjectArguments args)
             : base(game)
         {
             Position = args.Origin;
+            State = CropSpotState.Dirt;
         }
         public CropSpot(KhvGame game)
             : base(game)
         {
-        }
-
-
-        public void Plant(DrawableGameObject seed)
-        {
-            plantedItem = seed;
-            size = seed.Size;
+            State = CropSpotState.Dirt;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (!IsOccupied)
-                return;
-            //TODO päivitä kasvamista
 
         }
 
-        public bool IsOccupied
+        /// <summary>
+        /// Palauttaa maaperän.
+        /// Jos null, tarkoittaa sitä, että
+        /// alue on ns. vapaata markkinaa eikä siinä kasva mitään
+        /// </summary>
+        public Ground Ground
         {
-            get { return plantedItem != null; }
+            get; 
+            private set;
+        }
+
+        /// <summary>
+        /// Cropspotin state
+        /// </summary>
+        public CropSpotState State
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Asettaa maaperän. Jos null, tarkoittaa sitä, että
+        /// alue on ns. vapaata markkinaa eikä siinä kasva mitään
+        /// </summary>
+        /// <param name="ground"></param>
+        public void SetGround(Ground ground)
+        {
+            Ground = ground;
+            if (ground == null)
+            {
+                State = CropSpotState.Dirt;
+            }
+            else
+            {
+                State = CropSpotState.Grounded;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (!IsOccupied) return;
+            if (Ground == null) return;
 
-            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int) position.X, (int) position.Y, size.Width, size.Height), Color.RoyalBlue );
+            Ground.Draw(spriteBatch, this);
         }
     }
 }

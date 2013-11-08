@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Farmi.Entities;
 using Farmi.Entities.Components;
 using Farmi.Entities.Items;
 using Farmi.Entities.Scripts;
@@ -16,7 +17,9 @@ namespace Farmi.dat.scripts
         internal SeedInteractionComponent seedInteractionComponent;
         public SeedBehaviour(KhvGame game, Tool owner) : base(game, owner)
         {
-            seedInteractionComponent = new SeedInteractionComponent(owner);
+            Console.WriteLine(owner.Dataset.Name);
+#warning Tarvii repon että saa Seedin ulos toolista
+            seedInteractionComponent = new SeedInteractionComponent(owner as Seed);
             owner.Components.Add(seedInteractionComponent);
         }
 

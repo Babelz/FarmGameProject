@@ -19,7 +19,7 @@ namespace Farmi.Entities.Items
     /// <summary>
     /// Kuvaa työkalua jota voi käyttää
     /// </summary>
-    public sealed class Tool : Item, ILoadableRepositoryObject<ToolDataset>
+    public class Tool : Item, ILoadableRepositoryObject<ToolDataset>
     {
         #region Properties
         public ToolBehaviourScript Behaviour
@@ -76,7 +76,6 @@ namespace Farmi.Entities.Items
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            return;
             base.Draw(spriteBatch);
             Behaviour.Draw(spriteBatch);
         }

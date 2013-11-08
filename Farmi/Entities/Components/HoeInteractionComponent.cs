@@ -7,31 +7,23 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
-    public class SeedInteractionComponent : InteractionComponent
+    public class HoeInteractionComponent : InteractionComponent
     {
-        private readonly Seed owner;
-
-        public SeedInteractionComponent(Seed owner)
-        {
-            this.owner = owner;
-        }
-
         protected override void DoInteract(GameObject with, GameTime gameTime)
         {
+            // with = cropspot
             CropSpot spot = with as CropSpot;
-            if (spot == null)
-                return;
-            // onko spotilla maaperää
-            if (spot.Ground == null)
+            // siinä on jo maaperä
+            if (spot.Ground != null)
             {
                 IsInteracting = false;
                 return;
             }
 
-            // on maaperä, niin istutetaan kasvi
-            spot.Ground.Plant(owner);
+            spot.SetGround(new Ground());
 
             IsInteracting = false;
+
         }
 
         public override bool CanInteract(GameObject with)
