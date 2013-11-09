@@ -7,7 +7,7 @@ using Farmi.XmlParsers;
 
 namespace Farmi.Datasets
 {
-    public sealed class ToolDataset : IDataset
+    public class ToolDataset : IDataset
     {
         #region Vars
         private XElement xElement;
@@ -51,7 +51,7 @@ namespace Farmi.Datasets
         }
         #endregion
 
-        public void ParseValuesFrom(XElement xElement)
+        public virtual void ParseValuesFrom(XElement xElement)
         {
             this.xElement = xElement;
 

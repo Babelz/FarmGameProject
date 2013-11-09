@@ -5,8 +5,5 @@
     <Tool Name="Hoe" AssetName="hoe" Description="Wapsu panee jeesusta"
           MinPow="1" MaxPow="51" PowTimestep="10"
           Behaviour="HoeBehaviour"/>
-    <Tool Name="Seed" AssetName="seedxxx" Description="Kasvata vittu puu" 
-          MinPow="1" MaxPow="1" PowTimestep="0" Behaviour="SeedBehaviour" />
-    
   </Items>
 </Repository>

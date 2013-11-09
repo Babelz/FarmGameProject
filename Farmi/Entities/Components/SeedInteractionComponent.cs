@@ -21,14 +21,13 @@ namespace Farmi.Entities.Components
             CropSpot spot = with as CropSpot;
             if (spot == null)
                 return;
-            // onko spotilla maaperää
-            if (spot.Ground == null)
+            // onko spotilla maaperää tai kasvaako siinä joku
+            if (spot.Ground == null || spot.Ground.IsOccupied)
             {
                 IsInteracting = false;
                 return;
             }
-
-            // on maaperä, niin istutetaan kasvi
+            // ei kasva joten istutetaan
             spot.Ground.Plant(owner);
 
             IsInteracting = false;

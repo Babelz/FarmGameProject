@@ -91,7 +91,7 @@ namespace Farmi.Entities
 
             RepositoryManager r = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
             Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Hoe")));
-            Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Seed")));
+            Inventory.AddToInventory(new Seed(game, r.GetDataSet<SeedDataset>(t => t.Name == "Jeesus")));
         }
         private void InitDefaultSetup()
         {

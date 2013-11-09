@@ -32,6 +32,14 @@ namespace Farmi.Entities
             private set;
         }
 
+        public bool IsOccupied
+        {
+            get
+            {
+                return Seed != null;
+            }
+        }
+
         #endregion
         public Ground()
         {

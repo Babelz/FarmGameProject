@@ -17,6 +17,7 @@ namespace Farmi.Entities
         {
         }
 
+#warning proto | temp
         public override void DrawToInventory(SpriteBatch spriteBatch, Vector2 position, Size size)
         {
             Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);

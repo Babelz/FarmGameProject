@@ -45,6 +45,7 @@
     <Compile Include="Datasets\CalendarentryDataset.cs" />
     <Compile Include="Datasets\DateDataset.cs" />
     <Compile Include="Datasets\FeedDataset.cs" />
+    <Compile Include="Datasets\SeedDataset.cs" />
     <Compile Include="Datasets\ToolDataset.cs" />
     <Compile Include="dat\scripts\CowBehaviour.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -317,6 +318,7 @@
     <Compile Include="KahvipaussiEngine\Khv.Scripts\CSharpScriptEngine\ScriptObserver.cs" />
     <Compile Include="Repositories\AnimalFeedRepository.cs" />
     <Compile Include="Repositories\AnimalRepository.cs" />
+    <Compile Include="Repositories\SeedRepository.cs" />
     <Compile Include="Repositories\ToolRepository.cs" />
     <Compile Include="Repositories\ConsumableItemsRepository.cs" />
     <Compile Include="SpriteSheetAnimation.cs" />
@@ -441,6 +443,10 @@
     <Content Include="KahvipaussiEngine\Khv.Maps\config.xml" />
     <Content Include="KahvipaussiEngine\Khv.Maps\README.txt" />
     <Content Include="KahvipaussiEngine\Khv.Scripts\csharpscriptengine_README.txt" />
+    <None Include="dat\repos\seeds.db">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="dat\repos\tools.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

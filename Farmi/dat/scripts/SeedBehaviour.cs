@@ -15,11 +15,10 @@ namespace Farmi.dat.scripts
     internal class SeedBehaviour : ToolBehaviourScript
     {
         internal SeedInteractionComponent seedInteractionComponent;
-        public SeedBehaviour(KhvGame game, Tool owner) : base(game, owner)
+        public SeedBehaviour(KhvGame game, Seed owner) : base(game, owner)
         {
             Console.WriteLine(owner.Dataset.Name);
-#warning Tarvii repon että saa Seedin ulos toolista
-            seedInteractionComponent = new SeedInteractionComponent(owner as Seed);
+            seedInteractionComponent = new SeedInteractionComponent(owner);
             owner.Components.Add(seedInteractionComponent);
         }
 

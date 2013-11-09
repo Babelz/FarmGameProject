@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Repository Name="Seed Repository" DatasetType="SeedDataset" RepositoryType="SeedRepository">
+  <Items>
+    <Seed Name="Jeesus" AssetName="gg" Description="Wapsu panee jeesusta"
+          MinPow="1" MaxPow="1" PowTimestep="10"
+          Behaviour="SeedBehaviour"/>
+  </Items>
+</Repository>
