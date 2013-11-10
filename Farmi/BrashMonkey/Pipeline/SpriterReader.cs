@@ -175,7 +175,7 @@ namespace BrashMonkeySpriter.Content {
                 float pivotX = ReadFloat(xObject, "pivot_x", 0);
                 if (pivotX == 0)
                     pivotX = defaultPivots[key.Folder][key.File].X;
-                float pivotY = ReadFloat(xObject, "pivot_x", 1);
+                float pivotY = ReadFloat(xObject, "pivot_y", 1);
                 if (pivotY == 1)
                     pivotY = defaultPivots[key.Folder][key.File].Y;//ReadFloat(xObject, "pivot_x", 1); // pivot_y 1
                 key.Pivot = new Vector2(
@@ -204,7 +204,7 @@ namespace BrashMonkeySpriter.Content {
                 key.Location = new Vector2(locationX, -locationY);
 
                 float pivotX = ReadFloat(xBone, "pivot_x", 0); // pivot_x 0
-                float pivotY = ReadFloat(xBone, "pivot_x", 1); // pivot_y 1
+                float pivotY = ReadFloat(xBone, "pivot_y", 1); // pivot_y 1
                 key.Pivot = new Vector2(
                     pivotX ,
                     (1.0f - pivotY) 
