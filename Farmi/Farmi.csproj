@@ -38,6 +38,20 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BrashMonkey\Character.cs" />
+    <Compile Include="BrashMonkey\Pipeline\SpritePacker.cs" />
+    <Compile Include="BrashMonkey\Pipeline\SpriterImporter.cs" />
+    <Compile Include="BrashMonkey\Pipeline\SpriterProcessor.cs" />
+    <Compile Include="BrashMonkey\Pipeline\SpriterReader.cs" />
+    <Compile Include="BrashMonkey\Pipeline\SpriterShadow.cs" />
+    <Compile Include="BrashMonkey\Pipeline\Utils.cs" />
+    <Compile Include="BrashMonkey\Spriter\Animation.cs" />
+    <Compile Include="BrashMonkey\Spriter\Bone.cs" />
+    <Compile Include="BrashMonkey\Spriter\Entity.cs" />
+    <Compile Include="BrashMonkey\Spriter\Mainline.cs" />
+    <Compile Include="BrashMonkey\Spriter\Reference.cs" />
+    <Compile Include="BrashMonkey\Spriter\Timeline.cs" />
+    <Compile Include="BrashMonkey\Spriter\Types.cs" />
     <Compile Include="Calendar\Calendarentry.cs" />
     <Compile Include="Calendar\CalendarSystem.cs" />
     <Compile Include="Calendar\TimeSpanUtil.cs" />
@@ -335,6 +349,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MonoGameContentProcessors, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Program Files (x86)\MSBuild\MonoGame\v3.0\MonoGameContentProcessors.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK">
       <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
     </Reference>
@@ -400,6 +418,7 @@
     <Content Include="Content\MapTileSets\outdoors2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="BrashMonkey\LICENSE" />
     <None Include="dat\mps\farm.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -456,6 +475,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Spriter\" />
     <Folder Include="Content\Tools\" />
     <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
   </ItemGroup>

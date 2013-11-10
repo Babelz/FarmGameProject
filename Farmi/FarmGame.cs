@@ -45,6 +45,8 @@ namespace Farmi
         /// </summary>
         protected override void Initialize()
         {
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
             base.Initialize();
             InputManager.AddStateProvider(typeof(KeyboardStateProvider), new KeyboardStateProvider());
             InputManager.AddStateProvider(typeof(GamepadStateProvider), new GamepadStateProvider());

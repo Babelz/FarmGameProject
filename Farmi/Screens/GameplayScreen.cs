@@ -103,11 +103,12 @@ namespace Farmi.Screens
             SpriteBatch.GraphicsDevice.Clear(Color.Black);
             SpriteBatch.End();
 
-            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone,null, camera.TransFormation);
+            /*SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                   null,
                   null,
                   null,
-                  camera.TransFormation);
+                  camera.TransFormation);*/
 
             World.Draw(SpriteBatch);
             base.Draw();

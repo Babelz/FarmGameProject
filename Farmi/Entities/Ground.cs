@@ -32,6 +32,9 @@ namespace Farmi.Entities
             private set;
         }
 
+        /// <summary>
+        /// Kasvaako tässä maaperässä joku
+        /// </summary>
         public bool IsOccupied
         {
             get

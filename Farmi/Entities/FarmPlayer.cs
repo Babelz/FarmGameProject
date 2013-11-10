@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Linq;
+using BrashMonkeyContentPipelineExtension;
+using BrashMonkeySpriter;
+using BrashMonkeySpriter.Content;
 using Farmi.Calendar;
 using Farmi.Datasets;
 using Farmi.Entities.Animals;
@@ -152,8 +156,10 @@ namespace Farmi.Entities
 
 
             var powerUpComponent = Inventory.SelectedTool.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
-            Console.WriteLine("interact with " + powerUpComponent.CurrentPow + " power");
-            powerUpComponent.Disable();
+            if (powerUpComponent != null)
+            {
+                powerUpComponent.Disable();
+            }
 
             var interactionComponent = Inventory.SelectedTool.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
             // jotain meni vikaan, jokaisella työkalulla PITÄISI olla interaktion komponentti
@@ -162,7 +168,6 @@ namespace Farmi.Entities
 
 
             GameObject nearestObject = world.GetNearestGameObject(this, new Padding(100));
-            Console.WriteLine(nearestObject);
             // jos ei ole lähellä mitään
             if (nearestObject == null)
                 return;
@@ -189,11 +194,10 @@ namespace Farmi.Entities
                 return;
             }
 
-            if (!powerUpComponent.Enabled && !powerUpComponent.IsMaximumMet)
-            {
-                powerUpComponent.Disable();
-                powerUpComponent.Enable();
-            }
+            // jos power up on päällä ja päivittämässä poweria niin ei tarvi resetoida
+            if (powerUpComponent.Enabled || powerUpComponent.IsMaximumMet) return;
+            powerUpComponent.Disable();
+            powerUpComponent.Enable();
         }
         private void TryInteract(InputEventArgs args)
         {
