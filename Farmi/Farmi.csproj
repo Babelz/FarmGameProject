@@ -419,6 +419,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="BrashMonkey\LICENSE" />
+    <None Include="Content\Spriter\player.scml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="dat\mps\farm.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -444,6 +447,9 @@
     <Content Include="Content\naama.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\player_test.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Sounds\woof.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -453,6 +459,42 @@
     <None Include="dat\repos\animalfeeds.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Spriter\walk_down\player-front_0000_Head.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_down\player-front_0001_Body.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_down\player-front_0002_Rhand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_down\player-front_0003_Lhand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_down\player-front_0004_Rleg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_down\player-front_0005_Lleg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_side\player-side_0000_Head.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_side\player-side_0001_Rhand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_side\player-side_0002_Body.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_side\player-side_0003_Lhand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_side\player-side_0004_Lleg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_side\player-side_0005_Rleg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\ukko.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -475,7 +517,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Spriter\" />
     <Folder Include="Content\Tools\" />
     <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
   </ItemGroup>

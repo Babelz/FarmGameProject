@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using BrashMonkeyContentPipelineExtension;
@@ -37,6 +38,7 @@ namespace Farmi.Entities
 
         private ViewComponent viewComponent;
 
+        private CharaterAnimator animator;
         #endregion
 
         #region Properties
@@ -232,7 +234,15 @@ namespace Farmi.Entities
             controller.ChangeSetup(defaultInputSetup);
             InitDefaultSetup();
 
-            texture = game.Content.Load<Texture2D>("ukko");
+            texture = game.Content.Load<Texture2D>("player_test");
+
+            SpriterReader reader = new SpriterReader();
+            SpriterImporter importer = new SpriterImporter();
+            var model = reader.Read(importer.Import(Path.Combine("Content\\Spriter", "player.scml")), null, game.Content,
+                game.GraphicsDevice);
+            animator = model.CreateAnimator("player");
+            animator.ChangeAnimation("walk_right");
+            animator.Scale = 1.5f;
         }
 
         public override void Update(GameTime gameTime)
@@ -240,6 +250,9 @@ namespace Farmi.Entities
             base.Update(gameTime);
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
+            animator.Location = Position;
+            animator.Update(gameTime);
+
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
             if (Inventory.SelectedTool ==null) return;
             Inventory.SelectedTool.Update(gameTime);
@@ -247,7 +260,8 @@ namespace Farmi.Entities
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.White);
+            //spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.White);
+            animator.Draw(spriteBatch);
             base.Draw(spriteBatch);
 
             #region Draw closest
