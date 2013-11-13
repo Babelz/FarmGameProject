@@ -10,7 +10,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Khv.Engine.Structs;
+using Khv.Game.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -211,10 +212,18 @@ namespace BrashMonkeySpriter {
         }
 
         protected AnimationTransform ApplyTransform(AnimationTransform p_transform, AnimationTransform p_baseTransform) {
+           
+            /*RenderMatrix maxTrans = m_renderList.Find(m => m.Location.Y == m_renderList.Max(mt => mt.Location.Y));
+            RenderMatrix minTrans = m_renderList.Find(m => m.Location.Y == m_renderList.Min(mt => mt.Location.Y));
+            Rectangle rectangle = m_rect[maxTrans.Folder][maxTrans.File];
+            float height = maxTrans.Location.Y + rectangle.Height - minTrans.Location.Y;
+            Console.WriteLine(height);
+            vittu.Size = new Size(vittu.Size.Width, (int)height);*/
+
             //  Create a tranformation matrix so we can find out the location of the bone \ body
             Matrix l_matrix =   Matrix.CreateScale(p_baseTransform.Scale.X, p_baseTransform.Scale.Y, 0) *
                                 Matrix.CreateRotationZ(p_baseTransform.Rotation) *
-                                Matrix.CreateTranslation(p_baseTransform.Location.X, p_baseTransform.Location.Y, 0);
+                                Matrix.CreateTranslation(p_baseTransform.Location.X / 2, p_baseTransform.Location.Y, 0);
 
             AnimationTransform l_result = new AnimationTransform();
 
@@ -234,7 +243,7 @@ namespace BrashMonkeySpriter {
             }
 
             AnimationTransform l_baseTransform;
-            if((p_reference.Parent != -1) && p_main.Bones.Count != 0){
+            if((p_reference.Parent != -1)) {
                 l_baseTransform = ApplyBoneTransforms(p_main, p_main.Bones[p_reference.Parent]);
             } else {
                 //Apply global transforms to objects without parents (location is added later)
@@ -314,7 +323,7 @@ namespace BrashMonkeySpriter {
             foreach (RenderMatrix l_render in m_renderList) {
                 p_spriteBatch.Draw(
                     m_tx[l_render.Folder],
-                    l_render.Location,
+                    l_render.Location ,
                     m_rect[l_render.Folder][l_render.File],
                     m_color * l_render.Alpha,
                     l_render.Rotation,

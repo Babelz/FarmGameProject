@@ -459,6 +459,9 @@
     <None Include="dat\repos\animalfeeds.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Spriter\tools\pick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Spriter\walk_down\player-front_0000_Head.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

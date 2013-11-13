@@ -28,7 +28,7 @@ namespace Farmi.Entities
     {
         #region Vars
         private readonly FarmWorld world;
-        private const float speed = 5f;
+        private const float speed = 2.5f;
 
 
         private InputController controller;
@@ -81,7 +81,7 @@ namespace Farmi.Entities
             this.world = world;
             Position = new Vector2(500, 200);
 
-            Size = new Size(29, 37);
+            Size = new Size(30, 47);
 
             Collider = new BoxCollider(world, this,
                 new BasicObjectCollisionQuerier(),
@@ -102,10 +102,17 @@ namespace Farmi.Entities
         private void InitDefaultSetup()
         {
             var keymapper = defaultInputSetup.Mapper.GetInputBindProvider<KeyInputBindProvider>();
+            #region Move
             keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
             keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, speed));
+            #endregion
+            
+            keymapper.Map(new KeyTrigger("Flip left", Keys.A, Keys.Left), (triggered, args) => animator.FlipX = true, InputState.Pressed);
+            keymapper.Map(new KeyTrigger("Flip right", Keys.D, Keys.Right), (triggered, args) => animator.FlipX = false, InputState.Pressed);
+            
+
             keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
             keymapper.Map(new KeyTrigger("Next day", Keys.F1), (triggered, args) =>
             {
@@ -241,8 +248,8 @@ namespace Farmi.Entities
             var model = reader.Read(importer.Import(Path.Combine("Content\\Spriter", "player.scml")), null, game.Content,
                 game.GraphicsDevice);
             animator = model.CreateAnimator("player");
-            animator.ChangeAnimation("walk_right");
-            animator.Scale = 1.5f;
+            animator.ChangeAnimation("use_tool_right");
+            animator.Scale = 1.0f;
         }
 
         public override void Update(GameTime gameTime)
@@ -250,7 +257,7 @@ namespace Farmi.Entities
             base.Update(gameTime);
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
-            animator.Location = Position;
+            animator.Location = Position+ new Vector2(size.Width/ 2, size.Height);
             animator.Update(gameTime);
 
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
@@ -260,7 +267,7 @@ namespace Farmi.Entities
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.White);
+            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Red);
             animator.Draw(spriteBatch);
             base.Draw(spriteBatch);
 
