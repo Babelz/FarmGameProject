@@ -250,11 +250,14 @@ namespace Farmi.Entities
             base.Update(gameTime);
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
-            animator.Location = Position;
+            animator.Location = Position + new Vector2(0, size.Height);
             animator.Update(gameTime);
 
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
-            if (Inventory.SelectedTool ==null) return;
+            if (Inventory.SelectedTool == null)
+            {
+                return;
+            }
             Inventory.SelectedTool.Update(gameTime);
         }
 

@@ -430,6 +430,7 @@
     </None>
     <None Include="dat\repos\buildings.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="dat\mps\town.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
