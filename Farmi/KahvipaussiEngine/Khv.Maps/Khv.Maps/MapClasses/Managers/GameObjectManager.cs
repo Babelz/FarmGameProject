@@ -233,10 +233,15 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         public void FlushAddQue()
         {
-            // TODO: optimoi
-
-            safeAddQue.ForEach(
-                o => AddGameObject(o));
+            if (safeAddQue.Count > 10)
+            {
+                AddGameObjects(safeAddQue);
+            }
+            else
+            {
+                safeAddQue.ForEach(
+                    o => AddGameObject(o));
+            }
 
             safeAddQue.Clear();
         }
@@ -302,10 +307,15 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         public void FlushRemoveQue()
         {
-            // TODO: optimoi
-
-            safeRemoveQue.ForEach(
-                o => RemoveGameObject(o));
+            if (safeRemoveQue.Count > 10)
+            {
+                RemoveGameObjects(safeRemoveQue);
+            }
+            else
+            {
+                safeRemoveQue.ForEach(
+                    o => RemoveGameObject(o));
+            }
 
             safeRemoveQue.Clear();
         }
@@ -318,7 +328,7 @@ namespace Khv.Maps.MapClasses.Managers
         public void AddGameObject(GameObject gameObject)
         {
             IList list = GetObjectList(gameObject.GetType());
-            AddToList(list, gameObject);
+            AddToLists(list, gameObject);
         }
         /// <summary>
         /// Lisää monta peliobjektia manageriin.
@@ -335,7 +345,7 @@ namespace Khv.Maps.MapClasses.Managers
                     list = GetObjectList(gameObject.GetType());
                 }
 
-                AddToList(list, gameObject);
+                AddToLists(list, gameObject);
             }
         }
         /// <summary>
@@ -359,7 +369,7 @@ namespace Khv.Maps.MapClasses.Managers
 
             if (list != null)
             {
-                RemoveFromList(list, gameObject);
+                RemoveFromLists(list, gameObject);
 
                 RemoveIfEmpty(list.GetType().GetGenericArguments().First());
             }
@@ -375,7 +385,7 @@ namespace Khv.Maps.MapClasses.Managers
             {
                 GameObject gameObject = allObjects.Find(o => predicate(o));
 
-                RemoveFromList(list, gameObject);
+                RemoveFromLists(list, gameObject);
 
                 RemoveIfEmpty(list.GetType().GetGenericArguments().First());
             }
@@ -392,7 +402,7 @@ namespace Khv.Maps.MapClasses.Managers
             {
                 T gameObject = list.Find(o => predicate(o));
 
-                RemoveFromList(list, gameObject);
+                RemoveFromLists(list, gameObject);
 
                 RemoveIfEmpty(list.GetType().GetGenericArguments().First());
             }
@@ -402,15 +412,24 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         public void RemoveGameObjects<T>(IEnumerable<T> objectsToRemove) where T : GameObject
         {
-            List<T> list = GetObjectList<T>(typeof(T));
+            List<T> last = null;
+            List<T> list = GetObjectList<T>(typeof(T))
+                .OrderBy(o => o.GetType().Name)
+                .ToList();
 
-            if (list != null)
+            foreach (T gameObject in list)
             {
-                foreach (T gameObject in objectsToRemove)
+                if (list.GetType().GetGenericArguments().First() != gameObject.GetType())
                 {
-                    RemoveFromList(list, gameObject);
+                    last = list;
+                    list = GetObjectList<T>(gameObject.GetType());
+                    RemoveIfEmpty(last.GetType().GetGenericArguments().First());
                 }
+
+                RemoveFromLists(list, gameObject);
             }
+
+            RemoveIfEmpty(last.GetType().GetGenericArguments().First());
         }
         /// <summary>
         /// Poistaa kaikki tyyppiä olevat peliobjektit managerista jotka täyttävät ehdon.
@@ -425,7 +444,7 @@ namespace Khv.Maps.MapClasses.Managers
 
                 foreach (T gameObject in objectsToRemove)
                 {
-                    RemoveFromList(list, gameObject);
+                    RemoveFromLists(list, gameObject);
                 }
 
                 RemoveIfEmpty(list.GetType().GetGenericArguments().First());
@@ -626,7 +645,7 @@ namespace Khv.Maps.MapClasses.Managers
         /// <summary>
         /// Poistaa olion listasta ja allobjects listasta jos sitä ei poisteta heti alussa.
         /// </summary>
-        private void RemoveFromList<T>(IList list, T gameObject) where T : GameObject
+        private void RemoveFromLists<T>(IList list, T gameObject) where T : GameObject
         {
             list.Remove(gameObject);
 
@@ -649,7 +668,7 @@ namespace Khv.Maps.MapClasses.Managers
         /// <summary>
         /// Lisää olion listaan ja allobjects listaan jos sitä ei lisätä heti alussa.
         /// </summary>
-        private void AddToList<T>(IList list, T gameObject) where T : GameObject
+        private void AddToLists<T>(IList list, T gameObject) where T : GameObject
         {
             // Ei lisätä samaa olio viitettä uudestaan.
             if (list.Contains(gameObject))
