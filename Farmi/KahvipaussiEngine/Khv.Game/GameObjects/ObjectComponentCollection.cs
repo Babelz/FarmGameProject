@@ -3,34 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using System.Collections;
 
 namespace Khv.Game.GameObjects
 {
     /// <summary>
     /// Luokka jonka tarkoitus on wrapata kaikki peliolion komponentit
     /// samaan luokkaa. Tukee foreach iterointia ja indexillä noutamista.
-    /// Ei tue indexillä asettamista.
+    /// Ei tue indexillä asettamista. Mäppää 3 komponenttien pää rajapintaa
+    /// listoihin. Rajapinnat ovat IObjectComponent, IDrawableObjectComponent ja
+    /// IUpdatableObjectComponent.
     /// </summary>
     public class ObjectComponentCollection
     {
         #region Vars
         private readonly List<IObjectComponent> allComponents;
         private readonly List<IDrawableObjectComponent> drawableComponents;
+        private readonly List<IUpdatableObjectComponent> updatableComponents;
+
+        private readonly Dictionary<Type, IList> componentLists;
         #endregion
 
         #region Properties
-        public int Count
-        {
-            get
-            {
-                return allComponents.Count;
-            }
-        }
         public IObjectComponent this[int index]
         {
             get
             {
                 return allComponents[index];
+            }
+        }
+        /// <summary>
+        /// Palauttaa komponenttien määrän.
+        /// </summary>
+        public int ComponentCount
+        {
+            get
+            {
+                return allComponents.Count;
             }
         }
         #endregion
@@ -39,161 +48,209 @@ namespace Khv.Game.GameObjects
         {
             allComponents = new List<IObjectComponent>();
             drawableComponents = new List<IDrawableObjectComponent>();
+            updatableComponents = new List<IUpdatableObjectComponent>();
+
+            componentLists = new Dictionary<Type, IList>();
+            componentLists.Add(typeof(IObjectComponent), allComponents);
+            componentLists.Add(typeof(IDrawableObjectComponent), drawableComponents);
+            componentLists.Add(typeof(IUpdatableObjectComponent), updatableComponents);
         }
 
-        // Poistaa komponentin oikeista listoista.
-        private void CheckAndRemove(IObjectComponent objectComponent)
+        // Palauttaa komponentti listan komponentin tyypin perusteella.
+        private IList GetComponentList(Type componentType)
         {
-            if (objectComponent != null)
-            {
-                allComponents.Remove(objectComponent);
+            IList results = null;
+            Type[] types = componentType.GetInterfaces();
 
-                // Jos komponentti on drawable, pitää se poistaa myös drawable listasta.
-                IDrawableObjectComponent drawableComponent;
-                if ((drawableComponent = objectComponent as IDrawableObjectComponent) != null)
-                {
-                    drawableComponents.Remove(drawableComponent);
-                }
-            }
-        }
-        // Lisää komponentin oikeisiin listoihin.
-        private void CheckAndAdd(IObjectComponent objectComponent)
-        {
-            if (objectComponent != null)
+            // Jos tyyppi on rajapinta, haetaan lista suoriltaan.
+            if (componentType.IsInterface)
             {
-                if (allComponents.Find(c => c.GetType() == objectComponent.GetType()) == null)
-                {
-                    allComponents.Add(objectComponent);
-
-                    // Jos komponentti on drawable, lisätään se myös drawable listaan.
-                    IDrawableObjectComponent drawableComponent;
-                    if ((drawableComponent = objectComponent as IDrawableObjectComponent) != null)
-                    {
-                        drawableComponents.Add(drawableComponent);
-                    }
-                }
-            }
-        }
-        // Palauttaa iteraattorin halutulle listalle ja halutulla predicaatilla.
-        private IEnumerable<T> GetIterator<T>(List<T> collection, Predicate<T> predicate = null) where T : IObjectComponent
-        {
-            if (predicate == null)
-            {
-                foreach (T item in collection)
-                {
-                    yield return item;
-                }
+                results = componentLists[componentType];
             }
             else
             {
-                foreach (T item in collection.Where(i => predicate(i)))
+                // Jos tyyppi ei ole rajapinta, käydään sen jokainen rajapinta läpi 
+                // ja katsotaan mikä niistä matchaa dictin avaimeen.
+                foreach (Type type in types)
                 {
-                    yield return item;
+                    componentLists.TryGetValue(type, out results);
+                    if (results != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return results;
+        }
+       
+        // Lisää komponentin jokaiseen listaan johon se voi kuulua.
+        private void AddToLists<T>(T objectComponent) where T : IObjectComponent
+        {
+            // Suorittaa lisäys operaation listaan jos komponenttia ei ole siinä.
+            PerformActionWith<T>((list, component) => 
+                {
+                    if (!list.Contains(component))
+                    {
+                        list.Add(component);
+                    }
+                }, objectComponent);
+        }
+        
+        // Poistaa komponentin jokaisesta listasta johon se voisi kuulua.
+        private void RemoveFromLists<T>(T objectComponent) where T : IObjectComponent
+        {
+            // Suorittaa poisto operaation listalle jos komponentti on listassa.
+            PerformActionWith<T>((list, component) => 
+                {
+                    if (list.Contains(component))
+                    {
+                        list.Remove(component);
+                    }
+                }, objectComponent);
+        }
+       
+        // Suorittaa jonkin operaation listalla ja annetulla komponentilla.
+        // Suoritetaan poisto ja lisäys operaatiot tällä metodilla jotta säästytään
+        // turhalta koodin duplikoinnilta.
+        private void PerformActionWith<T>(Action<IList, T> action, T objectComponent) where T : IObjectComponent
+        {
+            IList list = null;
+            Type[] types = typeof(T).GetInterfaces();
+            
+            // Jos tyyppi on rajapinta, suoritetaan operaatio heti sillä ja listalla johon se voi kuulua.
+            if (typeof(T).IsInterface)
+            {
+                list = componentLists[typeof(T)];
+                action(list, objectComponent);
+                list = null;
+            }
+
+            // Käy tyypin jokaisen rajapinnan läpin ja samalla suorittaa jokaisella listalla johon 
+            // se voi kuulua operaation.
+            foreach (Type type in types)
+            {
+                componentLists.TryGetValue(type, out list);
+                if (list != null)
+                {
+                    // Jos saatiin lista dictistä, suoritetaan operaatio ja asetetaan listan viite nulliksi.
+                    action(list, objectComponent);
+                    list = null;
                 }
             }
         }
 
         #region Add methods
         /// <summary>
-        /// Lisää uuden komponentin managerille. 
-        /// Jos manageri omistaa jo tätä tyyppiä olevan komponentin, sitä ei lisätä.
+        /// Lisää annetun komponentin listoihin.
         /// </summary>
-        public void Add(IObjectComponent objectComponent)
+        public void AddComponent<T>(T objectComponent) where T : IObjectComponent
         {
-            CheckAndAdd(objectComponent);
+            AddToLists(objectComponent);
         }
         /// <summary>
-        /// Lisää monta komponenttia managerille.
-        /// Jos manageri omistaa jonkin näistä komponentti tyypeistä, sitä ei lisätä.
+        /// Lisää annetut komponentit listoihin.
         /// </summary>
-        public void AddMany(IEnumerable<IObjectComponent> objectComponents)
+        public void AddComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
         {
-            foreach (IObjectComponent objectComponent in objectComponents)
+            foreach (T component in objectComponents)
             {
-                CheckAndAdd(objectComponent);
+                AddToLists(component);
             }
         }
         /// <summary>
-        /// Lisää monta komponenttia managerille.
-        /// Jos manageri omistaa jonkin näistä komponentti tyypeistä, sitä ei lisätä.
+        /// Lisää annetut komponentit listoihin.
         /// </summary>
-        /// <param name="objectComponents"></param>
-        public void AddMany(params IObjectComponent[] objectComponents)
+        public void AddComponents<T>(params T[] objectComponents) where T : IObjectComponent
         {
-            Array.ForEach<IObjectComponent>(objectComponents, c => CheckAndAdd(c));
+            AddComponents<T>(objectComponents.ToList());
         }
         #endregion
 
         #region Remove methods
         /// <summary>
-        /// Poistaa halutun komponentin managerista.
+        /// Poistaa annetun komponentin listoista.
         /// </summary>
-        /// <param name="objectComponent"></param>
-        public void Remove(IObjectComponent objectComponent)
+        public void RemoveComponent<T>(T objectComponent) where T : IObjectComponent
         {
-            CheckAndRemove(objectComponent);
+            RemoveFromLists(objectComponent);
         }
         /// <summary>
-        /// Poistaa komponentin managerista joka
-        /// ensimmäisenä täyttää ehdon.
+        /// Poistaa annetut komponentit listoista.
         /// </summary>
-        /// <param name="predicate"></param>
-        public void Remove(Predicate<IObjectComponent> predicate)
+        public void RemoveComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
         {
-            CheckAndRemove(allComponents.Find(c => predicate(c)));
+            foreach (T component in objectComponents)
+            {
+                RemoveFromLists(component);
+            }
         }
         /// <summary>
-        /// Poistaa kaikki komponentit managerista jotka 
-        /// täyttävät ehdon.
+        /// Poistaa annetut komponentit listoista.
         /// </summary>
-        /// <param name="predicate"></param>
-        public void RemoveAll(Predicate<IObjectComponent> predicate)
+        public void RemoveComponents<T>(params T[] objectComponents) where T : IObjectComponent
         {
-            allComponents.FindAll(c => predicate(c)).ForEach(c => CheckAndRemove(c));
-        }
-        /// <summary>
-        /// Poistaa kaikki komponentit managerista.
-        /// </summary>
-        public void Clear()
-        {
-            allComponents.Clear();
-            drawableComponents.Clear();
+            RemoveComponents<T>(objectComponents.ToList());
         }
         #endregion
 
         #region Query methods
         /// <summary>
-        /// Palauttaa booleanin siitä omistaako
-        /// manageri ehdon täyttävän komponentin.
+        /// Palauttaa komponentin joka täyttää ehdon ensimmäisenä.
         /// </summary>
-        public bool ContainsComponent(Predicate<IObjectComponent> predicate)
+        public T GetComponent<T>(Predicate<T> predicate) where T : IObjectComponent
         {
-            return allComponents.Find(c => predicate(c)) != null;
+            IList list = GetComponentList(typeof(T));
+
+            foreach (T component in list)
+            {
+                if (predicate(component))
+                {
+                    return component;
+                }
+            }
+
+            return default(T);
         }
         /// <summary>
-        /// Palauttaa ensimmäisen komponentin managerista
-        /// joka täyttää annetun ehdon.
+        /// Palauttaa komponentin joka täyttää ehdon ensimmäisenä.
         /// </summary>
         public IObjectComponent GetComponent(Predicate<IObjectComponent> predicate)
         {
             return allComponents.Find(c => predicate(c));
         }
         /// <summary>
-        /// Palauttaa kaikki piirrettävät komponentit managerista.
+        /// Palauttaa truen jos jokin komponentti täyttää ehdon.
         /// </summary>
-        /// <param name="predicate">Selection ehto.</param>
-        public IEnumerable<IDrawableObjectComponent> DrawableComponents(Predicate<IDrawableObjectComponent> predicate = null)
+        public bool ContainsComponent(Predicate<IObjectComponent> predicate)
         {
-            return GetIterator<IDrawableObjectComponent>(drawableComponents, predicate);
-        }
-        /// <summary>
-        /// Palauttaa kaikki komponentit managerista.
-        /// </summary>
-        /// <param name="predicate">Selection ehto.</param>
-        public IEnumerable<IObjectComponent> AllComponents(Predicate<IObjectComponent> predicate = null)
-        {
-            return GetIterator<IObjectComponent>(allComponents, predicate);
+            return allComponents.Find(c => predicate(c)) != null;
         }
         #endregion
+
+        /// <summary>
+        /// Palauttaa iterointia varten kokoelman halutun tyyppisistä komponenteista.
+        /// Jos halutaan iteroida kaikki komponentit läpi, käytetään pohja rajapintaa (IObjectComponent)
+        /// tyyppi argumenttina.
+        /// </summary>
+        public IEnumerable<T> ComponentsOfType<T>(Predicate<T> predicate = null) where T : IObjectComponent
+        {
+            List<T> list = GetComponentList(typeof(T)) as List<T>;
+
+            if (predicate == null)
+            {
+                foreach (T component in list)
+                {
+                    yield return component;
+                }
+            }
+            else
+            {
+                foreach (T component in list.Where(c => predicate(c)))
+                {
+                    yield return component;
+                }
+            } 
+        }
     }
 }

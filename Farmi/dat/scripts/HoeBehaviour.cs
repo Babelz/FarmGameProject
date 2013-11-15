@@ -11,11 +11,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.dat.scripts
 {
-    internal class HoeBehaviour : ToolBehaviourScript
+    public class HoeBehaviour : ToolBehaviourScript
     {
-        public HoeBehaviour(KhvGame game, Tool owner) : base(game, owner)
+        public HoeBehaviour(KhvGame game, Tool owner) 
+            : base(game, owner)
         {
-            owner.Components.Add(new HoeInteractionComponent());
+            owner.Components.AddComponent(new HoeInteractionComponent());
         }
 
         public override void Update(GameTime gameTime)

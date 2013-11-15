@@ -27,11 +27,10 @@ namespace Khv.Maps.MapClasses.Layers.Components
         private readonly ILayer owner;
         #endregion
 
-        public LayerComponent(KhvGame game, ILayer layer)
+        public LayerComponent(KhvGame game, ILayer owner)
         {
             this.game = game;
-
-            owner = layer;
+            this.owner = owner;
         }
 
         public abstract void Update(GameTime gameTime);
@@ -42,8 +41,8 @@ namespace Khv.Maps.MapClasses.Layers.Components
     /// </summary>
     public abstract class DrawingLayerComponent : LayerComponent
     {
-        public DrawingLayerComponent(KhvGame game, ILayer layer)
-            : base(game, layer)
+        public DrawingLayerComponent(KhvGame game, ILayer owner)
+            : base(game, owner)
         {
         }
 
@@ -85,9 +84,10 @@ namespace Khv.Maps.MapClasses.Layers.Components
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Array.ForEach(genericOwner.Tiles, row =>
-                Array.ForEach(row.Where(t => t != null).ToArray(), t =>
-                    t.Draw(spriteBatch)));
+            Array.ForEach(genericOwner.Tiles, 
+                row => Array.ForEach(row.Where(
+                    t => t != null).ToArray(), 
+                    t => t.Draw(spriteBatch)));
         }
     }
 
@@ -149,9 +149,9 @@ namespace Khv.Maps.MapClasses.Layers.Components
         public override void Update(GameTime gameTime)
         {
             animationManager.Update(gameTime);
-            Array.ForEach(genericOwner.Tiles, row =>
-                Array.ForEach(row, t =>
-                    t.Update(gameTime)));
+            Array.ForEach(genericOwner.Tiles, 
+                row => Array.ForEach(row, 
+                    t => t.Update(gameTime)));
         }
     }
     #endregion

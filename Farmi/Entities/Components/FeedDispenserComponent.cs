@@ -33,8 +33,8 @@ namespace Farmi.Entities.Components
             }
             else
             {
-                MessageBoxComponent interactorMessageComponent = with.Components
-                    .GetComponent(c => c is MessageBoxComponent) as MessageBoxComponent;
+                MessageBoxComponent interactorMessageComponent = with.Components.GetComponent(
+                    c => c is MessageBoxComponent) as MessageBoxComponent;
 
                 interactorMessageComponent.DrawMessage("Siilossa ei ole safkaa!", 100 * 25);
             }

@@ -19,7 +19,7 @@ using Khv.Game.GameObjects;
 
 namespace Script
 {
-    internal sealed class DogBehaviour : AnimalBehaviourScript
+    public sealed class DogBehaviour : AnimalBehaviourScript
     {
         #region Vars
         private SpriteSheetAnimation animation;
@@ -157,7 +157,7 @@ namespace Script
             }
             else
             {
-                DogBehaviour behaviour = lastDogCollidedWith.Behaviours.First() as DogBehaviour;
+                DogBehaviour behaviour = lastDogCollidedWith.Behaviour as DogBehaviour;
 
                 if (behaviour.brain.CurrentState != RunAwayFromOtherObject && brain.CurrentState == PlayWithOtherDog)
                 {

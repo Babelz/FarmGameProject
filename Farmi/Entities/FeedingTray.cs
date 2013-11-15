@@ -62,7 +62,7 @@ namespace Farmi.Entities
 
             Collider = new BoxCollider(world, this);
 
-            Components.Add(new FeedingTrayInteractionComponent(this));
+            Components.AddComponent(new FeedingTrayInteractionComponent(this));
         }
 
         public void InsertFeed(AnimalFeedItem feedItem)

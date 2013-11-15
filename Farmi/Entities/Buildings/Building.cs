@@ -56,11 +56,13 @@ namespace Farmi.Entities.Buildings
         {
             if (e.Current.Name == mapContainedIn)
             {
-                world.WorldObjects.SafelyRemove<Door>(Doors);
+                world.WorldObjects.MoveToForeground(Doors);
+                world.WorldObjects.MoveToForeground(this);
             }
             else
             {
-                world.WorldObjects.SafelyAddMany(Doors);
+                world.WorldObjects.MoveToBackground(Doors);
+                world.WorldObjects.MoveToBackground(this);
             }
         }
         #endregion
@@ -98,6 +100,8 @@ namespace Farmi.Entities.Buildings
             }
 
             Collider = new BoxCollider(world, this);
+
+            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
         }
 
         public void InitializeFromDataset(BuildingDataset dataset)

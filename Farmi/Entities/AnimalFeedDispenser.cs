@@ -87,7 +87,7 @@ namespace Farmi.Entities
             world = (game.GameStateManager.Current as GameplayScreen).World;
             world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
 
-            Components.Add(new FeedDispenserComponent(this));
+            Components.AddComponent(new FeedDispenserComponent(this));
 
             feedDataset = (game.Components.First(c => c is RepositoryManager)
                 as RepositoryManager).GetDataSet<FeedDataset>(d => d.Type == FeedType);

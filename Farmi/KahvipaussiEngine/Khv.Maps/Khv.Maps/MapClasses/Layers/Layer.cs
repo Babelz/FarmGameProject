@@ -215,13 +215,9 @@ namespace Khv.Maps.MapClasses.Layers
             }
             else
             {
-                foreach (LayerComponent layerComponent in components.AllComponents())
+                foreach (IBackGroundUpdatableComponent layerComponent in components.AllComponents().Where(c => c as IBackGroundUpdatableComponent != null))
                 {
-                    IBackGroundUpdatableComponent component = layerComponent as IBackGroundUpdatableComponent;
-                    if (component != null)
-                    {
-                        component.DoBackgroundUpdates(gameTime);
-                    }
+                    layerComponent.DoBackgroundUpdates(gameTime);
                 }
             }
         }

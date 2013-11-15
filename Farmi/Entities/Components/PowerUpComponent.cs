@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
-    internal sealed class PowerUpComponent : IObjectComponent
+    internal sealed class PowerUpComponent : IUpdatableObjectComponent
     {
         #region Vars
         private int elapsed;

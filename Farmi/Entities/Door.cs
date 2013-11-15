@@ -46,7 +46,7 @@ namespace Farmi.Entities
 
             Collider = new BoxCollider(null, this);
             DoorInteractionComponent doorInteractionComponent = new DoorInteractionComponent(this);
-            Components.Add(doorInteractionComponent);
+            Components.AddComponent(doorInteractionComponent);
 
             texture = KhvGame.Temp;
         }

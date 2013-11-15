@@ -10,37 +10,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Khv.Engine.Structs;
-using Khv.Game.GameObjects;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using BrashMonkeySpriter.Spriter;
 
-namespace BrashMonkeySpriter {
-    public class CharacterModel : List<Entity> {
+namespace BrashMonkeySpriter
+{
+    public class CharacterModel : List<Entity>
+    {
         public List<Texture2D> Textures { get; internal protected set; }
         public List<List<Rectangle>> Rectangles { get; internal protected set; }
 
         public CharacterModel()
-            : base() {
+            : base()
+        {
 
             Textures = new List<Texture2D>();
             Rectangles = new List<List<Rectangle>>();
         }
 
-        public Entity this[string p_name] {
+        public Entity this[string p_name]
+        {
             get { return this.FirstOrDefault(x => x.Name == p_name); }
         }
 
-        public CharaterAnimator CreateAnimator(String p_entity) {
+        public CharaterAnimator CreateAnimator(String p_entity)
+        {
             return new CharaterAnimator(this, p_entity);
         }
     }
 
-    public class CharaterAnimator {
-        protected struct RenderMatrix {
+    public class CharaterAnimator
+    {
+        protected struct RenderMatrix
+        {
             public float Alpha;
             public SpriteEffects Effects;
             public int File;
@@ -51,7 +57,8 @@ namespace BrashMonkeySpriter {
             public Vector2 Scale;
             public int ZOrder;
 
-            public RenderMatrix(AnimationTransform p_at) {
+            public RenderMatrix(AnimationTransform p_at)
+            {
                 Alpha = p_at.Alpha;
                 Location = p_at.Location;
                 Rotation = p_at.Rotation;
@@ -65,14 +72,16 @@ namespace BrashMonkeySpriter {
             }
         }
 
-        protected struct AnimationTransform {
+        protected struct AnimationTransform
+        {
             public float Alpha;
             public Vector2 Location;
             public Vector2 Pivot;
             public Single Rotation;
             public Vector2 Scale;
 
-            public AnimationTransform(Vector2 p_location, float p_rotation, Vector2 p_pivot, Vector2 p_scale) {
+            public AnimationTransform(Vector2 p_location, float p_rotation, Vector2 p_pivot, Vector2 p_scale)
+            {
                 Alpha = 1.0f;
                 Location = p_location;
                 Rotation = p_rotation;
@@ -82,36 +91,42 @@ namespace BrashMonkeySpriter {
         }
 
         protected Color m_color = Color.White;
-        public virtual Color Color {
+        public virtual Color Color
+        {
             get { return m_color; }
             set { m_color = value; }
         }
 
         protected bool m_flipX = false, m_flipY = false;
-        public virtual bool FlipX {
+        public virtual bool FlipX
+        {
             get { return m_flipX; }
             set { m_flipX = value; }
         }
 
-        public virtual bool FlipY {
+        public virtual bool FlipY
+        {
             get { return m_flipY; }
             set { m_flipY = value; }
         }
 
         protected Vector2 m_location = Vector2.Zero;
-        public virtual Vector2 Location {
+        public virtual Vector2 Location
+        {
             get { return m_location; }
             set { m_location = value; }
         }
 
         protected float m_rotate = 0.0f;
-        public virtual float Rotation {
+        public virtual float Rotation
+        {
             get { return m_rotate; }
             set { m_rotate = value; }
         }
 
         protected float m_scale = 1.0f;
-        public virtual float Scale {
+        public virtual float Scale
+        {
             get { return m_scale; }
             set { m_scale = value; }
         }
@@ -131,7 +146,8 @@ namespace BrashMonkeySpriter {
         public delegate void AnimationEndedHandler(Animation sender);
         public event AnimationEndedHandler AnimationEnded;
 
-        public CharaterAnimator(CharacterModel p_model, String p_entity) {
+        public CharaterAnimator(CharacterModel p_model, String p_entity)
+        {
             m_entity = p_model[p_entity];
             m_tx = p_model.Textures;
             m_rect = p_model.Rectangles;
@@ -139,23 +155,26 @@ namespace BrashMonkeySpriter {
             ChangeAnimation(0);
         }
 
-        public void ChangeAnimation(String p_name) {
+        public void ChangeAnimation(String p_name)
+        {
             m_current = m_entity[p_name];
             m_renderList = new List<RenderMatrix>(m_current.MainLine[0].Body.Count);
             m_boneTransforms = new Dictionary<int, AnimationTransform>(m_current.MainLine[0].Body.Count);
             m_elapsedTime = 0;
         }
 
-        public void ChangeAnimation(int p_index) {
+        public void ChangeAnimation(int p_index)
+        {
             m_current = m_entity[p_index];
             m_renderList = new List<RenderMatrix>(m_current.MainLine[0].Body.Count);
             m_boneTransforms = new Dictionary<int, AnimationTransform>(m_current.MainLine[0].Body.Count);
             m_elapsedTime = 0;
         }
 
-        protected AnimationTransform GetFrameTransition(Reference p_ref) {
+        protected AnimationTransform GetFrameTransition(Reference p_ref)
+        {
             Timeline l_timeline = m_current.TimeLines[p_ref.Timeline];
-            
+
             // Find the current frame. 
             // The one referenced by mainline is not neccesarily the correct one
             // I guess the Spriter editor sometimes messes things up
@@ -164,14 +183,19 @@ namespace BrashMonkeySpriter {
             int l_keyCur = l_timeline.KeyAtOrBefore(m_elapsedTime), l_keyNext = 0;
             int l_thisTime = m_elapsedTime - l_timeline.Keys[l_keyCur].Time, l_nextTime = 0;
             // Find the next frame.
-            if ((l_keyCur + 1) < l_timeline.Keys.Count) {
+            if ((l_keyCur + 1) < l_timeline.Keys.Count)
+            {
                 l_keyNext = l_keyCur + 1;
                 l_nextTime = l_timeline.Keys[l_keyNext].Time;
-            } else if (m_current.Looping) {
+            }
+            else if (m_current.Looping)
+            {
                 // Assume that there is a frame at time = 0
                 l_keyNext = 0;
                 l_nextTime = m_current.Length;
-            } else {
+            }
+            else
+            {
                 l_keyNext = l_keyCur;
                 l_nextTime = m_current.Length;
             }
@@ -187,19 +211,30 @@ namespace BrashMonkeySpriter {
             AnimationTransform l_render = new AnimationTransform();
 
             float l_angleA = l_now.Rotation, l_angleB = l_next.Rotation;
-            if (l_now.Spin == SpinDirection.None) {
+            if (l_now.Spin == SpinDirection.None)
+            {
                 l_angleA = l_angleB = l_now.Rotation;
-            } else if (l_now.Spin == SpinDirection.Clockwise) {
-                if ((l_angleB - l_angleA) < 0.0f) {
+            }
+            else if (l_now.Spin == SpinDirection.Clockwise)
+            {
+                if ((l_angleB - l_angleA) < 0.0f)
+                {
                     l_angleB += MathHelper.TwoPi;
-                } else {
+                }
+                else
+                {
                     l_angleA %= MathHelper.TwoPi;
                     l_angleB %= MathHelper.TwoPi;
                 }
-            } else if (l_now.Spin == SpinDirection.CounterClockwise) {
-                if ((l_angleB - l_angleA) > 0.0f) {
+            }
+            else if (l_now.Spin == SpinDirection.CounterClockwise)
+            {
+                if ((l_angleB - l_angleA) > 0.0f)
+                {
                     l_angleB -= MathHelper.TwoPi;
-                } else {
+                }
+                else
+                {
                     l_angleA %= MathHelper.TwoPi;
                     l_angleB %= MathHelper.TwoPi;
                 }
@@ -215,19 +250,12 @@ namespace BrashMonkeySpriter {
             return l_render;
         }
 
-        protected AnimationTransform ApplyTransform(AnimationTransform p_transform, AnimationTransform p_baseTransform) {
-           
-            /*RenderMatrix maxTrans = m_renderList.Find(m => m.Location.Y == m_renderList.Max(mt => mt.Location.Y));
-            RenderMatrix minTrans = m_renderList.Find(m => m.Location.Y == m_renderList.Min(mt => mt.Location.Y));
-            Rectangle rectangle = m_rect[maxTrans.Folder][maxTrans.File];
-            float height = maxTrans.Location.Y + rectangle.Height - minTrans.Location.Y;
-            Console.WriteLine(height);
-            vittu.Size = new Size(vittu.Size.Width, (int)height);*/
-
+        protected AnimationTransform ApplyTransform(AnimationTransform p_transform, AnimationTransform p_baseTransform)
+        {
             //  Create a tranformation matrix so we can find out the location of the bone \ body
-            Matrix l_matrix =   Matrix.CreateScale(p_baseTransform.Scale.X, p_baseTransform.Scale.Y, 0) *
+            Matrix l_matrix = Matrix.CreateScale(p_baseTransform.Scale.X, p_baseTransform.Scale.Y, 0) *
                                 Matrix.CreateRotationZ(p_baseTransform.Rotation) *
-                                Matrix.CreateTranslation(p_baseTransform.Location.X / 2, p_baseTransform.Location.Y, 0);
+                                Matrix.CreateTranslation(p_baseTransform.Location.X / 2, p_baseTransform.Location.Y / 2, 0);
 
             AnimationTransform l_result = new AnimationTransform();
 
@@ -241,31 +269,38 @@ namespace BrashMonkeySpriter {
             return l_result;
         }
 
-        protected AnimationTransform ApplyBoneTransforms(MainlineKey p_main, Reference p_reference) {
-            if ((p_reference.BoneId >= 0) && m_boneTransforms.ContainsKey(p_reference.BoneId)) {
+        protected AnimationTransform ApplyBoneTransforms(MainlineKey p_main, Reference p_reference)
+        {
+            if ((p_reference.BoneId >= 0) && m_boneTransforms.ContainsKey(p_reference.BoneId))
+            {
                 return m_boneTransforms[p_reference.BoneId];
             }
 
             AnimationTransform l_baseTransform;
-            if((p_reference.Parent != -1)) {
+            if ((p_reference.Parent != -1) && p_main.Bones.Count != 0)
+            {
                 l_baseTransform = ApplyBoneTransforms(p_main, p_main.Bones[p_reference.Parent]);
-            } else {
+            }
+            else
+            {
                 //Apply global transforms to objects without parents (location is added later)
                 l_baseTransform = new AnimationTransform(Vector2.Zero, Rotation, Vector2.Zero, new Vector2(Math.Abs(Scale)));
             }
             AnimationTransform l_transform = ApplyTransform(GetFrameTransition(p_reference), l_baseTransform);
 
-            if (p_reference.BoneId >= 0) {
+            if (p_reference.BoneId >= 0)
+            {
                 m_boneTransforms.Add(p_reference.BoneId, l_transform);
             }
 
             return l_transform;
         }
 
-        public void Update(GameTime p_gameTime) {
+        public void Update(GameTime p_gameTime)
+        {
             m_renderList.Clear();
             m_boneTransforms.Clear();
-            
+
             m_elapsedTime += p_gameTime.ElapsedGameTime.Milliseconds;
             if (m_elapsedTime > m_current.Length)
             {
@@ -280,25 +315,31 @@ namespace BrashMonkeySpriter {
                 }
                 else if (m_current.Looping) {
                     m_elapsedTime -= m_current.Length;
-                } else {
+                }
+                else
+                {
                     m_elapsedTime = m_current.Length;
                 }
             }
 
             int l_frame = 0;
-            for (int l_i = 0; (l_i < m_current.MainLine.Count); l_i++) {
-                if (m_elapsedTime >= m_current.MainLine[l_i].Time) {
+            for (int l_i = 0; (l_i < m_current.MainLine.Count); l_i++)
+            {
+                if (m_elapsedTime >= m_current.MainLine[l_i].Time)
+                {
                     l_frame = l_i;
                 }
             }
 
             Vector2 l_flip = new Vector2(m_flipX ? -1.0f : 1.0f, m_flipY ? -1.0f : 1.0f);
             MainlineKey l_mainline = m_current.MainLine[l_frame];
-            
-            for (int l_i = 0; l_i < l_mainline.Body.Count; l_i++) {
+
+            for (int l_i = 0; l_i < l_mainline.Body.Count; l_i++)
+            {
                 TimelineKey l_key = m_current.TimeLines[l_mainline.Body[l_i].Timeline].Keys[l_mainline.Body[l_i].Key];
                 // check if file for this object is missing, and if so skip calculating transforms
-                if (m_rect[l_key.Folder][l_key.File].Width == 0) {
+                if (m_rect[l_key.Folder][l_key.File].Width == 0)
+                {
                     continue;
                 }
 
@@ -308,18 +349,21 @@ namespace BrashMonkeySpriter {
                 l_render.Folder = l_key.Folder;
 
                 l_render.Location = Location + Vector2.Multiply(l_render.Location, l_flip);
-                    
-                if (m_flipX) {
+
+                if (m_flipX)
+                {
                     l_render.Effects |= SpriteEffects.FlipHorizontally;
                     l_render.Pivot.X = m_rect[l_key.Folder][l_render.File].Width - l_render.Pivot.X;
                 }
 
-                if (m_flipY) {
+                if (m_flipY)
+                {
                     l_render.Effects |= SpriteEffects.FlipVertically;
                     l_render.Pivot.Y = m_rect[l_key.Folder][l_render.File].Height - l_render.Pivot.Y;
                 }
 
-                if (m_flipX != m_flipY) {
+                if (m_flipX != m_flipY)
+                {
                     l_render.Rotation *= -1.0f;
                 }
 
@@ -329,23 +373,25 @@ namespace BrashMonkeySpriter {
             }
         }
 
-        public void Draw(SpriteBatch p_spriteBatch) {
-          //  p_spriteBatch.End();
-           // p_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone);
-            foreach (RenderMatrix l_render in m_renderList) {
+        public void Draw(SpriteBatch p_spriteBatch)
+        {
+            //  p_spriteBatch.End();
+            // p_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone);
+            foreach (RenderMatrix l_render in m_renderList)
+            {
                 p_spriteBatch.Draw(
                     m_tx[l_render.Folder],
-                    l_render.Location ,
+                    l_render.Location,
                     m_rect[l_render.Folder][l_render.File],
                     m_color * l_render.Alpha,
                     l_render.Rotation,
-                    l_render.Pivot, 
+                    l_render.Pivot,
                     l_render.Scale,
                     l_render.Effects,
                     /*(float)l_render.ZOrder*/0.0f
                 );
             }
-          //  p_spriteBatch.End();
+            //  p_spriteBatch.End();
         }
 
         /// <summary>

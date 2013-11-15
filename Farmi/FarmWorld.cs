@@ -44,6 +44,8 @@ namespace Farmi
         {
             MapManager = new MapManager(Game, Path.Combine("cfg", "mengine.cfg"));
             WorldObjects = new GameObjectManager(null);
+            WorldObjects.EnableBackgroundTransfers();
+
             Player = new FarmPlayer(Game, this, PlayerIndex.One);
             Player.Initialize();
             WorldObjects.AddGameObject(Player);

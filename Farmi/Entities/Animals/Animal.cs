@@ -37,18 +37,16 @@ namespace Farmi.Entities.Animals
             get;
             private set;
         }
-        public AnimalBehaviourScript[] Behaviours
+        public ScriptObserver<AnimalBehaviourScript> BehaviourObserver
         {
             get;
             private set;
         }
-#if DEBUG
-        public ScriptObserver<AnimalBehaviourScript>[] BehaviourObservers
+        public AnimalBehaviourScript Behaviour
         {
             get;
             private set;
         }
-#endif
         public string MapContainedIn
         {
             get;
@@ -109,13 +107,9 @@ namespace Farmi.Entities.Animals
             ScriptEngine scriptEngine = game.Components
                 .First(c => c is ScriptEngine) as ScriptEngine;
 
-            Behaviours = new AnimalBehaviourScript[dataset.Behaviours.Length];
-
-            for (int i = 0; i < dataset.Behaviours.Length; i++)
-            {
-                Behaviours[i] = scriptEngine.GetScript<AnimalBehaviourScript>(
-                    new ScriptBuilder(dataset.Behaviours[i], new object[] { game, this }));
-            }
+            ScriptBuilder builder = new ScriptBuilder(dataset.Behaviours.First(), new object[] { game, this });
+            Behaviour = scriptEngine.GetScript<AnimalBehaviourScript>(builder);
+            BehaviourObserver = new ScriptObserver<AnimalBehaviourScript>(Behaviour, builder);
         }
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
@@ -144,15 +138,19 @@ namespace Farmi.Entities.Animals
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
 
-            Array.ForEach<AnimalBehaviourScript>(Behaviours,
-                b => b.Update(gameTime));
+            if (BehaviourObserver.HasScript)
+            {
+                BehaviourObserver.Script.Update(gameTime);
+            }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
 
-            Array.ForEach<AnimalBehaviourScript>(Behaviours,
-                b => b.Draw(spriteBatch));
+            if (BehaviourObserver.HasScript)
+            {
+                BehaviourObserver.Script.Draw(spriteBatch);
+            }
         }
     }
 }

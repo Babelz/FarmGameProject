@@ -53,9 +53,8 @@ namespace Farmi.Entities
                 }
                 else
                 {
-                    InteractionComponent component = ClosestInteractable
-                        .Components.GetComponent(c => c is InteractionComponent)
-                        as InteractionComponent;
+                    InteractionComponent component = ClosestInteractable.Components.GetComponent<IUpdatableObjectComponent>(
+                        c => c is InteractionComponent) as InteractionComponent;
 
                     return component.CanInteract(this);
                 }
@@ -91,10 +90,10 @@ namespace Farmi.Entities
 
         private void AddComponents()
         {
-            Components.Add(new ExclamationMarkDrawer(game, this));
-            Components.Add(new MessageBoxComponent(game, this));
-            Components.Add(Inventory = new PlayerInventory(this));
-            Components.Add(viewComponent = new ViewComponent(new Vector2(0, 1)));
+            Components.AddComponent(new ExclamationMarkDrawer(game, this));
+            Components.AddComponent(new MessageBoxComponent(game, this));
+            Components.AddComponent(Inventory = new PlayerInventory(this));
+            Components.AddComponent(viewComponent = new ViewComponent(new Vector2(0, 1)));
 
             RepositoryManager r = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
             Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Hoe")));
@@ -289,17 +288,20 @@ namespace Farmi.Entities
             base.Update(gameTime);
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
+
             animator.Location = Position+ new Vector2(size.Width/ 2, size.Height);
             animator.Update(gameTime);
 
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
-            if (Inventory.SelectedTool ==null) return;
+            if (Inventory.SelectedTool == null)
+            {
+                return;
+            }
             Inventory.SelectedTool.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), Color.Red);
             animator.Draw(spriteBatch);
             base.Draw(spriteBatch);
 

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Khv.Input
 {
-    public interface IRotationComponent : IObjectComponent
+    public interface IRotationComponent : IUpdatableObjectComponent
     {
         #region Properties
 

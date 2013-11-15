@@ -203,6 +203,7 @@ namespace Khv.Scripts.CSharpScriptEngine.Resolvers
 
             return TryResolve<T>(resolverWorkItem);
         }
+
         /// <summary>
         /// Yrittää resoltava halutun tyyppisen scriptin annetuilla atribuuteilla.
         /// </summary>

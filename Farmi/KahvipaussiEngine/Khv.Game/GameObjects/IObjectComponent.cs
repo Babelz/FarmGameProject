@@ -6,8 +6,18 @@ using Microsoft.Xna.Framework;
 
 namespace Khv.Game.GameObjects
 {
-    public interface IObjectComponent
+    /// <summary>
+    /// Rajapinta komponenteille jotka voivat suorittaa päivityksiä.
+    /// </summary>
+    public interface IUpdatableObjectComponent : IObjectComponent
     {
         void Update(GameTime gametime);
+    }
+
+    /// <summary>
+    /// Markkeri rajapinta object komponentille.
+    /// </summary>
+    public interface IObjectComponent
+    {
     }
 }

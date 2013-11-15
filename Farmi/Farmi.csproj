@@ -92,6 +92,7 @@
     <Compile Include="Entities\Components\ExclamationMarkDrawer.cs" />
     <Compile Include="Entities\Components\FeedDispenserComponent.cs" />
     <Compile Include="Entities\Components\FiniteStateMachine.cs" />
+    <Compile Include="Entities\Components\MapLocator.cs" />
     <Compile Include="Entities\Components\MessageBoxComponent.cs" />
     <Compile Include="Entities\Components\PlayerInventory.cs" />
     <Compile Include="Entities\Components\PowerUpComponent.cs" />
@@ -430,6 +431,7 @@
     </None>
     <None Include="dat\repos\buildings.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="dat\mps\town.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
