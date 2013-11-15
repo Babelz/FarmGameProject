@@ -149,7 +149,7 @@
                 </key>
             </timeline>
         </animation>
-        <animation id="1" name="use_tool_right" length="548">
+        <animation id="1" name="use_tool_right" length="548" looping="false">
             <mainline>
                 <key id="0">
                     <object_ref id="0" name="player-side_0000_Head" folder="1" file="0" abs_x="-13.350785" abs_y="48.95288" abs_pivot_x="0" abs_pivot_y="1" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="5" key="0" z_index="0"/>

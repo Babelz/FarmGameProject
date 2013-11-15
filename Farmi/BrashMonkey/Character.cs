@@ -131,6 +131,8 @@ namespace BrashMonkeySpriter
             set { m_scale = value; }
         }
 
+        public Animation CurrentAnimation { get { return m_current; } }
+
         protected Entity m_entity = null;
         protected Animation m_current;
         protected int m_elapsedTime = 0;
@@ -141,7 +143,7 @@ namespace BrashMonkeySpriter
 
         protected Dictionary<int, AnimationTransform> m_boneTransforms;
 
-        public delegate void AnimationEndedHandler();
+        public delegate void AnimationEndedHandler(Animation sender);
         public event AnimationEndedHandler AnimationEnded;
 
         public CharaterAnimator(CharacterModel p_model, String p_entity)
@@ -158,6 +160,7 @@ namespace BrashMonkeySpriter
             m_current = m_entity[p_name];
             m_renderList = new List<RenderMatrix>(m_current.MainLine[0].Body.Count);
             m_boneTransforms = new Dictionary<int, AnimationTransform>(m_current.MainLine[0].Body.Count);
+            m_elapsedTime = 0;
         }
 
         public void ChangeAnimation(int p_index)
@@ -165,6 +168,7 @@ namespace BrashMonkeySpriter
             m_current = m_entity[p_index];
             m_renderList = new List<RenderMatrix>(m_current.MainLine[0].Body.Count);
             m_boneTransforms = new Dictionary<int, AnimationTransform>(m_current.MainLine[0].Body.Count);
+            m_elapsedTime = 0;
         }
 
         protected AnimationTransform GetFrameTransition(Reference p_ref)
@@ -300,10 +304,16 @@ namespace BrashMonkeySpriter
             m_elapsedTime += p_gameTime.ElapsedGameTime.Milliseconds;
             if (m_elapsedTime > m_current.Length)
             {
+                // pitää ottaa talteen että nähdään vaihtaako eventti animaatiota
+                Animation current = m_current;
                 if (AnimationEnded != null)
-                    AnimationEnded();
-                if (m_current.Looping)
+                    AnimationEnded(m_current);
+                // jos animaatioi vaihtui niin alotetaan taas aika nollasta
+                if (!Equals(current, m_current))
                 {
+                    m_elapsedTime = 0;
+                }
+                else if (m_current.Looping) {
                     m_elapsedTime -= m_current.Length;
                 }
                 else
@@ -382,6 +392,16 @@ namespace BrashMonkeySpriter
                 );
             }
             //  p_spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Hakee animaation nimellä, palauttaa null jos ei löydy
+        /// </summary>
+        /// <param name="name">Minkä nimistä animatiota etsitään</param>
+        /// <returns></returns>
+        public Animation GetAnimation(string name)
+        {
+            return m_entity.FirstOrDefault(a => a.Name == name);
         }
     }
 }

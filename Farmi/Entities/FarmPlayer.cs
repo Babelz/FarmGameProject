@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using BrashMonkeyContentPipelineExtension;
 using BrashMonkeySpriter;
 using BrashMonkeySpriter.Content;
+using BrashMonkeySpriter.Spriter;
 using Farmi.Calendar;
 using Farmi.Datasets;
 using Farmi.Entities.Animals;
@@ -105,11 +106,31 @@ namespace Farmi.Entities
             keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
             keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, -speed));
-            keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, speed));
+            keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) =>
+            {
+                MotionEngine.GoalVelocityY = VelocityFunc(args, speed);
+
+                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_down"))) return;
+                animator.ChangeAnimation("walk_down");
+                animator.FlipX = false;
+                animator.FlipY = false;
+            });
             #endregion
             
-            keymapper.Map(new KeyTrigger("Flip left", Keys.A, Keys.Left), (triggered, args) => animator.FlipX = true, InputState.Pressed);
-            keymapper.Map(new KeyTrigger("Flip right", Keys.D, Keys.Right), (triggered, args) => animator.FlipX = false, InputState.Pressed);
+            keymapper.Map(new KeyTrigger("Flip left", Keys.A, Keys.Left), (triggered, args) =>
+            {
+                // joudutaan flippaan
+                animator.FlipX = true;
+                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_right"))) return;
+                animator.ChangeAnimation("walk_right");
+            }, InputState.Pressed | InputState.Down);
+            keymapper.Map(new KeyTrigger("Flip right", Keys.D, Keys.Right), (triggered, args) =>
+            {
+                animator.FlipX = false;
+                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_right"))) return;
+                animator.ChangeAnimation("walk_right");
+
+            }, InputState.Pressed | InputState.Down);
             
 
             keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
@@ -180,6 +201,7 @@ namespace Farmi.Entities
             if (nearestObject == null)
                 return;
 
+            animator.ChangeAnimation("use_tool_right");
             interactionComponent.Interact(nearestObject);
         }
         /// <summary>
@@ -232,6 +254,15 @@ namespace Farmi.Entities
         }
         #endregion
 
+        #region Events
+        void animator_AnimationEnded(Animation sender)
+        {
+            // näyttää niin vitun tyhmältä :D
+            /*if (sender.Name == "use_tool_right")
+                animator.ChangeAnimation("idle");*/
+        }
+        #endregion
+
         public void Initialize()
         {
             AddComponents();
@@ -247,7 +278,8 @@ namespace Farmi.Entities
             var model = reader.Read(importer.Import(Path.Combine("Content\\Spriter", "player.scml")), null, game.Content,
                 game.GraphicsDevice);
             animator = model.CreateAnimator("player");
-            animator.ChangeAnimation("use_tool_right");
+            animator.ChangeAnimation("idle");
+            animator.AnimationEnded += animator_AnimationEnded;
             animator.Scale = 1.0f;
         }
 

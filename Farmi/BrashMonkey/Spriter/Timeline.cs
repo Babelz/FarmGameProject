@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Khv.Engine.Structs;
 using Microsoft.Xna.Framework;
 
 namespace BrashMonkeySpriter.Spriter {
@@ -23,7 +23,8 @@ namespace BrashMonkeySpriter.Spriter {
     public class Timeline {
         public String Name;
         public List<TimelineKey> Keys;
-        
+        public Size Size { get; set; }
+
         public int KeyAtOrBefore(int p_elapsedTime) {
             // Binary search correct key
             int l_lo = 0, l_hi = Keys.Count - 1;

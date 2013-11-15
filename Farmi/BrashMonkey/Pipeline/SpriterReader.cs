@@ -15,6 +15,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Xml.Linq;
 using BrashMonkeyContentPipelineExtension;
+using Khv.Engine.Structs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -115,15 +116,25 @@ namespace BrashMonkeySpriter.Content {
                         // ----------------------- frame ------------------
                         #region Frame
 
+                        float minw, maxw, minh, maxh;
+                        minh = maxh = minw = maxw = 0;
                         foreach (var xTimelineKey in xTimeline.Elements("key"))
                         {
                             var key = ParseTimelineKey(model, xTimelineKey, l_defaultPivot);
-
-                             timeline.Keys.Add(key);
+                            if (key.Type != TimelineType.Bone)
+                            {
+                                Rectangle r = model.Rectangles[key.Folder][key.File];
+                                maxw = Math.Max(maxw, key.Location.X + r.Width);
+                                minw = Math.Min(minw, key.Location.X);
+                                maxh = Math.Max(maxh, key.Location.Y + r.Height);
+                                minh = Math.Min(minh, key.Location.Y);
+                            }
+                            timeline.Keys.Add(key);
                         }
 
                         #endregion
-
+                        Size size = new Size((int) (maxw - minw), (int) (maxh - minh));
+                        timeline.Size = size;
                        animation.TimeLines.Add(timeline);
                     }
                     #endregion
