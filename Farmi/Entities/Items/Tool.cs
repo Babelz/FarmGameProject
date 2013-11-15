@@ -52,7 +52,7 @@ namespace Farmi.Entities.Items
                 dataset.PowTimestep);
             //TODO temp
             Size = new Size(32,32);
-            Components.Add(powComponent);
+            Components.AddComponent(powComponent);
 
             ScriptEngine scriptEngine = game.Components.First(
                 c => c is ScriptEngine) as ScriptEngine;

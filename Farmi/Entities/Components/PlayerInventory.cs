@@ -14,12 +14,12 @@ namespace Farmi.Entities.Components
     {
         #region Vars
         private int itemIndex;
-        private List<Item> items;
+        private readonly List<Item> items;
 
         private int toolIndex;
-        private List<Tool> tools;
+        private readonly List<Tool> tools;
 
-        private FarmPlayer player;
+        private readonly FarmPlayer player;
         #endregion
 
         #region Properties
@@ -63,6 +63,7 @@ namespace Farmi.Entities.Components
             items = new List<Item>();
             tools = new List<Tool>();
         }
+
         public void NextItem()
         {
             itemIndex++;
@@ -83,6 +84,7 @@ namespace Farmi.Entities.Components
 
             ItemInHands = items[itemIndex];
         }
+
         public void NextTool()
         {
             toolIndex++;
@@ -103,6 +105,7 @@ namespace Farmi.Entities.Components
 
             SelectedTool = tools[toolIndex];
         }
+
         public void AddToInventory(Item item)
         {
             if (HasItemInHands)
@@ -139,7 +142,9 @@ namespace Farmi.Entities.Components
         public void Update(GameTime gametime)
         {
             if (HasToolSelected)
+            {
                 SelectedTool.Update(gametime);
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {

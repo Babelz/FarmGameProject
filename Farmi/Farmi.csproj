@@ -92,6 +92,7 @@
     <Compile Include="Entities\Components\ExclamationMarkDrawer.cs" />
     <Compile Include="Entities\Components\FeedDispenserComponent.cs" />
     <Compile Include="Entities\Components\FiniteStateMachine.cs" />
+    <Compile Include="Entities\Components\MapLocator.cs" />
     <Compile Include="Entities\Components\MessageBoxComponent.cs" />
     <Compile Include="Entities\Components\PlayerInventory.cs" />
     <Compile Include="Entities\Components\PowerUpComponent.cs" />
@@ -460,6 +461,9 @@
     <None Include="dat\repos\animalfeeds.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Spriter\tools\pick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Spriter\walk_down\player-front_0000_Head.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

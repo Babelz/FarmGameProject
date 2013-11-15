@@ -7,13 +7,15 @@ using Khv.Maps.MapClasses.Layers.Components;
 
 namespace Khv.Game.GameObjects
 {
-    public interface IDrawableObjectComponent : IObjectComponent
+    public interface IDrawableObjectComponent : IUpdatableObjectComponent
     {
+        #region Properties
         int DrawOrder
         {
             get;
             set;
         }
+        #endregion
 
         void Draw(SpriteBatch spriteBatch);
     }

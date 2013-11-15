@@ -23,12 +23,14 @@ namespace Khv.Maps.MapClasses.Managers
         #region Vars
         private readonly Layer<ObjectTile> owner;
 
-        private Dictionary<Type, IList> objectLists;
-        private List<GameObject> allObjects;
-        private List<DrawableGameObject> drawableObjects;
+        private readonly Dictionary<Type, IList> objectLists;
+        private readonly List<GameObject> allObjects;
+        private readonly List<DrawableGameObject> drawableObjects;
 
-        private List<GameObject> safeAddQue;
-        private List<GameObject> safeRemoveQue;
+        private readonly List<GameObject> safeAddQue;
+        private readonly List<GameObject> safeRemoveQue;
+
+        private GameObjectManager backgroundObjectManager;
         #endregion
 
         #region Properties
@@ -60,6 +62,27 @@ namespace Khv.Maps.MapClasses.Managers
                 return allObjects[index];
             }
         }
+        public bool HasBackgroundObjects
+        {
+            get
+            {
+                if (CanTransferObjectsToBackground)
+                {
+                    return backgroundObjectManager.Count > 0;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        public bool CanTransferObjectsToBackground
+        {
+            get
+            {
+                return backgroundObjectManager != null;
+            }
+        }
         #endregion
 
         public GameObjectManager()
@@ -81,6 +104,106 @@ namespace Khv.Maps.MapClasses.Managers
             safeAddQue = new List<GameObject>();
             safeRemoveQue = new List<GameObject>();
         }
+
+        #region Transfer methods
+        /// <summary>
+        /// Enabloi oliojen taustalle siirtämisen.
+        /// </summary>
+        public void EnableBackgroundTransfers()
+        {
+            if (!CanTransferObjectsToBackground)
+            {
+                backgroundObjectManager = new GameObjectManager();
+            }
+        }
+        /// <summary>
+        /// Disabloi oliojen taustalle siirtämisen.
+        /// </summary>
+        /// <param name="transfer">Tuleeko taustalla olevat oliot siirtää takaisin tälle managerille.</param>
+        public void DisableBackgroundTransfers(bool transfer)
+        {
+            if (CanTransferObjectsToBackground)
+            {
+                if (transfer)
+                {
+                    MoveAllToForeground();
+                }
+                else
+                {
+                    backgroundObjectManager = null;
+                }
+            }
+        }
+        /// <summary>
+        /// Siirtää olion tustalle.
+        /// </summary>
+        public void MoveToBackground<T>(T gameObject) where T : GameObject
+        {
+            if (Contains(gameObject))
+            {
+                SafelyRemove(gameObject);
+                backgroundObjectManager.AddGameObject(gameObject);
+            }
+        }
+        /// <summary>
+        /// Siirtää oliot taustalle.
+        /// </summary>
+        public void MoveToBackground<T>(IEnumerable<T> gameObjects) where T : GameObject
+        {
+            foreach (T gameObject in gameObjects.Where(o => Contains(o)))
+            {
+                SafelyRemove(gameObject);
+                backgroundObjectManager.AddGameObject(gameObject);
+            }
+        }
+        /// <summary>
+        /// Siirtää oliot taustalle.
+        /// </summary>
+        public void MoveToBackground<T>(params T[] gameObjects) where T : GameObject
+        {
+            MoveToBackground<T>(gameObjects.ToList());
+        }
+
+        /// <summary>
+        /// Siirtää kaikki taustalla olevat oliot takaisin 
+        /// tähän manageriin.
+        /// </summary>
+        public void MoveAllToForeground()
+        {
+            SafelyAddMany(backgroundObjectManager.allObjects);
+            backgroundObjectManager.Clear();
+        }
+
+        /// <summary>
+        /// Siirtää halutun olion takaisin tähän manageriin.
+        /// </summary>
+        public void MoveToForeground<T>(T gameObject) where T : GameObject
+        {
+            if (backgroundObjectManager.allObjects.Contains(gameObject))
+            {
+                SafelyAdd(gameObject);
+                backgroundObjectManager.RemoveGameObject(gameObject);
+            }
+        }
+        /// <summary>
+        /// Siirtää halutut olion takaisin tähän manageriin.
+        /// </summary>
+        public void MoveToForeground<T>(IEnumerable<T> gameObjects) where T : GameObject
+        {
+            foreach (T gameObject in gameObjects.Where(o => backgroundObjectManager.allObjects.Contains(o)))
+            {
+                SafelyAdd(gameObject);
+                backgroundObjectManager.RemoveGameObject(gameObject);
+            }
+        }
+        /// <summary>
+        /// Siirtää halutut olion takaisin tähän manageriin.
+        /// </summary>
+        public void MoveToForeground<T>(params T[] gameObjects) where T : GameObject
+        {
+            MoveToForeground<T>(gameObjects.ToList());
+        }
+        #endregion
 
         #region Safe add methods
         /// <summary>
@@ -110,10 +233,10 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         public void FlushAddQue()
         {
-            safeAddQue.ForEach(o =>
-                {
-                    AddGameObject(o);
-                });
+            // TODO: optimoi
+
+            safeAddQue.ForEach(
+                o => AddGameObject(o));
 
             safeAddQue.Clear();
         }
@@ -179,10 +302,10 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         public void FlushRemoveQue()
         {
-            safeRemoveQue.ForEach(o =>
-                {
-                    RemoveGameObject(o);
-                });
+            // TODO: optimoi
+
+            safeRemoveQue.ForEach(
+                o => RemoveGameObject(o));
 
             safeRemoveQue.Clear();
         }
@@ -221,18 +344,7 @@ namespace Khv.Maps.MapClasses.Managers
         /// <param name="gameObjects"></param>
         public void AddGameObjects(params GameObject[] gameObjects)
         {
-            IList list = allObjects;
-            var sortedObjects = gameObjects.OrderBy(o => o.GetType().Name);
-
-            foreach (GameObject gameObject in sortedObjects)
-            {
-                if (list.GetType().GetGenericArguments().First() != gameObject.GetType())
-                {
-                    list = GetObjectList(gameObject.GetType());
-                }
-
-                AddToList(list, gameObject);
-            }
+            AddGameObjects(gameObjects.ToList());
         }
         #endregion
 
@@ -352,9 +464,31 @@ namespace Khv.Maps.MapClasses.Managers
 
             return results;
         }
+        /// <summary>
+        /// Palauttaa truen jos manager omaa argumenttina
+        /// saadun olion.
+        /// </summary>
+        public bool Contains<T>(T gameObject) where T : GameObject
+        {
+            return allObjects.Contains(gameObject);
+        }
         #endregion
 
         #region IEnumerable methods
+        /// <summary>
+        /// Palauttaa kaikki peliobjektit jotka ovat taustalla iterointia varten.
+        /// </summary>
+        public IEnumerable<GameObject> AllObjectsInBackground(Predicate<GameObject> predicate = null)
+        {
+            return backgroundObjectManager.GetIterator<GameObject>(backgroundObjectManager.allObjects, predicate);
+        }
+        /// <summary>
+        /// Palauttaa tyyppinä syötetyt peliobjektit jotka ovat taustalla iterointia varten.
+        /// </summary>
+        public IEnumerable<T> GameObjectsOfTypeInBackground<T>(Predicate<T> predicate = null) where T : GameObject
+        {
+            return backgroundObjectManager.GameObjectsOfType<T>(predicate);
+        }
         /// <summary>
         /// Palauttaa kaikki managerin peliobjektit iterointia varten.
         /// </summary>
@@ -365,7 +499,7 @@ namespace Khv.Maps.MapClasses.Managers
         /// <summary>
         /// Palauttaa tyyppinä syötetyt peliobjektit iterointia varten.
         /// </summary>
-        public IEnumerable<T> GameObjectsOfType<T>(Predicate<T> predicate = null)
+        public IEnumerable<T> GameObjectsOfType<T>(Predicate<T> predicate = null) where T : GameObject
         {
             // Flussitaan aluksi quet jos ollaan poistettu 
             // tai lisätty olioja safe metodeilla.
@@ -378,7 +512,7 @@ namespace Khv.Maps.MapClasses.Managers
         /// <summary>
         /// Iteroi jokaisen otuksen kokoelmassa läpi ehdolla tai ilman.
         /// </summary>
-        private IEnumerable<T> GetIterator<T>(IList<T> collection, Predicate<T> predicate = null)
+        private IEnumerable<T> GetIterator<T>(IList<T> collection, Predicate<T> predicate = null) where T : GameObject
         {
             if (predicate == null)
             {
@@ -396,6 +530,21 @@ namespace Khv.Maps.MapClasses.Managers
             }
         }
         #endregion
+
+        public void Clear()
+        {
+            objectLists.Clear();
+            drawableObjects.Clear();
+            allObjects.Clear();
+
+            safeAddQue.Clear();
+            safeRemoveQue.Clear();
+
+            if (CanTransferObjectsToBackground)
+            {
+                backgroundObjectManager.Clear();
+            }
+        }
 
         /// <summary>
         /// Flushaa remove ja add quen.
@@ -468,8 +617,7 @@ namespace Khv.Maps.MapClasses.Managers
         {
             IList list = objectLists[type];
 
-            if (list.Count <= 0 && 
-                list != allObjects && list != drawableObjects)
+            if (list.Count <= 0 && list != allObjects && list != drawableObjects)
             {
                 objectLists.Remove(type);
             }
@@ -503,6 +651,12 @@ namespace Khv.Maps.MapClasses.Managers
         /// </summary>
         private void AddToList<T>(IList list, T gameObject) where T : GameObject
         {
+            // Ei lisätä samaa olio viitettä uudestaan.
+            if (list.Contains(gameObject))
+            {
+                return;
+            }
+
             list.Add(gameObject);
 
             // Koska ylempi listä voi olla allobjects lista, katsotaan ollaanko siihen jo lisätyy.

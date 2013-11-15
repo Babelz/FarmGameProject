@@ -10,7 +10,7 @@ namespace Farmi.Entities.Items.Components
     /// <summary>
     /// Kuvaa komponenttia jonka omistajaa voi heittää
     /// </summary>
-    internal sealed class ThrowableComponent : IObjectComponent
+    internal sealed class ThrowableComponent : IUpdatableObjectComponent
     {
         #region Properties
         /// <summary>

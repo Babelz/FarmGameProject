@@ -106,7 +106,7 @@ namespace Khv.Game.GameObjects
 
         public virtual void Update(GameTime gameTime)
         {
-            foreach (IObjectComponent objectComponent in Components.AllComponents())
+            foreach (IUpdatableObjectComponent objectComponent in Components.ComponentsOfType<IUpdatableObjectComponent>())
             {
                 objectComponent.Update(gameTime);
             }

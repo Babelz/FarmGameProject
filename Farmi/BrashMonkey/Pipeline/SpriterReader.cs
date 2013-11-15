@@ -112,7 +112,6 @@ namespace BrashMonkeySpriter.Content {
                     {
                         
                         var timeline = ParseTimeline(xTimeline);
-                        Console.WriteLine(vittu++);
                         // ----------------------- frame ------------------
                         #region Frame
 
@@ -154,7 +153,7 @@ namespace BrashMonkeySpriter.Content {
                 case 1:
                     key.Spin = SpinDirection.CounterClockwise;
                     break;
-                case - 1:
+                case -1:
                     key.Spin = SpinDirection.Clockwise;
                     break;
             }
@@ -207,7 +206,7 @@ namespace BrashMonkeySpriter.Content {
                 float pivotY = ReadFloat(xBone, "pivot_y", 1); // pivot_y 1
                 key.Pivot = new Vector2(
                     pivotX ,
-                    (1.0f - pivotY) 
+                    pivotY
                     );
                 key.Rotation =
                  -MathHelper.ToRadians(ReadFloat(xBone, "angle", 0)); // kulma 0

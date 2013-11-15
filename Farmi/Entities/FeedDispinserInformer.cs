@@ -27,11 +27,11 @@ namespace Farmi.Entities
             size = new Size(32, 32);
             position = new Vector2(owner.Position.X + size.Width, owner.Position.Y);
 
-            Components.Add(new DispenserInformerComponent(owner));
+            Components.AddComponent(new DispenserInformerComponent(owner));
 
             texture = game.Content.Load<Texture2D>(Path.Combine("Entities", "info"));
 
-            Components.Add(new DispenserInformerComponent(owner));
+            Components.AddComponent(new DispenserInformerComponent(owner));
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

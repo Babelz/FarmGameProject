@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
+<!-- TODO: ei vielä päätetty seedin lopullisesta datasta. -->
+
 <Repository Name="Seed Repository" DatasetType="SeedDataset" RepositoryType="SeedRepository">
   <Items>
     <Seed Name="Jeesus" AssetName="gg" Description="Wapsu panee jeesusta"

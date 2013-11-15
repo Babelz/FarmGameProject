@@ -7,13 +7,23 @@
         <Tag Value="CrazyAssDog"/>
       </Tags>
       <Collider X="0" Y="0" Width="0" Height="0"/>
-      <Birthday Season="Spring" Year="1" Day="1"/>
       <Behaviours>
         <Behaviour Name="DogBehaviour"/>
       </Behaviours>
       <LootTable>
         <Item Name="Dog meat"/>
       </LootTable>
+    </Animal>
+    <Animal>
+      <Animal Name="Moomoo" Type="Dog" Width="96" Height="32" AssetName="cow">
+        <Collider X="0" Y="0" Width="0" Height="0"/>
+        <Behaviours>
+          <Behaviour Name="CowBehaviour"/>
+        </Behaviours>
+        <LootTable>
+          <Item Name="Milk"/>
+        </LootTable>
+      </Animal>
     </Animal>
   </Items>
 </Repository>

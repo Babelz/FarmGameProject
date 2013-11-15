@@ -25,10 +25,10 @@ namespace Khv.Maps.MapClasses.Managers
     public class MapManager : Manager
     {
         #region Vars
-        private KhvGame game;
-        private ContentManager contentManager;
-        private List<TileMap> mapsInBackground;
-        private MapDepencyContainer mapDepencyContainer; 
+        private readonly KhvGame game;
+        private readonly ContentManager contentManager;
+        private readonly List<TileMap> mapsInBackground;
+        private readonly MapDepencyContainer mapDepencyContainer; 
         #endregion
 
         #region Events

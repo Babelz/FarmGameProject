@@ -43,7 +43,7 @@ namespace Farmi.Entities.Items
         public ConsumableItem(KhvGame game, ConsumableItemDataset itemDataset) 
             : base(game)
         {
-            Components.Add(new ThrowableComponent(this));
+            Components.AddComponent(new ThrowableComponent(this));
             InitializeFromDataset(itemDataset);
         }
 

@@ -10,7 +10,7 @@ using Farmi.Entities.Animals;
 
 namespace Farmi.dat.scripts
 {
-    internal sealed class CowBehaviour : AnimalBehaviourScript
+    public sealed class CowBehaviour : AnimalBehaviourScript
     {
         #region Vars
 
@@ -19,7 +19,15 @@ namespace Farmi.dat.scripts
         public CowBehaviour(KhvGame game, Animal owner)
             : base(game, owner)
         {
+            owner.OnDestroyed += new Khv.Game.GameObjects.GameObjectEventHandler(owner_OnDestroyed);
         }
+
+        #region Event handlers
+        private void owner_OnDestroyed(object sender, Khv.Engine.Args.GameEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         public override void Update(GameTime gameTime)
         {

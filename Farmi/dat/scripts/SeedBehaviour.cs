@@ -12,14 +12,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.dat.scripts
 {
-    internal class SeedBehaviour : ToolBehaviourScript
+    public class SeedBehaviour : ToolBehaviourScript
     {
         internal SeedInteractionComponent seedInteractionComponent;
         public SeedBehaviour(KhvGame game, Seed owner) : base(game, owner)
         {
             Console.WriteLine(owner.Dataset.Name);
             seedInteractionComponent = new SeedInteractionComponent(owner);
-            owner.Components.Add(seedInteractionComponent);
+            owner.Components.AddComponent(seedInteractionComponent);
         }
 
         protected override void HookEvents()

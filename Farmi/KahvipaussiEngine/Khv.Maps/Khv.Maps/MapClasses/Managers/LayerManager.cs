@@ -15,7 +15,7 @@ namespace Khv.Maps.MapClasses.Managers
     public class LayerManager
     {
         #region Vars
-        private List<ILayer> layers;
+        private readonly List<ILayer> layers;
         #endregion
 
         public LayerManager()

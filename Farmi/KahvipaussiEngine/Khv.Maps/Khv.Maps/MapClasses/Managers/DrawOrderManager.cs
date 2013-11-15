@@ -14,7 +14,7 @@ namespace Khv.Maps.MapClasses.Managers
     public class DrawOrderManager : Manager
     {
         #region Vars
-        private List<DrawOrder> drawOrders;
+        private readonly List<DrawOrder> drawOrders;
         #endregion
 
         public DrawOrderManager()

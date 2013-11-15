@@ -6,7 +6,7 @@ using Khv.Game.GameObjects;
 
 namespace Farmi.Entities.Components
 {
-    public interface IInteractionComponent : IObjectComponent
+    public interface IInteractionComponent : IUpdatableObjectComponent
     {
         #region Events
         event InterActionEventHandler OnInteractionBegin;
