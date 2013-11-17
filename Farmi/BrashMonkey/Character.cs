@@ -296,7 +296,7 @@ namespace BrashMonkeySpriter
             return l_transform;
         }
 
-        public void Update(GameTime p_gameTime)
+        public virtual void Update(GameTime p_gameTime)
         {
             m_renderList.Clear();
             m_boneTransforms.Clear();
@@ -373,7 +373,7 @@ namespace BrashMonkeySpriter
             }
         }
 
-        public void Draw(SpriteBatch p_spriteBatch)
+        public virtual void Draw(SpriteBatch p_spriteBatch)
         {
             //  p_spriteBatch.End();
             // p_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone);
