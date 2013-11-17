@@ -102,6 +102,7 @@ namespace Farmi.Entities
         private void InitDefaultSetup()
         {
             var keymapper = defaultInputSetup.Mapper.GetInputBindProvider<KeyInputBindProvider>();
+           
             #region Move
             keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
@@ -297,7 +298,7 @@ namespace Farmi.Entities
             {
                 return;
             }
-            Inventory.SelectedTool.Update(gameTime);
+            Inventory.SelectedTool.Update(gameTime); 
         }
 
         public override void Draw(SpriteBatch spriteBatch)
