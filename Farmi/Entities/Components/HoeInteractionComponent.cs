@@ -22,9 +22,7 @@ namespace Farmi.Entities.Components
             }
 
             spot.SetGround(new Ground());
-
             IsInteracting = false;
-
         }
 
         public override bool CanInteract(GameObject with)
