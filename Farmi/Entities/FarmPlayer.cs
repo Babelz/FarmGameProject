@@ -97,7 +97,8 @@ namespace Farmi.Entities
 
             RepositoryManager r = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
             Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Hoe")));
-            Inventory.AddToInventory(new Seed(game, r.GetDataSet<SeedDataset>(t => t.Name == "Jeesus")));
+            Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Pick")));
+            //Inventory.AddToInventory(new Seed(game, r.GetDataSet<SeedDataset>(t => t.Name == "Jeesus")));
         }
         private void InitDefaultSetup()
         {
@@ -278,7 +279,7 @@ namespace Farmi.Entities
             SpriterImporter importer = new SpriterImporter();
             var model = reader.Read(importer.Import(Path.Combine("Content\\Spriter", "player.scml")), null, game.Content,
                 game.GraphicsDevice);
-            animator = model.CreateAnimator("player");
+            animator = new FarmPlayerAnimator(this, model, "player");
             animator.ChangeAnimation("idle");
             animator.AnimationEnded += animator_AnimationEnded;
             animator.Scale = 1.0f;
@@ -289,8 +290,6 @@ namespace Farmi.Entities
             base.Update(gameTime);
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
-
-            animator.Location = Position+ new Vector2(size.Width/ 2, size.Height);
             animator.Update(gameTime);
 
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));

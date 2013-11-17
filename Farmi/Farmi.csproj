@@ -104,6 +104,7 @@
     <Compile Include="Entities\CropSpotState.cs" />
     <Compile Include="Entities\Door.cs" />
     <Compile Include="Entities\FarmPlayer.cs" />
+    <Compile Include="Entities\FarmPlayerAnimator.cs" />
     <Compile Include="Entities\FeedDispinserInformer.cs" />
     <Compile Include="Entities\FeedingTray.cs" />
     <Compile Include="Entities\Ground.cs" />
@@ -420,6 +421,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="BrashMonkey\LICENSE" />
+    <None Include="Content\Spriter\player.bak.scml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Spriter\player.scml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -461,6 +465,9 @@
     <None Include="dat\repos\animalfeeds.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Spriter\tools\pick2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Spriter\tools\pick.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -500,6 +507,12 @@
     <Content Include="Content\Spriter\walk_side\player-side_0005_Rleg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Tools\hoe.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Tools\pick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\ukko.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -522,7 +535,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Tools\" />
     <Folder Include="KahvipaussiEngine\Khv.Maps\Khv.Maps\MapFiles\" />
   </ItemGroup>
   <ItemGroup>

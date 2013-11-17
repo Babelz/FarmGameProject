@@ -44,7 +44,15 @@ namespace Farmi.Entities.Items
 
         public void InitializeFromDataset(ToolDataset dataset)
         {
-           // Texture = game.Content.Load<Texture2D>(Path.Combine("Tools", dataset.AssetName));
+            try
+            {
+                Texture = game.Content.Load<Texture2D>(Path.Combine("Tools", dataset.AssetName));
+                Console.WriteLine("Sucess");
+            }
+            catch
+            {
+                Texture = null;
+            }
 
             PowerUpComponent powComponent = new PowerUpComponent(this,
                 dataset.MinPow,

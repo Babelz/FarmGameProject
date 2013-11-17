@@ -5,5 +5,8 @@
     <Tool Name="Hoe" AssetName="hoe" Description="Wapsu panee jeesusta"
           MinPow="1" MaxPow="51" PowTimestep="10"
           Behaviour="HoeBehaviour"/>
+    <Tool Name="Pick" AssetName="pick" Description="Wapsu panee jeesusta"
+          MinPow="1" MaxPow="51" PowTimestep="10"
+          Behaviour="HoeBehaviour"/>
   </Items>
 </Repository>

@@ -9,6 +9,7 @@ namespace Farmi.Entities.Components
 {
     public class HoeInteractionComponent : InteractionComponent
     {
+
         protected override void DoInteract(GameObject with, GameTime gameTime)
         {
             // with = cropspot
