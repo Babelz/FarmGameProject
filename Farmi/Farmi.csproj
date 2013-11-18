@@ -506,6 +506,24 @@
     <Content Include="Content\Spriter\walk_side\player-side_0005_Rleg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Spriter\walk_up\player-back_0000_Head.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_up\player-back_0001_Body.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_up\player-back_0002_Rhand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_up\player-back_0003_Lhand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_up\player-back_0004_Rleg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Spriter\walk_up\player-back_0005_Lleg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Tools\hoe.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

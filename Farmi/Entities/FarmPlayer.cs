@@ -106,7 +106,14 @@ namespace Farmi.Entities
             #region Move
             keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
-            keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) => MotionEngine.GoalVelocityY = VelocityFunc(args, -speed));
+            keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) =>
+            {
+                MotionEngine.GoalVelocityY = VelocityFunc(args, -speed);
+                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_up"))) return;
+                animator.ChangeAnimation("walk_up");
+                animator.FlipX = false;
+                animator.FlipY = false;
+            });
             keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) =>
             {
                 MotionEngine.GoalVelocityY = VelocityFunc(args, speed);
@@ -200,20 +207,25 @@ namespace Farmi.Entities
                 powerUpComponent.Disable();
             }
 
-            var interactionComponent = Inventory.SelectedTool.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
-            // jotain meni vikaan, jokaisella työkalulla PITÄISI olla interaktion komponentti
-            if (interactionComponent == null)
-                return;
-
-
-            GameObject nearestObject = world.GetNearestGameObject(this, new Padding(100));
-            // jos ei ole lähellä mitään
-            if (nearestObject == null)
-                return;
-
             animator.ChangeAnimation("use_tool_right");
-            interactionComponent.Interact(nearestObject);
+            animator.AnimationEnded += tool_AnimationEnded;
         }
+
+        private void tool_AnimationEnded(Animation sender)
+        {
+            GameObject nearestObject = world.GetNearestGameObject(this, new Padding(32));
+            var interactionComponent = Inventory.SelectedTool.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
+            // jos ei ole lähellä mitään
+            // jotain meni vikaan, jokaisella työkalulla PITÄISI olla interaktion komponentti
+            if (nearestObject == null || interactionComponent == null)
+            {
+                animator.AnimationEnded -= tool_AnimationEnded;
+                return;
+            }
+            interactionComponent.Interact(nearestObject);
+            animator.AnimationEnded -= tool_AnimationEnded;
+        }
+
         /// <summary>
         /// PowerUp työkaluun callback inputtiin
         /// </summary>

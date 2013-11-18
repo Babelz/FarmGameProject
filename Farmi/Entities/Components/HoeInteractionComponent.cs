@@ -21,7 +21,6 @@ namespace Farmi.Entities.Components
             }
 
             spot.SetGround(new Ground());
-
             IsInteracting = false;
         }
 
