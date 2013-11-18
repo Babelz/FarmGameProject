@@ -42,24 +42,18 @@ namespace Farmi.Entities.Items
             InitializeFromDataset(dataset);
         }
 
+        #region Initializers
         public void InitializeFromDataset(ToolDataset dataset)
         {
-            try
-            {
-                Texture = game.Content.Load<Texture2D>(Path.Combine("Tools", dataset.AssetName));
-                Console.WriteLine("Sucess");
-            }
-            catch
-            {
-                Texture = null;
-            }
+            Texture = game.Content.Load<Texture2D>(Path.Combine("Tools", dataset.AssetName));
 
             PowerUpComponent powComponent = new PowerUpComponent(this,
                 dataset.MinPow,
                 dataset.MaxPow,
                 dataset.PowTimestep);
+
             //TODO temp
-            Size = new Size(32,32);
+            Size = new Size(32, 32);
             Components.AddComponent(powComponent);
 
             ScriptEngine scriptEngine = game.Components.First(
@@ -69,6 +63,8 @@ namespace Farmi.Entities.Items
                 new ScriptBuilder(dataset.Behaviour, new object[] { game, this }));
             Behaviour.Initialize();
         }
+        #endregion
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);

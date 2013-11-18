@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Farmi.Datasets
 {
-    public class CalendarDataset : IDataset
+    public sealed class CalendarDataset : IDataset
     {
         public void ParseValuesFrom(XElement xElement)
         {

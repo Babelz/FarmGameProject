@@ -9,7 +9,6 @@ namespace Farmi.Entities.Components
 {
     public class HoeInteractionComponent : InteractionComponent
     {
-
         protected override void DoInteract(GameObject with, GameTime gameTime)
         {
             // with = cropspot
@@ -24,7 +23,6 @@ namespace Farmi.Entities.Components
             spot.SetGround(new Ground());
 
             IsInteracting = false;
-
         }
 
         public override bool CanInteract(GameObject with)

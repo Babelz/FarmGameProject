@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities
 {
-    public class Ground
+    public sealed class Ground
     {
         #region Properties
 
@@ -44,25 +44,13 @@ namespace Farmi.Entities
         }
 
         #endregion
+
         public Ground()
         {
             State = GroundState.Hoed;
         }
 
         #region Methods
-
-        public virtual void Update(GameTime gameTime)
-        {
-            
-        }
-
-        public virtual void Draw(SpriteBatch spriteBatch, CropSpot owner)
-        {
-            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int) owner.Position.X, (int) owner.Position.Y, 32, 32), Color.Peru );
-            if (Seed == null)
-                return;
-            Seed.DrawToInventory(spriteBatch, owner.Position, new Size(16,16));
-        }
 
         /// <summary>
         /// Kylvee siemenen maaperään. 
@@ -72,6 +60,7 @@ namespace Farmi.Entities
         public void Plant(Seed seed)
         {
             Seed = seed;
+
             if (seed == null)
             {
                 State = GroundState.Hoed;
@@ -80,7 +69,11 @@ namespace Farmi.Entities
             {
                 State = GroundState.Planted;
             }
+        }
 
+        public void Draw(SpriteBatch spriteBatch, CropSpot owner)
+        {
+            spriteBatch.Draw(KhvGame.Temp, new Rectangle((int) owner.Position.X, (int) owner.Position.Y, 32, 32), Color.Peru );
         }
 
         #endregion

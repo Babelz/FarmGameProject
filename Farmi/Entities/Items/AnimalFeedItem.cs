@@ -34,6 +34,7 @@ namespace Farmi.Entities.Items
             InitializeFromDataset(feedDataset);
         }
 
+        #region Initializers
         public void InitializeFromDataset(FeedDataset dataset)
         {
             Name = dataset.Name;
@@ -44,6 +45,8 @@ namespace Farmi.Entities.Items
 
             Texture = game.Content.Load<Texture2D>(Path.Combine("Items", dataset.AssetName));
         }
+        #endregion
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);

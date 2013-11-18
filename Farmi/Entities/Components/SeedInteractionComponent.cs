@@ -7,9 +7,11 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
-    public class SeedInteractionComponent : InteractionComponent
+    public sealed class SeedInteractionComponent : InteractionComponent
     {
+        #region Vars
         private readonly Seed owner;
+        #endregion
 
         public SeedInteractionComponent(Seed owner)
         {

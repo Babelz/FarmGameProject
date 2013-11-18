@@ -7,7 +7,7 @@ using Farmi.XmlParsers;
 
 namespace Farmi.Datasets
 {
-    internal sealed class FeedDataset : IDataset
+    public sealed class FeedDataset : IDataset
     {
         #region Vars
         private XElement xElement;

@@ -12,24 +12,11 @@ namespace Farmi.Entities
 {
     public sealed class CropSpot : DrawableGameObject
     {
+        #region Vars
         private DrawableGameObject plantedItem = null;
-        public CropSpot(KhvGame game, MapObjectArguments args)
-            : base(game)
-        {
-            Position = args.Origin;
-            State = CropSpotState.Dirt;
-        }
-        public CropSpot(KhvGame game)
-            : base(game)
-        {
-            State = CropSpotState.Dirt;
-        }
+        #endregion
 
-        public override void Update(GameTime gameTime)
-        {
-
-        }
-
+        #region Properties
         /// <summary>
         /// Palauttaa maaperän.
         /// Jos null, tarkoittaa sitä, että
@@ -37,7 +24,7 @@ namespace Farmi.Entities
         /// </summary>
         public Ground Ground
         {
-            get; 
+            get;
             private set;
         }
 
@@ -48,6 +35,19 @@ namespace Farmi.Entities
         {
             get;
             private set;
+        }
+        #endregion
+
+        public CropSpot(KhvGame game, MapObjectArguments args)
+            : base(game)
+        {
+            Position = args.Origin;
+            State = CropSpotState.Dirt;
+        }
+        public CropSpot(KhvGame game)
+            : base(game)
+        {
+            State = CropSpotState.Dirt;
         }
 
         /// <summary>
@@ -67,7 +67,6 @@ namespace Farmi.Entities
                 State = CropSpotState.Grounded;
             }
         }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (Ground == null) return;

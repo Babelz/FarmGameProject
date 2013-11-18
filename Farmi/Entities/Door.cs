@@ -14,7 +14,7 @@ using Farmi.Screens;
 
 namespace Farmi.Entities
 {
-    public class Door : DrawableGameObject, ILoadableRepositoryObject<DoorDataset>
+    public sealed class Door : DrawableGameObject, ILoadableRepositoryObject<DoorDataset>
     {
         #region Vars
         private Texture2D texture;

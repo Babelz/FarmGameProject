@@ -74,6 +74,7 @@ namespace Farmi.Entities
         }
         #endregion
 
+        #region Initializers
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
             MapObjectArgumentReader reader = new MapObjectArgumentReader(mapObjectArguments);
@@ -92,8 +93,11 @@ namespace Farmi.Entities
             feedDataset = (game.Components.First(c => c is RepositoryManager)
                 as RepositoryManager).GetDataSet<FeedDataset>(d => d.Type == FeedType);
 
+            // TODO: Testi AnimalFeedDispenser - InsertFeed(100)
             InsertFeed(100);
         }
+        #endregion
+
         public AnimalFeedItem GetFeed()
         {
             AnimalFeedItem feed = null;
@@ -109,10 +113,6 @@ namespace Farmi.Entities
         public void InsertFeed(int amount)
         {
             FeedContained += amount;
-        }
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

@@ -47,6 +47,7 @@ namespace Farmi.Entities.Items
             InitializeFromDataset(itemDataset);
         }
 
+        #region Initializers
         public void InitializeFromDataset(ConsumableItemDataset dataset)
         {
             Name = dataset.Name;
@@ -75,6 +76,8 @@ namespace Farmi.Entities.Items
                     new ScriptBuilder(dataset.Script, new object[] { game, this }));
             }
         }
+        #endregion
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);

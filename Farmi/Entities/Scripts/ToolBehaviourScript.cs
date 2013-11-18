@@ -54,7 +54,11 @@ namespace Farmi.Entities.Scripts
             HookEvents();
         }
 
-        public abstract void Update(GameTime gameTime);
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public virtual void Update(GameTime gameTime)
+        {
+        }
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+        }
     }
 }

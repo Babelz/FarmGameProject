@@ -12,6 +12,7 @@ using Khv.Maps.MapClasses.Processors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
+using Farmi.Entities.Components;
 
 namespace Farmi.Entities.Buildings
 {
@@ -52,18 +53,15 @@ namespace Farmi.Entities.Buildings
         }
 
         #region Event handlers
-        private void MapManager_OnMapChanged(object sender, MapEventArgs e)
+        private void mapLocator_ContainedMapChanged(object sender, MapLocatorEventArgs e)
         {
-            if (e.Current.Name == mapContainedIn)
-            {
-                world.WorldObjects.MoveToForeground(Doors);
-                world.WorldObjects.MoveToForeground(this);
-            }
-            else
-            {
-                world.WorldObjects.MoveToBackground(Doors);
-                world.WorldObjects.MoveToBackground(this);
-            }
+            world.WorldObjects.MoveToBackground(Doors);
+            world.WorldObjects.MoveToBackground(this);
+        }
+        private void mapLocator_ContainedMapActive(object sender, MapLocatorEventArgs e)
+        {
+            world.WorldObjects.MoveToForeground(Doors);
+            world.WorldObjects.MoveToForeground(this);
         }
         #endregion
 
@@ -101,7 +99,10 @@ namespace Farmi.Entities.Buildings
 
             Collider = new BoxCollider(world, this);
 
-            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
+            MapLocator mapLocator;
+            Components.AddComponent(mapLocator = new MapLocator(world, this, mapContainedIn));
+            mapLocator.ContainedMapActive += new MapLocatorEventHandler(mapLocator_ContainedMapActive);
+            mapLocator.ContainedMapChanged += new MapLocatorEventHandler(mapLocator_ContainedMapChanged);
         }
 
         public void InitializeFromDataset(BuildingDataset dataset)
@@ -133,15 +134,13 @@ namespace Farmi.Entities.Buildings
             base.Update(gameTime);
             Collider.Update(gameTime);
 
-            Array.ForEach<Door>(Doors, 
-                d => d.Update(gameTime));
+            Array.ForEach(Doors, d => d.Update(gameTime));
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height), color);
 
-            Array.ForEach<Door>(Doors, 
-                d => d.Draw(spriteBatch));
+            Array.ForEach(Doors, d => d.Draw(spriteBatch));
         }
     }
 }

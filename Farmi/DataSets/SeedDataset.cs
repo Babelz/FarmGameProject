@@ -11,7 +11,6 @@ namespace Farmi.Datasets
         public override void ParseValuesFrom(XElement xElement)
         {
             base.ParseValuesFrom(xElement);
-
         }
     }
 }

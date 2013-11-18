@@ -13,7 +13,7 @@ namespace Farmi.Entities.Components
     /// <summary>
     /// TODO: tosi varhainen implementaatio (proto)
     /// </summary>
-    internal class MessageBoxComponent : IDrawableObjectComponent
+    internal sealed class MessageBoxComponent : IDrawableObjectComponent
     {
         #region Vars
         private readonly ExclamationMarkDrawer exclamationMarkDrawer;

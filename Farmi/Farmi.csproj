@@ -98,7 +98,6 @@
     <Compile Include="Entities\Components\PowerUpComponent.cs" />
     <Compile Include="Entities\Components\PushableComponent.cs" />
     <Compile Include="Entities\Components\SeedInteractionComponent.cs" />
-    <Compile Include="Entities\Components\ToolInteractionComponent.cs" />
     <Compile Include="Entities\Components\ViewComponent.cs" />
     <Compile Include="Entities\CropSpot.cs" />
     <Compile Include="Entities\CropSpotState.cs" />
