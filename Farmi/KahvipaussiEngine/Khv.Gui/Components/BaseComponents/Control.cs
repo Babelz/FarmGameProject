@@ -30,7 +30,6 @@ namespace Khv.Gui.Components.BaseComponents
     
         // protected muuttujat jotka ovat muokattavissa perinnässä
         protected List<EventDispatcher> eventDispatchers;
-        protected Texture2D backgroundImage;
         protected ControlSize size;
 
         // lista toiminnoista jotka suoritetaan joka updatessa.
@@ -177,8 +176,7 @@ namespace Khv.Gui.Components.BaseComponents
             set;
         }
         /// <summary>
-        /// Palauttaa rectanglen joka koostuu kontrollin oikeasta sijainnista.
-        /// ja koosta.
+        /// Palauttaa rectanglen joka koostuu kontrollin oikeasta sijainnista ja koosta.
         /// </summary>
         public Rectangle ClientArea
         {
@@ -188,7 +186,8 @@ namespace Khv.Gui.Components.BaseComponents
             }
         }
         /// <summary>
-        /// Lista toiminnoista jotka suoritetaan updatessa.
+        /// Lista toiminnoista jotka suoritetaan updatessa. Parametrinä tuleva kontrolli
+        /// on listan omistaja.
         /// </summary>
         public List<Action<Control>> UpdateActions
         {
@@ -201,6 +200,11 @@ namespace Khv.Gui.Components.BaseComponents
         {
             get;
             protected set;
+        }
+        public Texture2D BackgroundImage
+        {
+            get;
+            set;
         }
         #endregion 
 
@@ -262,9 +266,10 @@ namespace Khv.Gui.Components.BaseComponents
         /// </summary>
         public virtual void Defocus()
         {
-            if (this is IButtonListener)
+            IButtonListener buttonListener = this as IButtonListener;
+            if (buttonListener != null)
             {
-                (this as IButtonListener).ButtonEventListener.Trigger.CurrentState = PressedState.None;
+                buttonListener.ButtonEventListener.Trigger.CurrentState = PressedState.None;
             }
 
             hasFocus = false;
@@ -319,7 +324,7 @@ namespace Khv.Gui.Components.BaseComponents
         {
             // jos taustakuva on null, piirretään default texture
             // tausta värillä
-            Texture2D textureToDraw = (backgroundImage == null) ? KhvGame.Temp : backgroundImage;
+            Texture2D textureToDraw = (BackgroundImage == null) ? KhvGame.Temp : BackgroundImage;
             spriteBatch.Draw(textureToDraw, new Rectangle(Position.Real.X, Position.Real.Y, size.Width, size.Height), Colors.Background);
         }
         /// <summary>

@@ -110,7 +110,6 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Collections
 
         public Container()
         {
-
             controlManager = new ControlManager(this);
             focusManager = new FocusManager();
             indexNavigator = new IndexNavigator(focusManager);
@@ -165,7 +164,6 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Collections
         {
             base.Update(gameTime);
             controlManager.Update(gameTime);
-
         }
         /// <summary>
         /// Piirtää containerin ja kaikki sen visible childit.

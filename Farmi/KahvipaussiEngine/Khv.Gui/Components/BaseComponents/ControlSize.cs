@@ -158,8 +158,14 @@ namespace Khv.Gui.Components.BaseComponents
                     widthPercent = size.Width / parentSize.Width * 100;
                     break;
                 case SizeType.Percent:
-                    size = new Size(parentSize.Width / 100 * widthPercent,
-                                    parentSize.Height / 100 * heightPercent);
+                    int onePercent_Width = parentSize.Width / 100;
+                    onePercent_Width = (onePercent_Width == 0 ? 1 : onePercent_Width);
+
+                    int onePercent_Height = parentSize.Height / 100;
+                    onePercent_Height = (onePercent_Height == 0 ? 1 : onePercent_Height);
+
+                    size = new Size(onePercent_Width * widthPercent,
+                                    onePercent_Height * heightPercent);
                     break;
             }
         }

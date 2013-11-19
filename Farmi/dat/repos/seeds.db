@@ -4,7 +4,7 @@
 
 <Repository Name="Seed Repository" DatasetType="SeedDataset" RepositoryType="SeedRepository">
   <Items>
-    <Seed Name="Jeesus" AssetName="gg" Description="Wapsu panee jeesusta"
+    <Seed Name="Turnip seeds" AssetName="seedsack" Description="Wapsu panee jeesusta."
           MinPow="1" MaxPow="1" PowTimestep="10"
           Behaviour="SeedBehaviour"/>
   </Items>

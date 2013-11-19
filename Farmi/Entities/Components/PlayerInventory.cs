@@ -7,6 +7,7 @@ using Khv.Engine;
 using Khv.Game.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Khv.Engine.Args;
 
 namespace Farmi.Entities.Components
 {
@@ -20,6 +21,18 @@ namespace Farmi.Entities.Components
         private readonly List<Tool> tools;
 
         private readonly FarmPlayer player;
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// Laukaistaan kun aktiivinen tooli ollaan vaihtamassa.
+        /// </summary>
+        public event PlayerInventoryEventHandler OnToolChanging;
+
+        /// <summary>
+        /// Laukaistaan kun aktiivinen itemi ollaan vaihtamassa.
+        /// </summary>
+        public event PlayerInventoryEventHandler OnItemChanging;
         #endregion
 
         #region Properties
@@ -64,6 +77,31 @@ namespace Farmi.Entities.Components
             tools = new List<Tool>();
         }
 
+        #region Event callers
+        private void CallOnItemChaning(Item nextItem)
+        {
+            if (OnItemChanging != null)
+            {
+                OnItemChanging(this, new PlayerInventoryEventArgs()
+                {
+                    CurrentItem = ItemInHands,
+                    NextItem = nextItem
+                });
+            }
+        }
+        private void CallOnToolChanging(Tool nextTool)
+        {
+            if (OnToolChanging != null)
+            {
+                OnToolChanging(this, new PlayerInventoryEventArgs()
+                {
+                    CurrentItem = SelectedTool,
+                    NextItem = nextTool
+                });
+            }
+        }
+        #endregion
+
         public void NextItem()
         {
             itemIndex++;
@@ -72,17 +110,23 @@ namespace Farmi.Entities.Components
                 itemIndex = 0;
             }
 
-            ItemInHands = items[itemIndex];
+            Item nextItem = items[itemIndex];
+            CallOnItemChaning(nextItem);
+
+            ItemInHands = nextItem;
         }
         public void PreviousItem()
         {
             itemIndex--;
             if (itemIndex < 0)
             {
-                itemIndex = items.Count;
+                itemIndex = items.Count - 1;
             }
 
-            ItemInHands = items[itemIndex];
+            Item nextItem = items[itemIndex];
+            CallOnItemChaning(nextItem);
+
+            ItemInHands = nextItem;
         }
 
         public void NextTool()
@@ -93,17 +137,23 @@ namespace Farmi.Entities.Components
                 toolIndex = 0;
             }
 
-            SelectedTool = tools[toolIndex];
+            Tool nextTool = tools[toolIndex];
+            CallOnToolChanging(nextTool);
+
+            SelectedTool = nextTool;
         }
         public void PreviousTool()
         {
             toolIndex--;
-            if (toolIndex < tools.Count)
+            if (toolIndex < 0)
             {
-                toolIndex = items.Count;
+                toolIndex = tools.Count - 1;
             }
 
-            SelectedTool = tools[toolIndex];
+            Tool nextTool = tools[toolIndex];
+            CallOnToolChanging(nextTool);
+
+            SelectedTool = nextTool;
         }
 
         public void AddToInventory(Item item)
@@ -121,6 +171,8 @@ namespace Farmi.Entities.Components
             }
             else
             {
+                CallOnItemChaning(item);
+
                 items.Add(item);
                 ItemInHands = item;
             }
@@ -131,6 +183,8 @@ namespace Farmi.Entities.Components
 
             if (HasItemInHands)
             {
+                CallOnItemChaning(null);
+
                 items.Remove(ItemInHands);
                 item = ItemInHands;
                 ItemInHands = null;
@@ -154,5 +208,23 @@ namespace Farmi.Entities.Components
                 ItemInHands.Draw(spriteBatch);
             }
         }
+    }
+
+    public delegate void PlayerInventoryEventHandler(object sender, PlayerInventoryEventArgs e);
+
+    public class PlayerInventoryEventArgs : GameEventArgs
+    {
+        #region Properties
+        public Item CurrentItem
+        {
+            get;
+            set;
+        }
+        public Item NextItem
+        {
+            get;
+            set;
+        }
+        #endregion
     }
 }

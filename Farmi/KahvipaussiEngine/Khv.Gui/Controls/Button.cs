@@ -22,7 +22,7 @@ namespace Khv.Gui.Controls
         {
             set
             {
-                backgroundImage = value;
+                BackgroundImage = value;
             }
         }
         public string Text

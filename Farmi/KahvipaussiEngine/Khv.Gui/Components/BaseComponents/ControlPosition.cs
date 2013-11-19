@@ -16,6 +16,16 @@ namespace Khv.Gui.Components.BaseComponents
 
         #region Properties
         /// <summary>
+        /// Kontrollin sijanti ilman marginia.
+        /// </summary>
+        public Point NormalPosition
+        {
+            get
+            {
+                return position;
+            }
+        }
+        /// <summary>
         /// Kontrollin sijainti. Relatiivinen parenttiin jos kontrollilla
         /// on parentti tai se ankkuroidaan johonkin muuhun AnchorTo metodilla.
         /// </summary>
@@ -29,7 +39,7 @@ namespace Khv.Gui.Components.BaseComponents
             set
             {
                 position = value;
-            }
+            }  
         }
         /// <summary>
         /// Kontrollin oikea sijainti näytöllä.
@@ -51,7 +61,7 @@ namespace Khv.Gui.Components.BaseComponents
             {
                 if (value == null)
                 {
-                    margin = Margin.Empty();
+                    margin = Margin.Default();
                 }
                 else
                 {
@@ -64,7 +74,7 @@ namespace Khv.Gui.Components.BaseComponents
         public ControlPosition(int x, int y)
         {
             Relative = new Point(x, y);
-            margin = Margin.Empty();
+            margin = Margin.Default();
         }
 
         /// <summary>

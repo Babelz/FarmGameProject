@@ -31,7 +31,7 @@ namespace Khv.Gui.Components
         /// </summary>
         public Point Calculate(Control owner)
         {
-            Point position = owner.Position.Relative;
+            Point position = owner.Position.NormalPosition;
 
             if (owner.Parent != null)
             {

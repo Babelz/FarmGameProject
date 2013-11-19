@@ -120,11 +120,17 @@
     <Compile Include="Entities\Scripts\ToolBehaviourScript.cs" />
     <Compile Include="Entities\Seed.cs" />
     <Compile Include="Entities\Teleport.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FarmGame.cs" />
     <Compile Include="Entities\Components\IInteractionComponent.cs" />
     <Compile Include="GameDataExporter.cs" />
     <Compile Include="GameDataImporter.cs" />
     <Compile Include="GameDataManager.cs" />
+    <Compile Include="HUD\ItemWidget.cs" />
+    <Compile Include="HUD\ItemWrapper.cs" />
+    <Compile Include="HUD\Widget.cs" />
+    <Compile Include="HUD\WidgetManager.cs" />
+    <Compile Include="HUD\WidgetWindow.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Args.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\Enums.cs" />
     <Compile Include="KahvipaussiEngine\Khv.Engine\GameStateMachine.cs" />
@@ -338,6 +344,7 @@
     <Compile Include="Repositories\ToolRepository.cs" />
     <Compile Include="Repositories\ConsumableItemsRepository.cs" />
     <Compile Include="SpriteSheetAnimation.cs" />
+    <Compile Include="WeatherSystem.cs" />
     <Compile Include="XmlParsers\MapObjectArgumentReader.cs" />
     <Compile Include="XmlParsers\XAttributeReader.cs" />
     <Compile Include="Program.cs" />
@@ -387,6 +394,12 @@
     <Content Include="Content\Entities\info.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\GUI\slot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\GUI\widgetbg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Items\hayfeed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -421,6 +434,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="BrashMonkey\LICENSE" />
+    <None Include="Content\arial2.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Spriter\player.bak.scml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -529,6 +545,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Tools\pick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Tools\seedsack.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\ukko.png">

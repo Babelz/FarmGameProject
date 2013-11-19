@@ -22,6 +22,7 @@ using Khv.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Farmi.HUD;
 
 namespace Farmi.Entities
 {
@@ -111,6 +112,9 @@ namespace Farmi.Entities
             Components.AddComponent(viewComponent = new ViewComponent(new Vector2(0, 1)));
             CreateTools();
 
+            WidgetManager widgets = new WidgetManager(game, this);
+            widgets.AddWidget(new ItemWidget(game, this, widgets, "Tool widget"));
+            Components.AddComponent(widgets);
         }
 
         private void CreateTools()
@@ -118,7 +122,7 @@ namespace Farmi.Entities
             RepositoryManager r = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
             Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Hoe")));
             Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Pick")));
-            Inventory.AddToInventory(new Seed(game, r.GetDataSet<SeedDataset>(t => t.Name == "Jeesus")));
+            Inventory.AddToInventory(new Seed(game, r.GetDataSet<SeedDataset>(t => t.Name == "Turnip seeds")));
             Inventory.NextTool();
         }
 

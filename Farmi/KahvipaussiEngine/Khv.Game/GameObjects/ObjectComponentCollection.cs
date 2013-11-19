@@ -14,7 +14,7 @@ namespace Khv.Game.GameObjects
     /// listoihin. Rajapinnat ovat IObjectComponent, IDrawableObjectComponent ja
     /// IUpdatableObjectComponent.
     /// </summary>
-    public class ObjectComponentCollection
+    public sealed class ObjectComponentCollection
     {
         #region Vars
         private readonly List<IObjectComponent> allComponents;
@@ -197,18 +197,36 @@ namespace Khv.Game.GameObjects
         #region Query methods
         /// <summary>
         /// Palauttaa komponentin joka täyttää ehdon ensimmäisenä.
+        /// Jos predikaatti on null, palauttaa ensimmäisen T:n tyyppiä
+        /// olevan komponentin.
         /// </summary>
-        public T GetComponent<T>(Predicate<T> predicate) where T : IObjectComponent
+        public T GetComponent<T>(Predicate<T> predicate = null) where T : class, IObjectComponent
         {
             IList list = GetComponentList(typeof(T));
 
-            foreach (T component in list)
+            if (predicate == null)
             {
-                if (predicate(component))
+                foreach (IObjectComponent component in list)
                 {
-                    return component;
+                    T result = component as T;
+                    if (result != null)
+                    {
+                        return result;
+                    }
                 }
             }
+            else
+            {
+                foreach (IObjectComponent component in list)
+                {
+                    T result = component as T;
+                    if (result != null && predicate(result))
+                    {
+                        return result;
+                    }
+                }
+            }
+
 
             return default(T);
         }

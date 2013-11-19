@@ -30,6 +30,16 @@ namespace Farmi
         private SpriteBatch spriteBatch;
         #endregion
 
+        #region Properties
+        public override GraphicsDeviceManager GraphicsDeviceManager
+        {
+            get
+            {
+                return graphics;
+            }
+        }
+        #endregion
+
         public FarmGame()
             : base()
         {
@@ -55,7 +65,10 @@ namespace Farmi
 
             CalendarSystem calendar = new CalendarSystem(this, 15);
             Components.Add(calendar);
-            
+
+            WeatherSystem weatherSystem = new WeatherSystem(this);
+            Components.Add(weatherSystem);
+
             // TODO: Debug logger.
             ScriptEngine engine = new ScriptEngine(this, Path.Combine("cfg", "sengine.cfg"));
             engine.LoggingMethod = LoggingMethod.Console;

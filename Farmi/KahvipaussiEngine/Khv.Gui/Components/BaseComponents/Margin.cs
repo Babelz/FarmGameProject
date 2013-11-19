@@ -56,7 +56,7 @@ namespace Khv.Gui.Components.BaseComponents
         /// <summary>
         /// Palauttaa marginin minkä kaikki valuet ovat nollia.
         /// </summary>
-        public static Margin Empty()
+        public static Margin Default()
         {
             return new Margin(0);
         }

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace Khv.Engine
 {
-    public class KhvGame : Microsoft.Xna.Framework.Game
+    public abstract class KhvGame : Microsoft.Xna.Framework.Game
     {
         #region Vars
         protected GameStateManager gameStateManager;
@@ -31,11 +31,14 @@ namespace Khv.Engine
                 return gameStateManager;
             }
         }
-
         public TestInputManager InputManager
         {
             get;
             private set;
+        }
+        public abstract GraphicsDeviceManager GraphicsDeviceManager
+        {
+            get;
         }
 		#endregion
 		

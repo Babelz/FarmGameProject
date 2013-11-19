@@ -30,6 +30,17 @@ namespace Khv.Gui.Controls
                 }
             }
         }
+        public override SpriteFont Font
+        {
+            get
+            {
+                return base.Font;
+            }
+            set
+            {
+                base.Font = value;
+            }
+        }
         public float FontScale
         {
             get
