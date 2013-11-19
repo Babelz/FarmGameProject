@@ -15,6 +15,6 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Collections
             this.khvGame = khvGame;
         }
 
-        // Tehdään eventti ja metodi implementaatiot tässä osassa luokkaa,
+        // Tehdään eventti ja metodi implementaatiot tässä osassa luokkaa
     }
 }

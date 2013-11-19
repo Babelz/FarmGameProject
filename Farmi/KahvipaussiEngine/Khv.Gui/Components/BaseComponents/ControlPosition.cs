@@ -81,7 +81,7 @@ namespace Khv.Gui.Components.BaseComponents
         /// Asettaa kontrollin positionin että se ankkuroituu parametreinä saatavaan kontrolliin.
         /// Yleensä tämä kontrolli on kontrollin parentti.
         /// </summary>
-        public void AnchorTo(Control parent)
+        public void Transform(Control parent)
         {
             if (parent != null)
             {

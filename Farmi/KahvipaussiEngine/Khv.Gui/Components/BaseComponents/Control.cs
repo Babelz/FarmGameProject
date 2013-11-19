@@ -293,10 +293,10 @@ namespace Khv.Gui.Components.BaseComponents
 
             if (Parent != null)
             {
-                Size.Update(Parent.Size);
+                Size.Transform(Parent.Size);
                 Position.Relative = Alingment.Calculate(this);
             }
-            Position.AnchorTo(Parent);
+            Position.Transform(Parent);
 
             updateActions.ForEach(a => a.Invoke(this));
         }

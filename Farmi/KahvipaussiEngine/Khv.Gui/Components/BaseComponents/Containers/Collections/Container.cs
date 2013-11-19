@@ -3,7 +3,10 @@ using Khv.Gui.Components.BaseComponents.Containers.Components;
 using Khv.Gui.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
+
+// TODO: REFACTOR
 namespace Khv.Gui.Components.BaseComponents.Containers.Collections
 {
     /// <summary>
@@ -82,7 +85,17 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Collections
             set
             {
                 base.Font = value;
-                controlManager.Controls.ForEach(c => c.Font = value);
+                if (Font != null)
+                {
+                    foreach (Control control in controlManager.AllControls().Where(c => c.Font == null))
+                    {
+                        control.Font = Font;
+                    }
+                }
+            }
+            get
+            {
+                return base.Font;
             }
         }
         /// <summary>
@@ -97,13 +110,14 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Collections
             set
             {
                 fontScale = MathHelper.Clamp(value, 0.0f, 100.0f);
-                controlManager.Controls.ForEach(c =>
+                foreach (Control control in controlManager.AllControls())
+                {
+                    Label label = control as Label;
+                    if (label != null)
                     {
-                        if (c is Label)
-                        {
-                            (c as Label).FontScale = fontScale;
-                        }
-                    });
+                        label.FontScale = fontScale;
+                    }
+                }
             }
         }
         #endregion
@@ -127,15 +141,18 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Collections
         /// </summary>
         public void RefreshChildPositions()
         {
-            controlManager.Controls.ForEach(c => c.Position.AnchorTo(c.Parent));
+            controlManager.AllControls().ToList().ForEach(c => c.Position.Transform(c.Parent));
         }
         /// <summary>
         /// Asettaa focuksen kontrollille jolla on pienin focusindex.
         /// </summary>
         public void FocusFirst()
         {
-            focusManager.ChangeFocus(controlManager.Controls.First(p => p.FocusIndex.X == controlManager.Controls.Min(c => c.FocusIndex.X) &&
-                                                                        p.FocusIndex.Y == controlManager.Controls.Min(c => c.FocusIndex.Y)));
+            List<Control> allControls = controlManager.AllControls()
+                .ToList();
+
+            focusManager.ChangeFocus(allControls.First(p => p.FocusIndex.X == allControls.Min(c => c.FocusIndex.X) &&
+                                                            p.FocusIndex.Y == allControls.Min(c => c.FocusIndex.Y)));
         }
         /// <summary>
         /// Oakottaa jokaisen childin päivittämään itseään kerran,
@@ -149,13 +166,18 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Collections
             if (!Enabled)
             {
                 controlManager.EnableAll();
-                controlManager.Controls.ForEach(c => c.Update(null));
+                controlManager.AllControls()
+                    .ToList()
+                    .ForEach(c => c.Update(null));
+
                 controlManager.DisableAll();
             }
         }
         public void DoAllActions()
         {
-            controlManager.Controls.ForEach(c => c.UpdateActions.ForEach(a => a.Invoke(c)));
+            controlManager.AllControls()
+                .ToList()
+                .ForEach(c => c.UpdateActions.ForEach(a => a.Invoke(c)));
         }
         /// <summary>
         /// Päivittää containerin ja kaikki sen enabloidut childit.

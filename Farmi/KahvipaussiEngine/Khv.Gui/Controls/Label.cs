@@ -2,6 +2,7 @@
 using Khv.Gui.Components.BaseComponents;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Khv.Engine;
 
 namespace Khv.Gui.Controls
 {

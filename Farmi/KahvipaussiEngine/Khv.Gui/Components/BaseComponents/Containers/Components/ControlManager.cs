@@ -15,18 +15,8 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components
     public class ControlManager
     {
         #region Vars
-        private List<Control> controls;
-        private Control owner;
-        #endregion
-
-        #region Properties
-        public List<Control> Controls
-        {
-            get
-            {
-                return controls;
-            }
-        }
+        private readonly List<Control> controls;
+        private readonly Control owner;
         #endregion
 
         public ControlManager(Control owner)
@@ -37,10 +27,46 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components
         // Lisää kontrollin manageriin ja antaa sille tarittavat viitteet.
         public void AddControl(Control control)
         {
+            if (control == owner)
+            {
+                return;
+            }
+
             controls.Add(control);
             control.Parent = owner;
-            control.Font = owner.Font;
         }
+        public void RemoveControl(Control control)
+        {
+            if (control == owner)
+            {
+                return;
+            }
+
+            controls.Remove(control);
+        }
+        public Control GetControl(Predicate<Control> predicate)
+        {
+            return controls.First(c => predicate(c));
+        }
+
+        public IEnumerable<Control> AllControls(Predicate<Control> predicate = null)
+        {
+            if (predicate == null)
+            {
+                foreach (Control control in controls)
+                {
+                    yield return control;
+                }
+            }
+            else
+            {
+                foreach (Control control in controls.Where(c => predicate(c)))
+                {
+                    yield return control;
+                }
+            }
+        }
+
         /// <summary>
         /// Päivittää kaikki kontrollit jotka ovat enabloitu.
         /// </summary>

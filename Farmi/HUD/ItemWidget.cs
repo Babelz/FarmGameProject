@@ -45,9 +45,9 @@ namespace Farmi.HUD
             int screenWidth = khvGame.GraphicsDeviceManager.PreferredBackBufferWidth;
             int screenHeight = khvGame.GraphicsDeviceManager.PreferredBackBufferHeight;
 
-            Font = khvGame.Content.Load<SpriteFont>("arial2");
             BackgroundImage = khvGame.Content.Load<Texture2D>(Path.Combine("Gui", "widgetbg"));
             Size = new ControlSize(15, 15, SizeType.Percent);
+            Size.Transform(new ControlSize(screenWidth, screenHeight, SizeType.Fixed));
 
             Colors = new Colors()
             {
@@ -56,8 +56,8 @@ namespace Farmi.HUD
             };
 
             Position = new ControlPosition(
-                screenWidth - screenWidth / 100 * 15,
-                screenHeight - screenHeight / 100 * 15);
+                screenWidth - size.Width,
+                screenHeight - size.Height);
 
             Position.Margin = new Margin(
                 left: -15,
@@ -69,45 +69,37 @@ namespace Farmi.HUD
             this.controlManager.AddControl(itemWrapper);
             inventory.OnItemChanging += new PlayerInventoryEventHandler(inventory_OnItemChanging);
             itemWrapper.Size = new ControlSize(50, 50, SizeType.Percent);
-            updateActions.Add((c) =>
-                {
-                    itemWrapper.Position = new ControlPosition(this.size.Width - itemWrapper.Size.Width, 0);
-                    itemWrapper.Position.Margin = new Margin(-5, 0, 10, 0);
-                });
+            itemWrapper.Size.Transform(this.size);
+            itemWrapper.Position = new ControlPosition(this.size.Width - itemWrapper.Size.Width, 0);
+            itemWrapper.Position.Margin = new Margin(-10, 0, 10, 0);
             itemWrapper.BackgroundImage = khvGame.Content.Load<Texture2D>(Path.Combine("Gui", "slot"));
             
             Label itemLabel = new Label();
+            itemLabel.Font = khvGame.Content.Load<SpriteFont>("arial");
             this.controlManager.AddControl(itemLabel);
             itemLabel.Text = "Item";
-            updateActions.Add((c) =>
-                {
-                    itemLabel.Position = new ControlPosition(
-                        itemWrapper.Position.Relative.X + itemWrapper.Size.Width / 2 - (int)itemLabel.Font.MeasureString(itemLabel.Text).X / 2,
-                        itemWrapper.Position.Relative.Y + (int)itemLabel.Font.MeasureString(itemLabel.Text).Y * 2);
-                    itemLabel.Position.Margin = new Margin(0, 0, 5, 0);
-                });
+            itemLabel.Position = new ControlPosition(
+            itemWrapper.Position.Relative.X + itemWrapper.Size.Width / 2 - (int)itemLabel.Font.MeasureString(itemLabel.Text).X / 2,
+            itemWrapper.Position.Relative.Y + (int)itemLabel.Font.MeasureString(itemLabel.Text).Y * 2);
+            itemLabel.Position.Margin = new Margin(0, 0, 5, 0);
 
             toolWrapper = new ItemWrapper();
             this.controlManager.AddControl(toolWrapper);
             inventory.OnToolChanging += new PlayerInventoryEventHandler(inventory_OnToolChanging);
             toolWrapper.Size = new ControlSize(50, 50, SizeType.Percent);
-            updateActions.Add((c) =>
-                {
-                    toolWrapper.Position = new ControlPosition(0, 0);
-                    toolWrapper.Position.Margin = new Margin(5, 0, 10, 0);
-                });
+            toolWrapper.Size.Transform(this.size);
+            toolWrapper.Position = new ControlPosition(0, 0);
+            toolWrapper.Position.Margin = new Margin(10, 0, 10, 0);
             toolWrapper.BackgroundImage = khvGame.Content.Load<Texture2D>(Path.Combine("Gui", "slot"));
 
             Label toolLabel = new Label();
+            toolLabel.Font = khvGame.Content.Load<SpriteFont>("arial");
             this.controlManager.AddControl(toolLabel);
             toolLabel.Text = "Tool";
-            updateActions.Add((c) =>
-            {
-                toolLabel.Position = new ControlPosition(
-                    toolWrapper.Position.Relative.X + toolWrapper.Size.Width / 2 - (int)toolLabel.Font.MeasureString(toolLabel.Text).X / 2,
-                    toolWrapper.Position.Relative.Y + (int)toolLabel.Font.MeasureString(toolLabel.Text).Y * 2);
-                toolLabel.Position.Margin = new Margin(0, 0, 5, 0);
-            });
+            toolLabel.Position = new ControlPosition(
+            toolWrapper.Position.Relative.X + toolWrapper.Size.Width / 2 - (int)toolLabel.Font.MeasureString(toolLabel.Text).X / 2,
+            toolWrapper.Position.Relative.Y + (int)toolLabel.Font.MeasureString(toolLabel.Text).Y * 2);
+            toolLabel.Position.Margin = new Margin(0, 0, 5, 0);
         }
         private void inventory_OnToolChanging(object sender, PlayerInventoryEventArgs e)
         {

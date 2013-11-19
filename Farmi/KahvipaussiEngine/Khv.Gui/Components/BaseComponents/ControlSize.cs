@@ -149,7 +149,7 @@ namespace Khv.Gui.Components.BaseComponents
         /// valueta.
         /// </summary>
         /// <param name="parentSize">Parentin koko jota tarvitaan päivityksien tekemisessä.</param>
-        public void Update(ControlSize parentSize)
+        public void Transform(ControlSize parentSize)
         {
             switch (Type)
             {

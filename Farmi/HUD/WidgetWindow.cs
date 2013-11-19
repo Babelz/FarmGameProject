@@ -7,6 +7,10 @@ using Khv.Engine;
 using Khv.Gui.Components.BaseComponents;
 using Khv.Gui.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Farmi.Screens;
+using Farmi.Entities;
+using System.IO;
 
 namespace Farmi.HUD
 {
@@ -15,6 +19,7 @@ namespace Farmi.HUD
         public WidgetWindow(KhvGame khvGame)
             : base(khvGame)
         {
+
             size = new ControlSize(khvGame.GraphicsDeviceManager.PreferredBackBufferWidth,
                                    khvGame.GraphicsDeviceManager.PreferredBackBufferHeight,
                                    Khv.Gui.Components.SizeType.Fixed);
@@ -23,13 +28,11 @@ namespace Farmi.HUD
         }
         public void AddWidget(Widget widget)
         {
-            controlManager.Controls.Add(widget);
-            widget.Parent = this;
+            controlManager.AddControl(widget);
         }
         public void RemoveWidget(Widget widget)
         {
-            controlManager.Controls.Remove(widget);
-            widget.Parent = null;
+            controlManager.RemoveControl(widget);
         }
     }
     public sealed partial class WidgetWindow : Window
