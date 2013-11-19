@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Farmi.Entities.Components;
 using Khv.Engine;
 using Khv.Engine.Structs;
 using Microsoft.Xna.Framework;
@@ -53,7 +54,9 @@ namespace Farmi.Entities
 
         public virtual void Update(GameTime gameTime)
         {
-            
+            if (Seed == null)
+                return;
+            Seed.Update(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, CropSpot owner)

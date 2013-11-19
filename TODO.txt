@@ -1,0 +1,7 @@
+interaktaus pitäs kestää niin kauan ku animaatio loppuu?
+playerin logiikka pitäs vetää komponentteihin, paisuu liian isoksi
+itemfactory?
+animaatio työkaluille? kenen pitäisi tietää minkälainen animaatio on
+
+jos maan muokkaaminen kuokalla on alkanut, jos liikkuu niin sen pitäisi loppua
+työkaluilla pitäs olla inventory, oikealle/vasemmalle, ylös ja alaspäin kuva?

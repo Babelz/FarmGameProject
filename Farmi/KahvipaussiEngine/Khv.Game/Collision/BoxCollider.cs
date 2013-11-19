@@ -91,9 +91,6 @@ namespace Khv.Game.Collision
                     polygon.BuildEdges();
 
                     CollisionEventArgs r = PolygonCollision(this, polygon);
-                    if (r.Intersecting || r.WillIntersect)
-
-                    r = PolygonCollision(this, polygon);
                     if (r.WillIntersect)
                     {
                         FireOnCollision(Instance, tile, r);

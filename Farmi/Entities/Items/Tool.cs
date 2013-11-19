@@ -47,7 +47,6 @@ namespace Farmi.Entities.Items
             try
             {
                 Texture = game.Content.Load<Texture2D>(Path.Combine("Tools", dataset.AssetName));
-                Console.WriteLine("Sucess");
             }
             catch
             {

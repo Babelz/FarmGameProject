@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Entities\AnimalFeedDispenser.cs" />
     <Compile Include="Entities\Animals\Animal.cs" />
+    <Compile Include="Entities\Components\AnimationComponent.cs" />
     <Compile Include="Entities\Components\DispenserInformerComponent.cs" />
     <Compile Include="Entities\Components\DrawingFiniteStateMachine.cs" />
     <Compile Include="Entities\Components\FeedingTrayInteractionComponent.cs" />

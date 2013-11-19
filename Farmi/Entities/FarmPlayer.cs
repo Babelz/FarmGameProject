@@ -31,13 +31,11 @@ namespace Farmi.Entities
         private readonly FarmWorld world;
         private const float speed = 2.5f;
 
-
         private InputController controller;
-        private InputControlSetup defaultInputSetup;
-        private InputControlSetup shopInputSetup;
-        private Texture2D texture;
+        private readonly InputControlSetup defaultInputSetup;
 
         private ViewComponent viewComponent;
+        private AnimationComponent animationComponent;
 
         private CharaterAnimator animator;
         #endregion
@@ -51,19 +49,16 @@ namespace Farmi.Entities
                 {
                     return false;
                 }
-                else
-                {
-                    InteractionComponent component = ClosestInteractable.Components.GetComponent<IUpdatableObjectComponent>(
-                        c => c is InteractionComponent) as InteractionComponent;
+                InteractionComponent component = ClosestInteractable.Components.GetComponent<IUpdatableObjectComponent>(
+                    c => c is InteractionComponent) as InteractionComponent;
 
-                    return component.CanInteract(this);
-                }
+                return component.CanInteract(this);
             }
         }
         public GameObject ClosestInteractable
         {
             get;
-            set;
+            private set;
         }
         public PlayerInventory Inventory
         {
@@ -76,7 +71,6 @@ namespace Farmi.Entities
             : base(game, index)
         {
             defaultInputSetup = new InputControlSetup();
-            shopInputSetup = new InputControlSetup();
             
             this.world = world;
             Position = new Vector2(500, 200);
@@ -88,18 +82,48 @@ namespace Farmi.Entities
                 new BasicTileCollisionQuerier());
         }
 
+        #region Init
+
+        public void Initialize()
+        {
+            AddComponents();
+
+            controller = new InputController(game.InputManager);
+            controller.ChangeSetup(defaultInputSetup);
+            InitDefaultSetup();            
+        }
+
         private void AddComponents()
         {
+            SpriterReader reader = new SpriterReader();
+            SpriterImporter importer = new SpriterImporter();
+            var model = reader.Read(importer.Import(Path.Combine("Content\\Spriter", "player.scml")), null, game.Content,
+                game.GraphicsDevice);
+            animator = new FarmPlayerAnimator(this, model, "player");
+            animator.AnimationEnded += animator_AnimationEnded;
+            animator.Scale = 1.0f;
+            animationComponent = new AnimationComponent(this, animator, "idle");
+
+            Components.AddComponent(animationComponent);
             Components.AddComponent(new ExclamationMarkDrawer(game, this));
             Components.AddComponent(new MessageBoxComponent(game, this));
             Components.AddComponent(Inventory = new PlayerInventory(this));
             Components.AddComponent(viewComponent = new ViewComponent(new Vector2(0, 1)));
+            CreateTools();
 
+        }
+
+        private void CreateTools()
+        {
             RepositoryManager r = game.Components.First(c => c is RepositoryManager) as RepositoryManager;
             Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Hoe")));
             Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Pick")));
-            //Inventory.AddToInventory(new Seed(game, r.GetDataSet<SeedDataset>(t => t.Name == "Jeesus")));
+            Inventory.AddToInventory(new Seed(game, r.GetDataSet<SeedDataset>(t => t.Name == "Jeesus")));
+            Inventory.NextTool();
         }
+
+        #region Init input
+
         private void InitDefaultSetup()
         {
             var keymapper = defaultInputSetup.Mapper.GetInputBindProvider<KeyInputBindProvider>();
@@ -124,7 +148,7 @@ namespace Farmi.Entities
                 animator.FlipY = false;
             });
             #endregion
-            
+
             keymapper.Map(new KeyTrigger("Flip left", Keys.A, Keys.Left), (triggered, args) =>
             {
                 // joudutaan flippaan
@@ -139,7 +163,7 @@ namespace Farmi.Entities
                 animator.ChangeAnimation("walk_right");
 
             }, InputState.Pressed | InputState.Down);
-            
+
 
             keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
             keymapper.Map(new KeyTrigger("Next day", Keys.F1), (triggered, args) =>
@@ -152,7 +176,7 @@ namespace Farmi.Entities
                     calendar.SkipDay(23, 45);
                 }
             });
-            keymapper.Map(new KeyTrigger("Previous tool", Keys.Q), (triggered, args) => Inventory.PreviousTool() , InputState.Released);
+            keymapper.Map(new KeyTrigger("Previous tool", Keys.Q), (triggered, args) => Inventory.PreviousTool(), InputState.Released);
             keymapper.Map(new KeyTrigger("Next tool", Keys.E), (triggered, args) => Inventory.NextTool(), InputState.Released);
             keymapper.Map(new KeyTrigger("Spawn dog", Keys.F2), (triggered, args) =>
             {
@@ -177,6 +201,10 @@ namespace Farmi.Entities
             padmapper.Map(new ButtonTrigger("Move up", Buttons.LeftThumbstickUp, Buttons.DPadUp), (triggered, args) => MotionEngine.GoalVelocityY = -speed);
             padmapper.Map(new ButtonTrigger("Move down", Buttons.LeftThumbstickDown, Buttons.DPadDown), (triggered, args) => MotionEngine.GoalVelocityX = speed);
         }
+
+        #endregion
+
+        #endregion
 
         #region Input callbacks
         /// <summary>
@@ -276,44 +304,17 @@ namespace Farmi.Entities
         }
         #endregion
 
-        public void Initialize()
-        {
-            AddComponents();
-
-            controller = new InputController(game.InputManager);
-            controller.ChangeSetup(defaultInputSetup);
-            InitDefaultSetup();
-
-            texture = game.Content.Load<Texture2D>("player_test");
-
-            SpriterReader reader = new SpriterReader();
-            SpriterImporter importer = new SpriterImporter();
-            var model = reader.Read(importer.Import(Path.Combine("Content\\Spriter", "player.scml")), null, game.Content,
-                game.GraphicsDevice);
-            animator = new FarmPlayerAnimator(this, model, "player");
-            animator.ChangeAnimation("idle");
-            animator.AnimationEnded += animator_AnimationEnded;
-            animator.Scale = 1.0f;
-        }
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             MotionEngine.Update(gameTime);
             Collider.Update(gameTime);
-            animator.Update(gameTime);
 
             ClosestInteractable = world.GetNearestInteractable(this, new Padding(10, 5));
-            if (Inventory.SelectedTool == null)
-            {
-                return;
-            }
-            Inventory.SelectedTool.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            animator.Draw(spriteBatch);
             base.Draw(spriteBatch);
 
             #region Draw closest
