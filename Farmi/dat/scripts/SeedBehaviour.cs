@@ -14,28 +14,16 @@ namespace Farmi.dat.scripts
 {
     public class SeedBehaviour : ToolBehaviourScript
     {
-        internal SeedInteractionComponent seedInteractionComponent;
-        public SeedBehaviour(KhvGame game, Seed owner) : base(game, owner)
+        #region Vars
+        private SeedInteractionComponent seedInteractionComponent;
+        #endregion
+
+        public SeedBehaviour(KhvGame game, Seed owner) 
+            : base(game, owner)
         {
             Console.WriteLine(owner.Dataset.Name);
             seedInteractionComponent = new SeedInteractionComponent(owner);
             owner.Components.AddComponent(seedInteractionComponent);
-        }
-
-        protected override void HookEvents()
-        {
-            base.HookEvents();
-        }
-
-
-        public override void Update(GameTime gameTime)
-        {
-                
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            
         }
     }
 }

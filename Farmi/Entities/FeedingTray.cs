@@ -49,6 +49,7 @@ namespace Farmi.Entities
             InitializeFromMapData(mapObjectArguments);
         }
 
+        #region Initializers
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
             MapObjectArgumentReader reader = new MapObjectArgumentReader(mapObjectArguments);
@@ -64,13 +65,13 @@ namespace Farmi.Entities
 
             Components.AddComponent(new FeedingTrayInteractionComponent(this));
         }
+        #endregion
 
         public void InsertFeed(AnimalFeedItem feedItem)
         {
             feed = feedItem;
             feedItem.Size = new Size(feedItem.Size.Width, feedItem.Size.Height / 2);
         }
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -84,7 +85,6 @@ namespace Farmi.Entities
                 feed.Position = feedPosition;
             }
         }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);

@@ -9,7 +9,7 @@ using OpenTK.Audio.OpenAL;
 
 namespace Farmi.Entities.Components
 {
-    class ViewComponent : IUpdatableObjectComponent
+    internal sealed class ViewComponent : IUpdatableObjectComponent
     {
         #region Vars
         private Vector2 viewVector;

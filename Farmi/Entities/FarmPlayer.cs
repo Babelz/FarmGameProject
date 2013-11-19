@@ -127,6 +127,7 @@ namespace Farmi.Entities
         private void InitDefaultSetup()
         {
             var keymapper = defaultInputSetup.Mapper.GetInputBindProvider<KeyInputBindProvider>();
+           
             #region Move
             keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, -speed));
             keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
@@ -153,19 +154,28 @@ namespace Farmi.Entities
             {
                 // joudutaan flippaan
                 animator.FlipX = true;
-                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_right"))) return;
+                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_right")))
+                {
+                    return;
+                }
                 animator.ChangeAnimation("walk_right");
             }, InputState.Pressed | InputState.Down);
+
             keymapper.Map(new KeyTrigger("Flip right", Keys.D, Keys.Right), (triggered, args) =>
             {
                 animator.FlipX = false;
-                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_right"))) return;
+                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_right")))
+                {
+                    return;
+                }
                 animator.ChangeAnimation("walk_right");
 
             }, InputState.Pressed | InputState.Down);
 
 
-            keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => TryInteract(args));
+            keymapper.Map(new KeyTrigger("Interact", Keys.Space), 
+                (triggered, args) => TryInteract(args));
+
             keymapper.Map(new KeyTrigger("Next day", Keys.F1), (triggered, args) =>
             {
                 if (args.State == InputState.Pressed)

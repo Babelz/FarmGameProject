@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Farmi.Entities
 {
-    internal class FeedDispinserInformer : DrawableGameObject
+    internal sealed class FeedDispinserInformer : DrawableGameObject
     {
         #region Vars
         private readonly AnimalFeedDispenser owner;
@@ -33,6 +33,7 @@ namespace Farmi.Entities
 
             Components.AddComponent(new DispenserInformerComponent(owner));
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);

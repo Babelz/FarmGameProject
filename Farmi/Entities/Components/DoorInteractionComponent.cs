@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
-    internal class DoorInteractionComponent : InteractionComponent
+    internal sealed class DoorInteractionComponent : InteractionComponent
     {
         #region Vars
         private readonly Door owner;

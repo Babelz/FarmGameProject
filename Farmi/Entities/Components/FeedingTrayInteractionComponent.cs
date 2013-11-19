@@ -27,6 +27,7 @@ namespace Farmi.Entities.Components
 
             IsInteracting = false;
         }
+
         public override bool CanInteract(GameObject with)
         {
             if (owner.ContainsFeed)

@@ -11,9 +11,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities
 {
-    class FarmPlayerAnimator : CharaterAnimator
+    internal sealed class FarmPlayerAnimator : CharaterAnimator
     {
+        #region Vars
         private readonly FarmPlayer player;
+        #endregion
 
         public FarmPlayerAnimator(FarmPlayer player, CharacterModel model, string entity) : base(model, entity)
         {
@@ -25,28 +27,28 @@ namespace Farmi.Entities
             Location = player.Position + new Vector2(player.Size.Width / 2, player.Size.Height);
             base.Update(p_gameTime);
         }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
-            
             if (player.Inventory.HasToolSelected)
             {
-
                 Tool selectedTool = player.Inventory.SelectedTool;
-                var interactionComponent = selectedTool.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
+                IInteractionComponent interactionComponent = selectedTool.Components.GetComponent(
+                    c => c is IInteractionComponent) as IInteractionComponent;
+
                 // ei pitäs olla null ikinä
                 if (interactionComponent != null && !interactionComponent.IsInteracting)
                 {
-#warning proto, tarvii objekti id:n tai muun, hakee työkalun tools kansiosta eli folder id 2
                     foreach (RenderMatrix l_render in m_renderList)
                     {
                         Texture2D texture = m_tx[l_render.Folder];
                         Rectangle? source = m_rect[l_render.Folder][l_render.File];
+                        
                         if (l_render.Folder == 2)
                         {
                             texture = selectedTool.Texture ?? texture;
                             source = null;
                         }
+
                         spriteBatch.Draw(
                             texture,
                             l_render.Location,
@@ -62,7 +64,6 @@ namespace Farmi.Entities
                     return;
                 }
             }
-
             base.Draw(spriteBatch);
         }
     }

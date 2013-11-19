@@ -42,6 +42,7 @@ namespace Farmi.Entities.Items
             InitializeFromDataset(dataset);
         }
 
+        #region Initializers
         public void InitializeFromDataset(ToolDataset dataset)
         {
             try
@@ -57,8 +58,9 @@ namespace Farmi.Entities.Items
                 dataset.MinPow,
                 dataset.MaxPow,
                 dataset.PowTimestep);
+
             //TODO temp
-            Size = new Size(32,32);
+            Size = new Size(32, 32);
             Components.AddComponent(powComponent);
 
             ScriptEngine scriptEngine = game.Components.First(
@@ -68,6 +70,8 @@ namespace Farmi.Entities.Items
                 new ScriptBuilder(dataset.Behaviour, new object[] { game, this }));
             Behaviour.Initialize();
         }
+        #endregion
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
