@@ -5,37 +5,37 @@ namespace Khv.Gui.Components
 {
     public static class GuiHelper
     {
-        public static Point CalulateHorizontalPoint(ControlPosition currentPoint, ControlSize targetSize, ControlSize parentSize, ControlPosition parentPosition, HorizontalAlingment alingment)
+        public static Vector2 CalulateHorizontalPoint(ControlPosition currentPoint, ControlSize targetSize, ControlSize parentSize, ControlPosition parentPosition, HorizontalAlingment alingment)
         {
-            Point results = Point.Zero;
+            Vector2 results = Vector2.Zero;
             switch (alingment)
             {
                 case HorizontalAlingment.Right:
-                    results = new Point((parentPosition.Relative.X + parentSize.Width) - targetSize.Width, currentPoint.Relative.Y);
+                    results = new Vector2((parentPosition.Relative.X + parentSize.Width) - targetSize.Width, currentPoint.Relative.Y);
                     break;
                 case HorizontalAlingment.Left:
-                    results = new Point(parentPosition.Relative.X, currentPoint.Relative.Y);
+                    results = new Vector2(parentPosition.Relative.X, currentPoint.Relative.Y);
                     break;
                 case HorizontalAlingment.Center:
-                    results = new Point(parentSize.Width / 2 - targetSize.Width / 2, currentPoint.Relative.Y);
+                    results = new Vector2(parentSize.Width / 2 - targetSize.Width / 2, currentPoint.Relative.Y);
                     break;
             }
 
             return results;
         }
-        public static Point CalculateVerticalPoint(ControlPosition currentPoint, ControlSize targetSize, ControlSize parentSize, ControlPosition parentPosition, VerticalAlingment alingment)
+        public static Vector2 CalculateVerticalPoint(ControlPosition currentPoint, ControlSize targetSize, ControlSize parentSize, ControlPosition parentPosition, VerticalAlingment alingment)
         {
-            Point results = Point.Zero;
+            Vector2 results = Vector2.Zero;
             switch (alingment)
             {
                 case VerticalAlingment.Center:
-                    results = new Point(currentPoint.Relative.X, parentSize.Height / 2 - targetSize.Height / 2);
+                    results = new Vector2(currentPoint.Relative.X, parentSize.Height / 2 - targetSize.Height / 2);
                     break;
                 case VerticalAlingment.Top:
-                    results = new Point(currentPoint.Relative.X, 0);
+                    results = new Vector2(currentPoint.Relative.X, 0);
                     break;
                 case VerticalAlingment.Bottom:
-                    results = new Point(currentPoint.Relative.X, parentSize.Height - targetSize.Height);
+                    results = new Vector2(currentPoint.Relative.X, parentSize.Height - targetSize.Height);
                     break;
             }
             return results;

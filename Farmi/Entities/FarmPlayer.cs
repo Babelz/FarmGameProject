@@ -114,6 +114,7 @@ namespace Farmi.Entities
 
             WidgetManager widgets = new WidgetManager(game, this);
             widgets.AddWidget(new ItemWidget(game, this, widgets, "Tool widget"));
+            widgets.AddWidget(new TimeWidget(game, this, widgets, "Time and date widget"));
             Components.AddComponent(widgets);
         }
 

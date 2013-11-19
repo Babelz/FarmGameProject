@@ -124,7 +124,7 @@ namespace Khv.Gui.Controls
                         offset = Font.MeasureString(text.Substring(0, startIndex));
                     }
 
-                    Rectangle selectionPosition = new Rectangle(Position.Real.X + (int)offset.X, Position.Real.Y, (int)size.X, (int)size.Y);
+                    Rectangle selectionPosition = new Rectangle((int)Position.Real.X + (int)offset.X, (int)Position.Real.Y, (int)size.X, (int)size.Y);
                     spriteBatch.Draw(Khv.Engine.KhvGame.Temp, selectionPosition, Color.Green);
                 }
             }

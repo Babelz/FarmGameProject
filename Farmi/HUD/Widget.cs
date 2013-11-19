@@ -42,6 +42,12 @@ namespace Farmi.HUD
             Name = name;
         }
 
+        /// <summary>
+        /// Suoritetaan widgetin disposaus tässä metodissa.
+        /// </summary>
+        protected virtual void OnDestory()
+        {
+        }
         public void Destroy()
         {
             if (!destoyed)
@@ -54,12 +60,6 @@ namespace Farmi.HUD
                     OnDestoryed(this, new WidgetEventArgs());
                 }
             }
-        }
-        /// <summary>
-        /// Suoritetaan widgetin disposaus tässä metodissa.
-        /// </summary>
-        protected virtual void OnDestory()
-        {
         }
     }
 

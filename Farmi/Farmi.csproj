@@ -128,6 +128,8 @@
     <Compile Include="GameDataManager.cs" />
     <Compile Include="HUD\ItemWidget.cs" />
     <Compile Include="HUD\ItemWrapper.cs" />
+    <Compile Include="HUD\TextureWrapper.cs" />
+    <Compile Include="HUD\TimeWidget.cs" />
     <Compile Include="HUD\Widget.cs" />
     <Compile Include="HUD\WidgetManager.cs" />
     <Compile Include="HUD\WidgetWindow.cs" />
@@ -539,6 +541,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Spriter\walk_up\player-back_0005_Lleg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\sun.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Tools\hoe.png">

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Khv.Engine;
 using Farmi.Calendar;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi
 {
@@ -17,7 +18,9 @@ namespace Farmi
         Windy,
         Storm
     }
-    public sealed class WeatherSystem : IGameComponent
+
+    // TODO: varhainen toteutus.
+    public sealed class WeatherSystem : GameComponent
     {
         #region Vars
         private readonly CalendarSystem calendar;
@@ -29,16 +32,34 @@ namespace Farmi
             get;
             private set;
         }
+        public Texture2D CorrespondingWeatherTexture
+        {
+            get;
+            private set;
+        }
         #endregion
 
         public WeatherSystem(KhvGame khvGame)
+            : base(khvGame)
         {
             calendar = khvGame.Components.GetGameComponent<CalendarSystem>();
             CurrentWeather = Weather.None;
-        }
 
+            ChangeCorrespondingWeatherTexture();
+        }
+        private void ChangeCorrespondingWeatherTexture()
+        {
+            // TODO: testi
+            CorrespondingWeatherTexture = Game.Content.Load<Texture2D>("sun");
+        }
         public void Initialize()
         {
+            // TODO: alustustu, lataa tekstuurit tässä.
+        }
+        public override void Update(GameTime gameTime)
+        {
+            // TODO: vaihtaa säätä aina ehdon x jälkeen.
+            base.Update(gameTime);
         }
     }
 }

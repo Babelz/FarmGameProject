@@ -27,7 +27,6 @@ namespace Farmi.HUD
             : base(khvGame, owner, owningManager, name)
         {
             FarmPlayer player = owner as FarmPlayer;
-
             inventory = player.Components.GetComponent<PlayerInventory>();
 
             Initialize();
@@ -55,16 +54,11 @@ namespace Farmi.HUD
                 Foreground = Color.White
             };
 
-            Position = new ControlPosition(
-                screenWidth - size.Width,
-                screenHeight - size.Height);
+            Position = new ControlPosition(screenWidth - size.Width,
+                                           screenHeight - size.Height);
+            Position.Margin = new Margin(-15, 0, -15, 0);
 
-            Position.Margin = new Margin(
-                left: -15,
-                right: 0,
-                top: -15,
-                bottom: 0);
-
+            #region Controls init
             itemWrapper = new ItemWrapper();
             this.controlManager.AddControl(itemWrapper);
             inventory.OnItemChanging += new PlayerInventoryEventHandler(inventory_OnItemChanging);
@@ -78,9 +72,8 @@ namespace Farmi.HUD
             itemLabel.Font = khvGame.Content.Load<SpriteFont>("arial");
             this.controlManager.AddControl(itemLabel);
             itemLabel.Text = "Item";
-            itemLabel.Position = new ControlPosition(
-            itemWrapper.Position.Relative.X + itemWrapper.Size.Width / 2 - (int)itemLabel.Font.MeasureString(itemLabel.Text).X / 2,
-            itemWrapper.Position.Relative.Y + (int)itemLabel.Font.MeasureString(itemLabel.Text).Y * 2);
+            itemLabel.Position = new ControlPosition(itemWrapper.Position.Relative.X + itemWrapper.Size.Width / 2 - (int)itemLabel.Font.MeasureString(itemLabel.Text).X / 2,
+                                                     itemWrapper.Position.Relative.Y + (int)itemLabel.Font.MeasureString(itemLabel.Text).Y * 2);
             itemLabel.Position.Margin = new Margin(0, 0, 5, 0);
 
             toolWrapper = new ItemWrapper();
@@ -96,10 +89,27 @@ namespace Farmi.HUD
             toolLabel.Font = khvGame.Content.Load<SpriteFont>("arial");
             this.controlManager.AddControl(toolLabel);
             toolLabel.Text = "Tool";
-            toolLabel.Position = new ControlPosition(
-            toolWrapper.Position.Relative.X + toolWrapper.Size.Width / 2 - (int)toolLabel.Font.MeasureString(toolLabel.Text).X / 2,
-            toolWrapper.Position.Relative.Y + (int)toolLabel.Font.MeasureString(toolLabel.Text).Y * 2);
+            toolLabel.Position = new ControlPosition(toolWrapper.Position.Relative.X + toolWrapper.Size.Width / 2 - (int)toolLabel.Font.MeasureString(toolLabel.Text).X / 2,
+                                                     toolWrapper.Position.Relative.Y + (int)toolLabel.Font.MeasureString(toolLabel.Text).Y * 2);
             toolLabel.Position.Margin = new Margin(0, 0, 5, 0);
+            #endregion
+
+            Owner.OnDestroyed += new GameObjectEventHandler(Owner_OnDestroyed);
+        }
+
+        protected override void OnDestory()
+        {
+            Owner.OnDestroyed -= Owner_OnDestroyed;
+            inventory.OnItemChanging -= inventory_OnItemChanging;
+            inventory.OnToolChanging -= inventory_OnToolChanging;
+
+            base.OnDestory();
+        }
+
+        #region Event handlers
+        private void Owner_OnDestroyed(object sender, Khv.Engine.Args.GameEventArgs e)
+        {
+            Destroy();
         }
         private void inventory_OnToolChanging(object sender, PlayerInventoryEventArgs e)
         {
@@ -109,9 +119,12 @@ namespace Farmi.HUD
         {
             itemWrapper.ChangeItem(e.NextItem);
         }
-        public override void Update(GameTime gameTime)
+        #endregion
+
+        protected override void DrawControl(SpriteBatch spriteBatch)
         {
-            base.Update(gameTime);
+            Vector2 scale = new Vector2((float)size.Width / (float)BackgroundImage.Width, (float)size.Height / (float)BackgroundImage.Height);
+            spriteBatch.Draw(BackgroundImage, Position.Real, null, Colors.Background, 0.0f, Vector2.Zero, scale, SpriteEffects.None, 0.0f);
         }
     }
 }

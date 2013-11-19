@@ -39,8 +39,6 @@ namespace Farmi.HUD
     {
         protected override void Initialize()
         {
-            base.Initialize();
-
             Colors = new Colors()
             {
                 Background = Color.Transparent,

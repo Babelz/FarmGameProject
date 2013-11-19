@@ -182,7 +182,7 @@ namespace Khv.Gui.Components.BaseComponents
         {
             get
             {
-                return new Rectangle(Position.Real.X, Position.Real.Y, Size.Width, Size.Height);
+                return new Rectangle((int)Position.Real.X, (int)Position.Real.Y, Size.Width, Size.Height);
             }
         }
         /// <summary>
@@ -325,7 +325,7 @@ namespace Khv.Gui.Components.BaseComponents
             // jos taustakuva on null, piirretään default texture
             // tausta värillä
             Texture2D textureToDraw = (BackgroundImage == null) ? KhvGame.Temp : BackgroundImage;
-            spriteBatch.Draw(textureToDraw, new Rectangle(Position.Real.X, Position.Real.Y, size.Width, size.Height), Colors.Background);
+            spriteBatch.Draw(textureToDraw, new Rectangle((int)Position.Real.X, (int)Position.Real.Y, size.Width, size.Height), Colors.Background);
         }
         /// <summary>
         /// Piirtää kaikki efektit. Vakiona järjestys on draworder.

@@ -80,7 +80,7 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
         /// <param name="b"></param>
         private void CenterConstraint(Control c, BorderLayoutConstraint b)
         {
-            Point position = new Point();
+            Vector2 position = new Vector2();
 
             if (slots.ContainsKey(left.Direction))
             {
@@ -93,10 +93,10 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
             if (slots.ContainsKey(up.Direction))
             {
                 Control upArea = slots[up.Direction];
-                position.Y = upArea.Position.Relative.Y + upArea.Size.Height;
+                position.Y = (int)upArea.Position.Relative.Y + upArea.Size.Height;
             }
 
-            ControlSize size = new ControlSize(container.Size.Width - position.X, container.Size.Height - position.Y, SizeType.Fixed);
+            ControlSize size = new ControlSize(container.Size.Width - (int)position.X, container.Size.Height - (int)position.Y, SizeType.Fixed);
 
             if (slots.ContainsKey(right.Direction))
             {
@@ -124,18 +124,18 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
         /// <param name="constraint"></param>
         private void LeftConstraint(Control control, BorderLayoutConstraint constraint)
         {
-            Point position = new Point();
+            Vector2 position = new Vector2();
 
             if (slots.ContainsKey(up.Direction))
             {
                 Control upArea = slots[up.Direction];
                 position.Y = upArea.Size.Height;
             }
-            ControlSize size = new ControlSize(control.Size.Width, container.Size.Height - position.Y);
+            ControlSize size = new ControlSize(control.Size.Width, container.Size.Height - (int)position.Y);
             if (slots.ContainsKey(down.Direction))
             {
                 Control downArea = slots[down.Direction];
-                size = new ControlSize(size.Width, container.Size.Width - (position.Y - downArea.Size.Height));
+                size = new ControlSize(size.Width, container.Size.Width - ((int)position.Y - downArea.Size.Height));
             }
             control.Position.Relative = position;
             control.Size = size;
@@ -150,7 +150,7 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
         /// <param name="constraint"></param>
         private void UpConstraint(Control control, BorderLayoutConstraint constraint)
         {
-            Point position = new Point();
+            Vector2 position = new Vector2();
 
             if (slots.ContainsKey(left.Direction))
             {
@@ -158,12 +158,12 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
                 position.X = leftArea.Size.Width;
             }
 
-            ControlSize size = new ControlSize(container.Size.Width - position.X, control.Size.Height);
+            ControlSize size = new ControlSize(container.Size.Width - (int)position.X, control.Size.Height);
 
             if (slots.ContainsKey(right.Direction))
             {
                 Control rightArea = slots[right.Direction];
-                ControlSize temp = new ControlSize(container.Size.Width - (position.X - rightArea.Size.Width), size.Height);
+                ControlSize temp = new ControlSize(container.Size.Width - ((int)position.X - rightArea.Size.Width), size.Height);
                 size = temp;
             }
 
@@ -180,7 +180,7 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
         /// <param name="constraint"></param>
         private void RightConstraint(Control control, BorderLayoutConstraint constraint)
         {
-            Point position = new Point();
+            Vector2 position = new Vector2();
             position.X = container.Size.Width - control.Size.Width;
 
             if (slots.ContainsKey(up.Direction))
@@ -188,11 +188,11 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
                 Control upArea = slots[up.Direction];
                 position.Y = upArea.Size.Height;
             }
-            ControlSize size = new ControlSize(control.Size.Width, container.Size.Height - position.Y);
+            ControlSize size = new ControlSize(control.Size.Width, container.Size.Height - (int)position.Y);
             if (slots.ContainsKey(down.Direction))
             {
                 Control downArea = slots[down.Direction];
-                ControlSize temp = new ControlSize(size.Width, container.Size.Height - position.Y - downArea.Size.Height);
+                ControlSize temp = new ControlSize(size.Width, container.Size.Height - (int)position.Y - downArea.Size.Height);
                 size = temp;
             }
             control.Size = size;
@@ -209,7 +209,7 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
         /// <param name="constraint"></param>
         private void DownConstraint(Control control, BorderLayoutConstraint constraint)
         {
-            Point position = new Point();
+            Vector2 position = new Vector2();
             position.Y = container.Size.Height - control.Size.Height;
 
             if (slots.ContainsKey(left.Direction))
@@ -218,7 +218,7 @@ namespace Khv.Gui.Components.BaseComponents.Containers.Components.Layout
                 position.X = leftArea.Size.Width;
             }
 
-            ControlSize size = new ControlSize(container.Size.Width - position.X, control.Size.Height);
+            ControlSize size = new ControlSize(container.Size.Width - (int)position.X, control.Size.Height);
 
             if (slots.ContainsKey(right.Direction))
             {

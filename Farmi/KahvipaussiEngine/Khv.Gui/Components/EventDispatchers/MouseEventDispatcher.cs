@@ -88,7 +88,7 @@ namespace Khv.Gui.Components.EventDispatchers
         private bool IsMouseOver()
         {
             Point mousePosition = Khv.Engine.InputManager.MousePosition;
-            Rectangle controlRect = new Rectangle(sender.Position.Real.X, sender.Position.Real.Y, sender.Size.Width, sender.Size.Height);
+            Rectangle controlRect = new Rectangle((int)sender.Position.Real.X, (int)sender.Position.Real.Y, sender.Size.Width, sender.Size.Height);
 
             return mousePosition.X <= controlRect.Right && mousePosition.X >= controlRect.Left &&
                    mousePosition.Y >= controlRect.Top && mousePosition.Y <= controlRect.Bottom;

@@ -157,9 +157,8 @@ namespace Farmi.HUD
 
             if (gameplayScreen != null)
             {
-                window.Position = new ControlPosition(
-                    (int)gameplayScreen.Camera.Position.X,
-                    (int)gameplayScreen.Camera.Position.Y);
+                window.Position = new ControlPosition(gameplayScreen.Camera.Position.X,
+                                                      gameplayScreen.Camera.Position.Y);
             }
 
             window.Update(gametime);

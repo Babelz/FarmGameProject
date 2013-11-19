@@ -29,9 +29,9 @@ namespace Khv.Gui.Components
         /// Laskee kohdan mihin kontrolli pitäisi laittaa
         /// nykyisillä aling arvoilla.
         /// </summary>
-        public Point Calculate(Control owner)
+        public Vector2 Calculate(Control owner)
         {
-            Point position = owner.Position.NormalPosition;
+            Vector2 position = owner.Position.NormalPosition;
 
             if (owner.Parent != null)
             {

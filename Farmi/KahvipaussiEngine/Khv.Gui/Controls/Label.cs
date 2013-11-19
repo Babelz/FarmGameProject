@@ -122,7 +122,7 @@ namespace Khv.Gui.Controls
         }
         protected override void DrawControl(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Khv.Engine.KhvGame.Temp, new Rectangle(Position.Real.X, Position.Real.Y, Size.Width, Size.Height), Colors.Background);
+            spriteBatch.Draw(Khv.Engine.KhvGame.Temp, new Rectangle((int)Position.Real.X, (int)Position.Real.Y, Size.Width, Size.Height), Colors.Background);
             spriteBatch.DrawString(Font, text, new Vector2((float)Position.Real.X, (float)Position.Real.Y), Colors.Foreground, 0.0f, Vector2.Zero, fontScale, SpriteEffects.None, 0.0f);
         }
     }

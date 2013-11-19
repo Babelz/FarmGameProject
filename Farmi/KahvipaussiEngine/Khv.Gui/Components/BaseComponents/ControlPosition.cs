@@ -10,15 +10,15 @@ namespace Khv.Gui.Components.BaseComponents
     {
         #region Vars
         private Margin margin;
-        private Point position;
-        private Point realPosition;
+        private Vector2 position;
+        private Vector2 realPosition;
         #endregion
 
         #region Properties
         /// <summary>
         /// Kontrollin sijanti ilman marginia.
         /// </summary>
-        public Point NormalPosition
+        public Vector2 NormalPosition
         {
             get
             {
@@ -29,12 +29,12 @@ namespace Khv.Gui.Components.BaseComponents
         /// Kontrollin sijainti. Relatiivinen parenttiin jos kontrollilla
         /// on parentti tai se ankkuroidaan johonkin muuhun AnchorTo metodilla.
         /// </summary>
-        public Point Relative
+        public Vector2 Relative
         {
             get
             {
-                return new Point(margin.Left + position.X + margin.Right,
-                                 margin.Top + position.Y + margin.Bottom);
+                return new Vector2(margin.Left + position.X + margin.Right,
+                                   margin.Top + position.Y + margin.Bottom);
             }
             set
             {
@@ -44,7 +44,7 @@ namespace Khv.Gui.Components.BaseComponents
         /// <summary>
         /// Kontrollin oikea sijainti näytöllä.
         /// </summary>
-        public Point Real
+        public Vector2 Real
         {
             get
             {
@@ -71,9 +71,9 @@ namespace Khv.Gui.Components.BaseComponents
         }
         #endregion
 
-        public ControlPosition(int x, int y)
+        public ControlPosition(float x, float y)
         {
-            Relative = new Point(x, y);
+            Relative = new Vector2(x, y);
             margin = Margin.Default();
         }
 
@@ -85,7 +85,7 @@ namespace Khv.Gui.Components.BaseComponents
         {
             if (parent != null)
             {
-                realPosition = new Point(Relative.X + parent.Position.Real.X, Relative.Y + parent.Position.Real.Y);
+                realPosition = new Vector2(Relative.X + parent.Position.Real.X, Relative.Y + parent.Position.Real.Y);
             }
             else
             {

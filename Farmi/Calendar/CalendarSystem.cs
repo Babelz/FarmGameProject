@@ -249,7 +249,10 @@ namespace Farmi.Calendar
         /// <returns></returns>
         public string GetDateDisplayString()
         {
-            return string.Format("{0} : d: {1} - y: {2} - dow: {3}", CurrentSeason, CurrentDayOfMonth, CurrentYear, CurrentDay);
+            return string.Format("D:{0} - Y:{1} - DOW:{2}", 
+                CurrentDayOfMonth, 
+                CurrentYear, 
+                CurrentDay.ToString().Substring(0, 3));
         }
 
         public void Import(GameDataImporter gameDataImporter)
