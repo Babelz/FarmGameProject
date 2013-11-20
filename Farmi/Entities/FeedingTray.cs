@@ -69,41 +69,51 @@ namespace Farmi.Entities
                 // Jos faderia ei toisteta, ruoka vain katoaa.
                 if (world.MapManager.ActiveMap.Name == mapContainedIn)
                 {
-                    // Kun fader on saanut itsensä toistettua, ruoka dispostataan jos 
-                    // sitä ei ole disposattu aikaisemmin.
-                    fader = new TextureFader(feed.Texture, 255, 0, 5, 15);
-                    fader.Destination = new Rectangle(
-                        (int)feed.Position.X,
-                        (int)feed.Position.Y,
-                        feed.Size.Width,
-                        feed.Size.Height);
+                    StartFading();
                 }
                 else
                 {
-                    // Haetaan lato bg mapeista koska se ei ole aktiivisena.
-                    TileMap barn = (game.GameStateManager.Current as GameplayScreen)
-                        .World.MapManager.MapsInBackground().First(c => c.Name == mapContainedIn);
-
-                    int traysWithFood = 0;
-                    int consumers = 0;
-                    foreach (GameObjectManager gameObjectManager in barn.ObjectManagers.AllManagers())
-                    {
-                        // Lasketaan jokaisesta managerista ruokinta astioiden määrä jotka sisältävät ruokaa.
-                        traysWithFood += gameObjectManager.GameObjectsOfType<FeedingTray>(
-                            f => f.ContainsFeed).Count();
-
-                        // Lasketaan ladossa olevien eläinten määrä jotka voivat syödä tämän astian sisältämää ruokaa.
-                        consumers += gameObjectManager.GameObjectsOfType<Animal>(
-                            a => a.Dataset.FeedTable.Contains(FeedType)).Count();
-                    }
-
-                    // Jos ruokaa on enemmän kuin syöjiä, disposataan ruoka.
-                    if (traysWithFood > consumers)
-                    {
-                        feed = null;
-                    }
+                    CheckFoodAmount();
                 }
             }
+        }
+
+        private void CheckFoodAmount()
+        {
+            // Haetaan lato bg mapeista koska se ei ole aktiivisena.
+            TileMap barn = (game.GameStateManager.Current as GameplayScreen)
+                .World.MapManager.MapsInBackground().First(c => c.Name == mapContainedIn);
+
+            int traysWithFood = 0;
+            int consumers = 0;
+            foreach (GameObjectManager gameObjectManager in barn.ObjectManagers.AllManagers())
+            {
+                // Lasketaan jokaisesta managerista ruokinta astioiden määrä jotka sisältävät ruokaa.
+                traysWithFood += gameObjectManager.GameObjectsOfType<FeedingTray>(
+                    f => f.ContainsFeed).Count();
+
+                // Lasketaan ladossa olevien eläinten määrä jotka voivat syödä tämän astian sisältämää ruokaa.
+                consumers += gameObjectManager.GameObjectsOfType<Animal>(
+                    a => a.Dataset.FeedTable.Contains(FeedType)).Count();
+            }
+
+            // Jos ruokaa on enemmän kuin syöjiä, disposataan ruoka.
+            if (traysWithFood > consumers)
+            {
+                feed = null;
+            }
+        }
+
+        private void StartFading()
+        {
+            // Kun fader on saanut itsensä toistettua, ruoka dispostataan jos 
+            // sitä ei ole disposattu aikaisemmin.
+            fader = new TextureFader(feed.Texture, 255, 0, 5, 15);
+            fader.Destination = new Rectangle(
+                (int)feed.Position.X,
+                (int)feed.Position.Y,
+                feed.Size.Width,
+                feed.Size.Height);
         }
         #endregion
 

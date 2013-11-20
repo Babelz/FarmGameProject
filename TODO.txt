@@ -1,7 +1,81 @@
-interaktaus pit‰s kest‰‰ niin kauan ku animaatio loppuu?
-playerin logiikka pit‰s vet‰‰ komponentteihin, paisuu liian isoksi
-itemfactory?
-animaatio tyˆkaluille? kenen pit‰isi tiet‰‰ mink‰lainen animaatio on
+TODO with Engine
 
-jos maan muokkaaminen kuokalla on alkanut, jos liikkuu niin sen pit‰isi loppua
-tyˆkaluilla pit‰s olla inventory, oikealle/vasemmalle, ylˆs ja alasp‰in kuva?
+Mappi prosessorissa oli jotaki h‰m‰r‰‰ layerin latauksen kanssa.
+TileMapManageriin Backgroundmaps iterointi.
+Window ottaa viel‰kin content managerin sis‰‰n.
+LyaerManager?
+GetSurroundingTiles ottaa possin tai rangea vois s‰‰t‰‰
+ScriptEngine
+
+Gui kirjastolle kunnon facelift kiitos
+- Kunnon komponentti malli
+- Kunnon parent malli
+- Kunnon muokkas toolit
+- Kunnon efektit
+- Kunnon baseclassitus ja parenttaus
+- Winforms tapainein
+- J‰rkev‰mpi k‰yttˆinen
+- V‰hempi parent bindattu
+- PROPERTY BINDING
+
+Teleport vaatii koon@maps
+Teleport vaatii offset valuet@position sit‰ varten, ett‰ mihin teleporttaaja tulee siirt‰‰ kun h‰n telett‰‰
+
+
+Teleport
+
+string: To
+string: From
+Vector2: PositionOffSet
+Size: SizeOffSet
+
+<!-- Valuepairs -->
+
+<Name>To</Name>
+<Value>string</Value>
+
+<Name>PositionOffSet</Name>
+<Value>X = 0, Y = 0</Value>
+
+
+<Name>Size</Name>
+<Value>Width = 0, Height = 0</Value>
+
+Erkki the spuge
+Tarmo the suklaakauppias
+Squual the nes diileri
+Hipit the mˆyhy polttajat
+Pormestari
+Hunks the tukkum‰n
+Liisa the l‰‰k‰ri
+Jarkko the lumberjack
+
+		<!-- TODO -->
+Miten vaihtetaan karttaa ja playataan transition samaan aikaan?
+
+Parempi message dialog pelaajalle.
+
+Siement, animaatio niille, Tooleja v‰h‰n?
+Siemenist‰ puuttu tiedot (mit‰ kasvattaa, state, kuinka kauan per state, Jani kertoo kun tiet‰‰
+			  mit‰ kaikkea ne tarvitsevat ja kirjoitan repot)
+
+Inputtiin, setteihin combine metodi joka yhist‰‰ x m‰‰r‰ setti‰ 
+joten on helpompi managoida jos pit‰‰ ajonaikana v‰rk‰t‰ uusia settej‰
+
+Dailyupdateissa ja muissakin asiat eiv‰t katoa, ne fadettavat?
+
+Lehm‰ (perus lehm‰ imppaus jotta voidaan testata interactiota el‰imen ja pelaajan kanssa toolin kera)
+
+Perus hud, repoja lis‰‰ ja selvent‰‰ rakennetta
+
+Pelin lataaminen ja tallentaminen
+
+Perus gui
+
+WorldEvents
+
+Minigames
+
+Npc:t
+
+Furnituret

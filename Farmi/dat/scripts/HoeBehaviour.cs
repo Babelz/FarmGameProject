@@ -18,11 +18,5 @@ namespace Farmi.dat.scripts
         {
             owner.Components.AddComponent(new HoeInteractionComponent());
         }
-        public override void Update(GameTime gameTime)
-        {    
-        }
-        public override void Draw(SpriteBatch spriteBatch)
-        {  
-        }
     }
 }
