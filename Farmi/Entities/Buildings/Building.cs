@@ -101,8 +101,8 @@ namespace Farmi.Entities.Buildings
 
             MapLocator mapLocator;
             Components.AddComponent(mapLocator = new MapLocator(world, this, mapContainedIn));
-            mapLocator.ContainedMapActive += new MapLocatorEventHandler(mapLocator_ContainedMapActive);
-            mapLocator.ContainedMapChanged += new MapLocatorEventHandler(mapLocator_ContainedMapChanged);
+            mapLocator.ContainingMapActive += new MapLocatorEventHandler(mapLocator_ContainedMapActive);
+            mapLocator.ContainingMapChanged += new MapLocatorEventHandler(mapLocator_ContainedMapChanged);
         }
 
         public void InitializeFromDataset(BuildingDataset dataset)

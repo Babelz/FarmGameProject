@@ -17,7 +17,7 @@ namespace Farmi.Calendar
         Winter
     }
 
-    internal sealed class CalendarSystem : GameComponent
+    public sealed class CalendarSystem : GameComponent
     {
         #region Vars
         // Kaikki tämän kuukauden kalenteri merkinnät.
@@ -253,15 +253,6 @@ namespace Farmi.Calendar
                 CurrentDayOfMonth, 
                 CurrentYear, 
                 CurrentDay.ToString().Substring(0, 3));
-        }
-
-        public void Import(GameDataImporter gameDataImporter)
-        {
-            throw new NotImplementedException();
-        }
-        public void Export(GameDataExporter gameDataExporter)
-        {
-            throw new NotImplementedException();
         }
     }
     

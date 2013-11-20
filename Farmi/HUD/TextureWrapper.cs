@@ -23,6 +23,7 @@ namespace Farmi.HUD
                 Background = Color.White
             };
         }
+
         public void ChangeTexture(Texture2D texture)
         {
             currentTexture = texture;

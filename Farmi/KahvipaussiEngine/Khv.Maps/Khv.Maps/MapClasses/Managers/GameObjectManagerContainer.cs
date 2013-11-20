@@ -28,6 +28,7 @@ namespace Khv.Maps.MapClasses.Managers
             gameObjectManagers = new List<GameObjectManager>();
         }
 
+        #region Add and remove methods
         /// <summary>
         /// Lisää uuden managerin containeriin.
         /// </summary>
@@ -42,6 +43,17 @@ namespace Khv.Maps.MapClasses.Managers
         {
             gameObjectManagers.Remove(gameObjectManagers.Find(o => predicate(o)));
         }
+        #endregion
+
+        #region Query methods
+        public bool ContainsGameObject(GameObject gameObject)
+        {
+            return gameObjectManagers.Find(c => c.Contains(gameObject)) != null;
+        }
+        public bool HasObjectInBackground(GameObject gameObject)
+        {
+            return gameObjectManagers.First(c => c.AllObjectsInBackground().Contains(gameObject)) != null;
+        }
         /// <summary>
         /// Palauttaa managerin joka täyttää annetut ehdot.
         /// </summary>
@@ -49,6 +61,8 @@ namespace Khv.Maps.MapClasses.Managers
         {
             return gameObjectManagers.Find(o => predicate(o));
         }
+        #endregion
+
         /// <summary>
         /// Poistaa kaikki managerit joiden InUse value on
         /// false.

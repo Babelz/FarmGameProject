@@ -11,7 +11,7 @@ using System.IO;
 
 namespace Farmi.Entities.Items
 {
-    internal sealed class AnimalFeedItem : Item, ILoadableRepositoryObject<FeedDataset>
+    public sealed class AnimalFeedItem : Item, ILoadableRepositoryObject<FeedDataset>
     {
         #region Properties
         public FeedDataset Dataset

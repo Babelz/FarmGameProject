@@ -67,22 +67,14 @@ namespace Farmi.Entities.Animals
             InitializeFromDataset(animalDataset);
         }
 
-        protected override void OnDestroy()
-        {
-            world.MapManager.OnMapChanged -= MapManager_OnMapChanged;
-        }
-
         #region Event handlers
-        private void MapManager_OnMapChanged(object sender, MapEventArgs e)
+        private void mapLocator_ContainingMapActive(object sender, MapLocatorEventArgs e)
         {
-            if (e.Current.Name == MapContainedIn)
-            {
-                world.WorldObjects.SafelyAdd(this);
-            }
-            else
-            {
-                world.WorldObjects.SafelyRemove(this);
-            }
+            world.WorldObjects.MoveToForeground(this);
+        }
+        private void mapLocator_ContainingMapChanged(object sender, MapLocatorEventArgs e)
+        {
+            world.WorldObjects.MoveToBackground(this);
         }
         #endregion
 
@@ -93,8 +85,6 @@ namespace Farmi.Entities.Animals
 
             world = (game.GameStateManager.States
                 .First(c => c is GameplayScreen) as GameplayScreen).World;
-
-            world.MapManager.OnMapChanged += new MapEventHandler(MapManager_OnMapChanged);
 
             RepositoryManager repositoryManager = game.Components
                 .First(c => c is RepositoryManager) as RepositoryManager;
@@ -111,6 +101,13 @@ namespace Farmi.Entities.Animals
             Behaviour = scriptEngine.GetScript<AnimalBehaviourScript>(builder);
             BehaviourObserver = new ScriptObserver<AnimalBehaviourScript>(Behaviour, builder);
         }
+        private void InitializeLocator()
+        {
+            MapLocator mapLocator = new MapLocator(world, this, MapContainedIn);
+            mapLocator.ContainingMapActive += new MapLocatorEventHandler(mapLocator_ContainingMapActive);
+            mapLocator.ContainingMapChanged += new MapLocatorEventHandler(mapLocator_ContainingMapChanged);
+            Components.AddComponent(mapLocator);
+        }
         public void InitializeFromMapData(MapObjectArguments mapObjectArguments)
         {
             string typeName = mapObjectArguments.SerializedData.valuepairs
@@ -122,12 +119,16 @@ namespace Farmi.Entities.Animals
             Initialize(Dataset);
 
             MapContainedIn = mapObjectArguments.MapContainedIn;
+
+            InitializeLocator();
         }
         public void InitializeFromDataset(AnimalDataset dataset)
         {
             Initialize(dataset);
 
             MapContainedIn = world.MapManager.ActiveMap.Name;
+
+            InitializeLocator();
         }
         #endregion
 

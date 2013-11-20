@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Khv.Gui.Controls;
+using Khv.Engine.Args;
 
 namespace Farmi.HUD
 {
@@ -107,7 +108,7 @@ namespace Farmi.HUD
         }
 
         #region Event handlers
-        private void Owner_OnDestroyed(object sender, Khv.Engine.Args.GameEventArgs e)
+        private void Owner_OnDestroyed(object sender, GameEventArgs e)
         {
             Destroy();
         }

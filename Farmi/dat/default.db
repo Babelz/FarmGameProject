@@ -1,84 +1,87 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <Defaults>
-  
-  <!-- Teleport in map -->
-  <MapObject>
-    <Name>Teleport</Name>
-    <Valuepairs>
-      <Pair>
-        <Name>To</Name>
-        <Value>farm</Value>
-      </Pair>
-      <Pair>
-        <Name>PositionOffSet</Name>
-        <Value>X = 0, Y = -32</Value>
-      </Pair>
-      <Pair>
-        <Name>Position</Name>
-        <Value>X = 0, Y = 0</Value>
-      </Pair>
-      <Pair>
-        <Name>Size</Name>
-        <Value>Width = 64, Height = 32</Value>
-      </Pair>
-    </Valuepairs>
-  </MapObject>
 
-  <!-- Teleport in db -->
-  <Teleport X="0,0" Y="-32,0" Width="0" Height="0"
-            TeleportTo="playerhouseindoors1"/>
+	<!-- Teleport in map -->
+	<MapObject>
+		<Name>Teleport</Name>
+		<Valuepairs>
+			<Pair>
+				<Name>To</Name>
+				<Value>farm</Value>
+			</Pair>
+			<Pair>
+				<Name>PositionOffSet</Name>
+				<Value>X = 0, Y = -32</Value>
+			</Pair>
+			<Pair>
+				<Name>Position</Name>
+				<Value>X = 0, Y = 0</Value>
+			</Pair>
+			<Pair>
+				<Name>Size</Name>
+				<Value>Width = 64, Height = 32</Value>
+			</Pair>
+		</Valuepairs>
+	</MapObject>
 
-  <!-- Building in map -->
-  <MapObject>
-    <Name>Building</Name>
-    <Valuepairs>
-      <Pair>
-        <Name>Type</Name>
-        <Value>BuildingDataset</Value>
-      </Pair>
-      <Pair>
-        <Name>ContextName</Name>
-        <Value>playerhouse1</Value>
-      </Pair>
-    </Valuepairs>
-  </MapObject>
+	<!-- Teleport in db -->
+	<Teleport X="0,0" Y="-32,0" Width="0" Height="0"
+			  TeleportTo="playerhouseindoors1"/>
 
-  <!-- Building in db -->
-  <Building Name="" Width="0" Height="0" AssetName="">
-    <Collider X="0,0f" Y="0,0" Width="0" Height="0"/>
-    <Scripts>
+	<!-- Building in map -->
+	<MapObject>
+		<Name>Building</Name>
+		<Valuepairs>
+			<Pair>
+				<Name>Type</Name>
+				<Value>BuildingDataset</Value>
+			</Pair>
+			<Pair>
+				<Name>ContextName</Name>
+				<Value>playerhouse1</Value>
+			</Pair>
+		</Valuepairs>
+	</MapObject>
 
-    </Scripts>
-    <Doors>
-      <Door X="0,0" Y="0,0" Width="0" Height="0" AssetName="">
-        <Teleport X="0,0" Y="-0,0" Width="0" Height="0" TeleportTo="playerhouseindoors1"/>
-      </Door>
-    </Doors>
-  </Building>
-  
-  <!-- Animal in map -->
-  <MapObject>
-    <Name>Animal</Name>
-    <Valuepairs>
-      <Pair>
-        <Name>Type</Name>
-        <Value>Dog</Value>
-      </Pair>
-    </Valuepairs>
-  </MapObject>
+	<!-- Building in db -->
+	<Building Name="" Width="0" Height="0" AssetName="">
+		<Collider X="0,0f" Y="0,0" Width="0" Height="0"/>
+		<Scripts>
 
-  <!-- Animal in db -->
-  <Animal Name="" Type="Dog" Width="128" Height="128" AssetName="dogsheet">
-    <Collider X="0" Y="0" Width="0" Height="0"/>
-    <Birthday Season="Spring" Year="1" Day="1"/>
-    <Behaviours>
-      <Behaviour Name="DogBehaviour"/>
-    </Behaviours>
-    <LootTable>
-      <Item Name="Dog meat"/>
-    </LootTable>
-  </Animal>
-  
-  
+		</Scripts>
+		<Doors>
+			<Door X="0,0" Y="0,0" Width="0" Height="0" AssetName="">
+				<Teleport X="0,0" Y="-0,0" Width="0" Height="0" TeleportTo="playerhouseindoors1"/>
+			</Door>
+		</Doors>
+	</Building>
+
+	<!-- Animal in map -->
+	<MapObject>
+		<Name>Animal</Name>
+		<Valuepairs>
+			<Pair>
+				<Name>Type</Name>
+				<Value>Dog</Value>
+			</Pair>
+		</Valuepairs>
+	</MapObject>
+
+	<!-- Animal in db -->
+	<Animal Name="" Type="Dog" Width="128" Height="128" AssetName="dogsheet">
+		<Collider X="0" Y="0" Width="0" Height="0"/>
+		<Birthday Season="Spring" Year="1" Day="1"/>
+		<Behaviours>
+			<Behaviour Name="DogBehaviour"/>
+		</Behaviours>
+		<LootTable>
+			<Item Name="Dog meat"/>
+		</LootTable>
+		<FeedTable>
+			<Feed Name="Hay"/>
+		</FeedTable>
+	</Animal>
+
+
 </Defaults>

@@ -99,6 +99,7 @@
     <Compile Include="Entities\Components\PowerUpComponent.cs" />
     <Compile Include="Entities\Components\PushableComponent.cs" />
     <Compile Include="Entities\Components\SeedInteractionComponent.cs" />
+    <Compile Include="Entities\Components\TextureFader.cs" />
     <Compile Include="Entities\Components\ViewComponent.cs" />
     <Compile Include="Entities\CropSpot.cs" />
     <Compile Include="Entities\CropSpotState.cs" />
@@ -385,6 +386,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Buildings\playerhouse1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\cow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Entities\dogsheet.png">

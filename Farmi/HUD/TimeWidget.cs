@@ -33,6 +33,11 @@ namespace Farmi.HUD
 
     public sealed partial class TimeWidget : Widget
     {
+        #region Vars
+        private int elapsed;
+        private Label timeLabel;
+        #endregion
+
         protected override void Initialize()
         {
             int screenWidth = khvGame.GraphicsDeviceManager.PreferredBackBufferWidth;
@@ -51,6 +56,7 @@ namespace Farmi.HUD
             Position = new ControlPosition(screenWidth - size.Width, 0);
             Position.Margin = new Margin(-15, 0, 15, 0);
 
+            #region Controls init
             TextureWrapper weatherTextureWrapper = new TextureWrapper();
             weatherTextureWrapper.ChangeTexture(weatherSystem.CorrespondingWeatherTexture);
             weatherTextureWrapper.BackgroundImage = khvGame.Content.Load<Texture2D>(Path.Combine("Gui", "slot"));
@@ -90,17 +96,33 @@ namespace Farmi.HUD
             dateLabel.FontScale = 0.85f;
 
 
-            Label timeLabel = new Label();
+            timeLabel = new Label();
             this.controlManager.AddControl(timeLabel);
             timeLabel.Font = khvGame.Content.Load<SpriteFont>("arial");
             timeLabel.Text = "TimeLabel";
             timeLabel.Position = new ControlPosition(0, size.Height - timeLabel.Size.Height);
             timeLabel.Position.Margin = new Margin(10, 0, -10, 0);
-            timeLabel.UpdateActions.Add((c) =>
-                {
-                    timeLabel.Text = calendar.GetTimeDisplayString();
-                });
             timeLabel.FontScale = 1.25f;
+            #endregion
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            elapsed += gameTime.ElapsedGameTime.Milliseconds;
+            if (elapsed < 400)
+            {
+                timeLabel.Text = calendar.GetTimeDisplayString().Replace(":", " ");
+            }
+            else if (elapsed < 800)
+            {
+                timeLabel.Text = calendar.GetTimeDisplayString();
+            }
+            else
+            {
+                elapsed = 0;
+            }
         }
     }
 }

@@ -61,6 +61,11 @@ namespace Farmi.Datasets
             get;
             private set;
         }
+        public string[] FeedTable
+        {
+            get;
+            private set;
+        }
         public string[] Tags
         {
             get;
@@ -81,6 +86,18 @@ namespace Farmi.Datasets
                         from tag in tags.Descendants()
                         where tag.Name == "Tag"
                         select tag.Attribute("Value").Value).ToArray<string>();
+            }
+        }
+        private void ReadFeedTable(XElement xElement)
+        {
+            IEnumerable<XElement> feedTableElements = xElement.Descendants("FeedTable");
+
+            if (feedTableElements != null)
+            {
+                FeedTable = (from feeds in feedTableElements
+                             from feed in feeds.Descendants()
+                             where feed.Name == "Feed"
+                             select feed.Attribute("Name").Value).ToArray<string>();
             }
         }
         private void ReadLootTable(XElement xElement)

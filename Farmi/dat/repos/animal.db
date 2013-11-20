@@ -1,29 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <Repository Name="Animal repository" DatasetType="AnimalDataset" RepositoryType="AnimalRepository">
-  <Items>
-    <Animal Name="Sparky" Type="Dog" Width="32" Height="32" AssetName="dogsheet">
-      <Tags>
-        <Tag Value="CrazyAssDog"/>
-      </Tags>
-      <Collider X="0" Y="0" Width="0" Height="0"/>
-      <Behaviours>
-        <Behaviour Name="DogBehaviour"/>
-      </Behaviours>
-      <LootTable>
-        <Item Name="Dog meat"/>
-      </LootTable>
-    </Animal>
-    <Animal>
-      <Animal Name="Moomoo" Type="Dog" Width="96" Height="32" AssetName="cow">
-        <Collider X="0" Y="0" Width="0" Height="0"/>
-        <Behaviours>
-          <Behaviour Name="CowBehaviour"/>
-        </Behaviours>
-        <LootTable>
-          <Item Name="Milk"/>
-        </LootTable>
-      </Animal>
-    </Animal>
-  </Items>
+	<Items>
+		<Animal Name="Sparky" Type="Dog" Width="32" Height="32" AssetName="dogsheet">
+			<Tags>
+				<Tag Value="CrazyAssDog"/>
+			</Tags>
+			<Collider X="0" Y="0" Width="0" Height="0"/>
+			<Behaviours>
+				<Behaviour Name="DogBehaviour"/>
+			</Behaviours>
+			<LootTable>
+				<Item Name="Dog meat"/>
+			</LootTable>
+		</Animal>
+		<Animal Name="Moomoo" Type="Cow" Width="96" Height="64" AssetName="cow">
+			<Collider X="0" Y="0" Width="0" Height="0"/>
+			<Behaviours>
+				<Behaviour Name="CowBehaviour"/>
+			</Behaviours>
+			<LootTable>
+				<Item Name="Milk"/>
+				<Item Name="Good Milk"/>
+				<Item Name="Super Milk"/>
+				<Item Name="Ultra Milk"/>
+				<Item Name="Golden Milk"/>
+			</LootTable>
+			<FeedTable>
+				<Feed Name="Hay"/>
+			</FeedTable>
+		</Animal>
+	</Items>
 </Repository>

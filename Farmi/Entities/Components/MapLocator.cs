@@ -23,11 +23,11 @@ namespace Farmi.Entities.Components
         /// <summary>
         /// Eventti joka laukaistaan kun kartta jossa omistaja asuu tulee aktiiviseksi.
         /// </summary>
-        public event MapLocatorEventHandler ContainedMapActive;
+        public event MapLocatorEventHandler ContainingMapActive;
         /// <summary>
         /// Eventti joka laukaistaan kun kartta jossa omistaja ei asu tulee aktiiviseksi.
         /// </summary>
-        public event MapLocatorEventHandler ContainedMapChanged;
+        public event MapLocatorEventHandler ContainingMapChanged;
         #endregion
 
         #region Properties
@@ -59,16 +59,16 @@ namespace Farmi.Entities.Components
         {
             if (e.Current.Name == MapContainedIn)
             {
-                if (ContainedMapActive != null)
+                if (ContainingMapActive != null)
                 {
-                    ContainedMapActive(this, new MapLocatorEventArgs(e, owner));
+                    ContainingMapActive(this, new MapLocatorEventArgs(e, owner));
                 }
             }
             else
             {
-                if (ContainedMapChanged != null)
+                if (ContainingMapChanged != null)
                 {
-                    ContainedMapChanged(this, new MapLocatorEventArgs(e, owner));
+                    ContainingMapChanged(this, new MapLocatorEventArgs(e, owner));
                 }
             }
         }

@@ -82,22 +82,14 @@ namespace Farmi.Entities.Components
         {
             if (OnItemChanging != null)
             {
-                OnItemChanging(this, new PlayerInventoryEventArgs()
-                {
-                    CurrentItem = ItemInHands,
-                    NextItem = nextItem
-                });
+                OnItemChanging(this, new PlayerInventoryEventArgs(ItemInHands, nextItem));
             }
         }
         private void CallOnToolChanging(Tool nextTool)
         {
             if (OnToolChanging != null)
             {
-                OnToolChanging(this, new PlayerInventoryEventArgs()
-                {
-                    CurrentItem = SelectedTool,
-                    NextItem = nextTool
-                });
+                OnToolChanging(this, new PlayerInventoryEventArgs(SelectedTool, nextTool));
             }
         }
         #endregion
@@ -218,13 +210,19 @@ namespace Farmi.Entities.Components
         public Item CurrentItem
         {
             get;
-            set;
+            private set;
         }
         public Item NextItem
         {
             get;
-            set;
+            private set;
         }
         #endregion
+
+        public PlayerInventoryEventArgs(Item currentItem, Item nextItem)
+        {
+            CurrentItem = currentItem;
+            NextItem = nextItem;
+        }
     }
 }

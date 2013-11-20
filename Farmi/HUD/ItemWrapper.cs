@@ -27,6 +27,7 @@ namespace Farmi.HUD
                 Background = Color.White
             };
         }
+
         public void ChangeItem(Item next)
         {
             currentItem = next;

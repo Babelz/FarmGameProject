@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities
 {
-    internal sealed class Camera
+    public sealed class Camera
     {
         #region Vars
         private float zoom;

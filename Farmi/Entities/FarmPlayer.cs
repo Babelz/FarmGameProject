@@ -193,6 +193,9 @@ namespace Farmi.Entities
             });
             keymapper.Map(new KeyTrigger("Previous tool", Keys.Q), (triggered, args) => Inventory.PreviousTool(), InputState.Released);
             keymapper.Map(new KeyTrigger("Next tool", Keys.E), (triggered, args) => Inventory.NextTool(), InputState.Released);
+            
+            
+            
             keymapper.Map(new KeyTrigger("Spawn dog", Keys.F2), (triggered, args) =>
             {
                 if (args.State == InputState.Pressed)
@@ -202,11 +205,26 @@ namespace Farmi.Entities
 
                     Animal dog = new Animal(game, dataset);
                     dog.Position = position;
-                    dog.MapContainedIn = world.MapManager.ActiveMap.Name;
 
                     world.WorldObjects.AddGameObject(dog);
                 }
             });
+            keymapper.Map(new KeyTrigger("Spawn cow", Keys.F3), (triggered, args) =>
+                {
+                    if(args.State == InputState.Pressed)
+                    {
+                        AnimalDataset dataset = game.Components.GetGameComponent<RepositoryManager>()
+                            .GetDataSet<AnimalDataset>(d => d.Type == "Cow");
+
+                        Animal cow = new Animal(game, dataset);
+                        cow.Position = position;
+
+                        world.WorldObjects.AddGameObject(cow);
+                    }
+                });
+
+
+
             keymapper.Map(new KeyTrigger("Power tool", Keys.Z), PowerUpTool, InputState.Pressed | InputState.Down);
             keymapper.Map(new KeyTrigger("Interact with tool", Keys.Z), InteractWithTool, InputState.Released);
 

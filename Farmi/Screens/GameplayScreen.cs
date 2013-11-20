@@ -15,7 +15,7 @@ using Farmi.Entities.Components;
 
 namespace Farmi.Screens
 {
-    internal sealed class GameplayScreen : GameState
+    public sealed class GameplayScreen : GameState
     {
         #region Vars
         private Camera camera;
