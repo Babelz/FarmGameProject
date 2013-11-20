@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Farmi.Entities
 {
-    internal sealed class FarmPlayerAnimator : CharaterAnimator
+    public sealed class FarmPlayerAnimator : CharaterAnimator
     {
         #region Vars
         private readonly FarmPlayer player;
@@ -36,7 +36,7 @@ namespace Farmi.Entities
                     c => c is IInteractionComponent) as IInteractionComponent;
 
                 // ei pitäs olla null ikinä
-                if (interactionComponent != null && !interactionComponent.IsInteracting)
+                if (interactionComponent != null && interactionComponent.IsInteracting)
                 {
                     foreach (RenderMatrix l_render in m_renderList)
                     {
