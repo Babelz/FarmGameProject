@@ -439,6 +439,9 @@
     <Content Include="Content\MapTileSets\outdoors2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="OpenAL32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="BrashMonkey\LICENSE" />
     <None Include="Content\arial2.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

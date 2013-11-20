@@ -38,7 +38,7 @@ namespace Farmi.Entities
         private ViewComponent viewComponent;
         private AnimationComponent animationComponent;
 
-        private CharaterAnimator animator;
+        
         #endregion
 
         #region Properties
@@ -66,6 +66,13 @@ namespace Farmi.Entities
             get;
             private set;
         }
+
+        public FarmPlayerAnimator Animator
+        {
+            get; 
+            private set;
+        }
+
         #endregion
 
         public FarmPlayer(KhvGame game, FarmWorld world, PlayerIndex index = PlayerIndex.One)
@@ -100,10 +107,10 @@ namespace Farmi.Entities
             SpriterImporter importer = new SpriterImporter();
             var model = reader.Read(importer.Import(Path.Combine("Content\\Spriter", "player.scml")), null, game.Content,
                 game.GraphicsDevice);
-            animator = new FarmPlayerAnimator(this, model, "player");
-            animator.AnimationEnded += animator_AnimationEnded;
-            animator.Scale = 1.0f;
-            animationComponent = new AnimationComponent(this, animator, "idle");
+            Animator = new FarmPlayerAnimator(this, model, "player");
+            //Animator.AnimationEnded += Animator_AnimationEnded;
+            Animator.Scale = 1.0f;
+            animationComponent = new AnimationComponent(this, Animator, "idle_down");
 
             Components.AddComponent(animationComponent);
             Components.AddComponent(new ExclamationMarkDrawer(game, this));
@@ -125,6 +132,7 @@ namespace Farmi.Entities
             Inventory.AddToInventory(new Tool(game, r.GetDataSet<ToolDataset>(t => t.Name == "Pick")));
             Inventory.AddToInventory(new Seed(game, r.GetDataSet<SeedDataset>(t => t.Name == "Turnip seeds")));
             Inventory.NextTool();
+            Inventory.OnToolChanging += Inventory_OnToolChanging;
         }
 
         #region Init input
@@ -139,41 +147,41 @@ namespace Farmi.Entities
             keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) =>
             {
                 MotionEngine.GoalVelocityY = VelocityFunc(args, -speed);
-                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_up"))) return;
-                animator.ChangeAnimation("walk_up");
-                animator.FlipX = false;
-                animator.FlipY = false;
+                if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_up"))) return;
+                Animator.ChangeAnimation("walk_up");
+                Animator.FlipX = false;
+                Animator.FlipY = false;
             });
             keymapper.Map(new KeyTrigger("Move down", Keys.S, Keys.Down), (triggered, args) =>
             {
                 MotionEngine.GoalVelocityY = VelocityFunc(args, speed);
 
-                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_down"))) return;
-                animator.ChangeAnimation("walk_down");
-                animator.FlipX = false;
-                animator.FlipY = false;
+                if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_down"))) return;
+                Animator.ChangeAnimation("walk_down");
+                Animator.FlipX = false;
+                Animator.FlipY = false;
             });
             #endregion
 
             keymapper.Map(new KeyTrigger("Flip left", Keys.A, Keys.Left), (triggered, args) =>
             {
                 // joudutaan flippaan
-                animator.FlipX = true;
-                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_right")))
+                Animator.FlipX = true;
+                if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_right")))
                 {
                     return;
                 }
-                animator.ChangeAnimation("walk_right");
+                Animator.ChangeAnimation("walk_right");
             }, InputState.Pressed | InputState.Down);
 
             keymapper.Map(new KeyTrigger("Flip right", Keys.D, Keys.Right), (triggered, args) =>
             {
-                animator.FlipX = false;
-                if (Equals(animator.CurrentAnimation, animator.GetAnimation("walk_right")))
+                Animator.FlipX = false;
+                if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_right")))
                 {
                     return;
                 }
-                animator.ChangeAnimation("walk_right");
+                Animator.ChangeAnimation("walk_right");
 
             }, InputState.Pressed | InputState.Down);
 
@@ -239,6 +247,23 @@ namespace Farmi.Entities
 
         #endregion
 
+        #region Events
+
+        void Inventory_OnToolChanging(object sender, PlayerInventoryEventArgs e)
+        {
+            /*
+            Animator.AnimationEnded -= tool_AnimationEnded;
+            var interactionComponent = e.CurrentItem.Components.GetComponent<IInteractionComponent>();
+            // jos ei ole komponenttia tai komponentti ei interaktaa kenenkään kanssa
+            if (interactionComponent == null || !interactionComponent.IsInteracting)
+            {
+                return;
+            }
+            interactionComponent.CancelInteract();*/
+        }
+
+        #endregion
+
         #region Input callbacks
         /// <summary>
         /// Interactaa työkalulla callback inputtiin
@@ -259,23 +284,30 @@ namespace Farmi.Entities
                 powerUpComponent.Disable();
             }
 
-            animator.ChangeAnimation("use_tool_right");
-            animator.AnimationEnded += tool_AnimationEnded;
-        }
-
-        private void tool_AnimationEnded(Animation sender)
-        {
-            GameObject nearestObject = world.GetNearestGameObject(this, new Padding(32));
             var interactionComponent = Inventory.SelectedTool.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
-            // jos ei ole lähellä mitään
             // jotain meni vikaan, jokaisella työkalulla PITÄISI olla interaktion komponentti
-            if (nearestObject == null || interactionComponent == null)
+            // otetaan myös huomioon että jos se lyö jotain tällä hetkellä
+            if (interactionComponent == null || interactionComponent.IsInteracting)
             {
-                animator.AnimationEnded -= tool_AnimationEnded;
                 return;
             }
+            GameObject nearestObject = world.GetNearestGameObject(this, new Padding(32));
+            // jos ei oo lähellä ketää, älä tee mitään
+            if (nearestObject == null)
+            {
+                return;
+            }
+            Animator.ChangeAnimation("use_tool_right");
             interactionComponent.Interact(nearestObject);
-            animator.AnimationEnded -= tool_AnimationEnded;
+            interactionComponent.OnInteractionFinished += interactionComponent_OnInteractionFinished; 
+        }
+
+        void interactionComponent_OnInteractionFinished(object sender, InteractionEventArgs e)
+        {
+            var component = sender as IInteractionComponent;
+            component.OnInteractionFinished -= interactionComponent_OnInteractionFinished;
+            Animator.ChangeAnimation("idle_right");
+
         }
 
         /// <summary>
@@ -329,11 +361,11 @@ namespace Farmi.Entities
         #endregion
 
         #region Events
-        void animator_AnimationEnded(Animation sender)
+        void Animator_AnimationEnded(Animation sender)
         {
             // näyttää niin vitun tyhmältä :D
             /*if (sender.Name == "use_tool_right")
-                animator.ChangeAnimation("idle");*/
+                Animator.ChangeAnimation("idle");*/
         }
         #endregion
 
