@@ -16,7 +16,7 @@ namespace Farmi.dat.scripts
         public HoeBehaviour(KhvGame game, Tool owner) 
             : base(game, owner)
         {
-            owner.Components.AddComponent(new HoeInteractionComponent());
+            owner.Components.AddComponent(new HoeInteractionComponent(game));
         }
         public override void Update(GameTime gameTime)
         {    
