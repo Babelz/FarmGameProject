@@ -19,12 +19,21 @@ namespace Farmi.Entities.Scripts
         protected readonly FiniteStateMachine brain;
         #endregion
 
+        #region Properties
+        public bool HasSavableStateData
+        {
+            get;
+            protected set;
+        }
+        #endregion
+
         public AnimalBehaviourScript(KhvGame game, Animal owner)
         {
             this.game = game;
             this.owner = owner;
 
             brain = new FiniteStateMachine();
+            owner.Components.AddComponent(brain);
         }
 
         #region Abstract members

@@ -76,6 +76,8 @@
     <Compile Include="Entities\AnimalFeedDispenser.cs" />
     <Compile Include="Entities\Animals\Animal.cs" />
     <Compile Include="Entities\Components\AnimationComponent.cs" />
+    <Compile Include="Entities\Components\AnimalInteractionComponent.cs" />
+    <Compile Include="Entities\Components\CowInteractionComponent.cs" />
     <Compile Include="Entities\Components\DispenserInformerComponent.cs" />
     <Compile Include="Entities\Components\DrawingFiniteStateMachine.cs" />
     <Compile Include="Entities\Components\FeedingTrayInteractionComponent.cs" />
@@ -100,6 +102,7 @@
     <Compile Include="Entities\Components\PushableComponent.cs" />
     <Compile Include="Entities\Components\SeedInteractionComponent.cs" />
     <Compile Include="Entities\Components\TextureFader.cs" />
+    <Compile Include="Entities\Components\TimerWrapper.cs" />
     <Compile Include="Entities\Components\ViewComponent.cs" />
     <Compile Include="Entities\CropSpot.cs" />
     <Compile Include="Entities\CropSpotState.cs" />
@@ -110,13 +113,14 @@
     <Compile Include="Entities\FeedingTray.cs" />
     <Compile Include="Entities\Ground.cs" />
     <Compile Include="Entities\GroundState.cs" />
-    <Compile Include="Entities\ISaveable.cs" />
+    <Compile Include="Entities\ISavable.cs" />
     <Compile Include="Entities\Items\AnimalFeedItem.cs" />
     <Compile Include="Entities\Items\Components\ThrowableComponent.cs" />
     <Compile Include="Entities\Items\ConsumableItem.cs" />
     <Compile Include="Entities\Items\Item.cs" />
     <Compile Include="Entities\Items\Tool.cs" />
     <Compile Include="Entities\Scripts\AnimalBehaviourScript.cs" />
+    <Compile Include="Entities\Scripts\ISavableBehaviour.cs" />
     <Compile Include="Entities\Scripts\ItemScript.cs" />
     <Compile Include="Entities\Scripts\ToolBehaviourScript.cs" />
     <Compile Include="Entities\Seed.cs" />
@@ -375,11 +379,9 @@
       <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Tao.Sdl">
-      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Tao.Sdl.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tao.Sdl, Version=1.2.13.0, Culture=neutral, PublicKeyToken=9c7a200e36c0094e, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Buildings\barn1.png">
@@ -455,7 +457,7 @@
     <None Include="dat\mps\farm.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="dat\repos\animal.db">
+    <None Include="dat\repos\animals.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="dat\repos\buildings.db">
@@ -468,7 +470,9 @@
     <None Include="dat\mps\forest.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="dat\default.db" />
+    <None Include="dat\default.db">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="dat\mps\playerhouseindoors1.mp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -489,6 +493,7 @@
     </None>
     <None Include="dat\repos\animalfeeds.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="Content\Spriter\tools\pick2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Khv.Game.GameObjects;
 
 namespace Farmi.Entities.Components
 {
-    public sealed class DrawingFiniteStateMachine
+    public sealed class DrawingFiniteStateMachine : IDrawableObjectComponent
     {
         #region Vars
         private readonly Stack<DrawingState> states;
@@ -52,14 +53,14 @@ namespace Farmi.Entities.Components
             }
         }
 
-        public void UpdateCurrent(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             if (!HasFinished)
             {
                 CurrentState.UpdateAction(gameTime);
             }
         }
-        public void DrawCurrent(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (!HasFinished)
             {

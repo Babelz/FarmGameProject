@@ -69,29 +69,38 @@ namespace Khv.Game
             get { return GoalVelocity.Y; }
             set { GoalVelocity.Y = value; }
         }
+        public bool Enabled
+        {
+            get;
+            set;
+        }
         #endregion
 
         public MotionEngine(GameObject target)
         {
             character = target;
             OldDirection = Vector2.Zero;
+
+            Enabled = true;
         }
 
         #region Methods
 
         public void Update(GameTime gameTime)
         {
-          
-            Vector2 v = new Vector2();
-           
-            v.X = CalculateSpeed(GoalVelocity.X, character.Velocity.X, (float)gameTime.ElapsedGameTime.TotalSeconds * factor);
-            v.Y = CalculateSpeed(GoalVelocity.Y, character.Velocity.Y, (float)gameTime.ElapsedGameTime.TotalSeconds * factor);
+            if (Enabled)
+            {
+                Vector2 v = new Vector2();
 
-            oldVelocity = character.Velocity;
-            character.Velocity = v;
+                v.X = CalculateSpeed(GoalVelocity.X, character.Velocity.X, (float)gameTime.ElapsedGameTime.TotalSeconds * factor);
+                v.Y = CalculateSpeed(GoalVelocity.Y, character.Velocity.Y, (float)gameTime.ElapsedGameTime.TotalSeconds * factor);
 
-            oldPosition = character.Position;
-            character.Position += character.Velocity;
+                oldVelocity = character.Velocity;
+                character.Velocity = v;
+
+                oldPosition = character.Position;
+                character.Position += character.Velocity;
+            }
         }
 
         public float CalculateSpeed(float goal, float currentSpeed, float deltaTime)

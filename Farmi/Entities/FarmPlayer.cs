@@ -37,8 +37,6 @@ namespace Farmi.Entities
 
         private ViewComponent viewComponent;
         private AnimationComponent animationComponent;
-
-        
         #endregion
 
         #region Properties
@@ -98,7 +96,8 @@ namespace Farmi.Entities
 
             controller = new InputController(game.InputManager);
             controller.ChangeSetup(defaultInputSetup);
-            InitDefaultSetup();            
+            InitPadSetup();
+            InitKeyboardSetup();            
         }
 
         private void AddComponents()
@@ -137,17 +136,171 @@ namespace Farmi.Entities
 
         #region Init input
 
-        private void InitDefaultSetup()
+#warning Suora copypaste - pitäs laittaa callbackit erillisiin funkkeihin - FarmPlayer.InitPadSetup()
+        private void InitPadSetup()
+        {
+            var padmapper = defaultInputSetup.Mapper.GetInputBindProvider<PadInputBindProvider>();
+
+            #region Movement
+            padmapper.Map(new ButtonTrigger("Move left", Buttons.LeftThumbstickLeft), (triggeted, args) =>
+                {
+                    MotionEngine.GoalVelocityX = VelocityFunc(args, -speed);
+
+                    Animator.FlipX = true;
+                    if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_right")))
+                    {
+                        return;
+                    }
+                    Animator.ChangeAnimation("walk_right");
+                });
+            padmapper.Map(new ButtonTrigger("Move right", Buttons.LeftThumbstickRight), (triggeted, args) =>
+                {
+                    MotionEngine.GoalVelocityX = VelocityFunc(args, speed);
+
+                    Animator.FlipX = false;
+                    if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_right")))
+                    {
+                        return;
+                    }
+                    Animator.ChangeAnimation("walk_right");
+                });
+            padmapper.Map(new ButtonTrigger("Move up", Buttons.LeftThumbstickUp), (triggeted, args) =>
+                {
+                    MotionEngine.GoalVelocityY = VelocityFunc(args, -speed);
+
+                    if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_up")))
+                    {
+                        return;
+                    }
+                    Animator.ChangeAnimation("walk_up");
+                    Animator.FlipX = false;
+                    Animator.FlipY = false;
+                });
+            padmapper.Map(new ButtonTrigger("Move down", Buttons.LeftThumbstickDown), (triggeted, args) =>
+                {
+                    MotionEngine.GoalVelocityY = VelocityFunc(args, speed);
+
+                    if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_down")))
+                    {
+                        return;
+                    }
+                    Animator.ChangeAnimation("walk_down");
+                    Animator.FlipX = false;
+                    Animator.FlipY = false;
+                });
+            #endregion
+
+            #region Interaction binds
+            padmapper.Map(new ButtonTrigger("Interact", Buttons.A), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        TryInteract(args);
+                    }
+                });
+            padmapper.Map(new ButtonTrigger("Interact with tool", Buttons.B), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        #region Copy pastaaapaskaa
+                        if (!Inventory.HasToolSelected)
+                        {
+                            return;
+                        }
+
+
+                        var powerUpComponent = Inventory.SelectedTool.Components.GetComponent(c => c is PowerUpComponent) as PowerUpComponent;
+                        if (powerUpComponent != null)
+                        {
+                            powerUpComponent.Disable();
+                        }
+
+                        var interactionComponent = Inventory.SelectedTool.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent;
+                        // jotain meni vikaan, jokaisella työkalulla PITÄISI olla interaktion komponentti
+                        // otetaan myös huomioon että jos se lyö jotain tällä hetkellä
+                        if (interactionComponent == null || interactionComponent.IsInteracting)
+                        {
+                            return;
+                        }
+                        GameObject nearestObject = world.GetNearestGameObject(this, new Padding(32));
+                        // jos ei oo lähellä ketää, älä tee mitään
+                        if (nearestObject == null)
+                        {
+                            return;
+                        }
+                        Animator.ChangeAnimation("use_tool_right");
+                        interactionComponent.Interact(nearestObject);
+                        interactionComponent.OnInteractionFinished += interactionComponent_OnInteractionFinished;
+                        #endregion
+                    }
+                });
+            #endregion
+
+            #region Inventory binds
+            padmapper.Map(new ButtonTrigger("Move to inventory", Buttons.X), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        if (Inventory.HasItemInHands)
+                        {
+                            Inventory.MoveItemInHandsToInventory();
+                        }
+                        else
+                        {
+                            Inventory.LastItem();
+                        }
+                    }
+                });
+            padmapper.Map(new ButtonTrigger("Next item", Buttons.LeftTrigger), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        Inventory.NextItem();
+                    }
+                });
+            padmapper.Map(new ButtonTrigger("Previous item", Buttons.RightTrigger), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        Inventory.PreviousItem();
+                    }
+                });
+            padmapper.Map(new ButtonTrigger("Next tool", Buttons.LeftShoulder), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        Inventory.NextTool();
+                    }
+                });
+            padmapper.Map(new ButtonTrigger("Previous tool", Buttons.RightShoulder), (triggered, args) =>
+                {
+                    if (args.State == InputState.Pressed)
+                    {
+                        Inventory.PreviousTool();
+                    }
+                });
+            #endregion
+        }
+        private void InitKeyboardSetup()
         {
             var keymapper = defaultInputSetup.Mapper.GetInputBindProvider<KeyInputBindProvider>();
-           
-            #region Move
-            keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, -speed));
-            keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => MotionEngine.GoalVelocityX = VelocityFunc(args, speed));
+
+            #region Movement
+            keymapper.Map(new KeyTrigger("Move left", Keys.A, Keys.Left), (triggered, args) => 
+            {
+                MotionEngine.GoalVelocityX = VelocityFunc(args, -speed);
+            });
+            keymapper.Map(new KeyTrigger("Move right", Keys.D, Keys.Right), (triggered, args) => 
+            {
+                MotionEngine.GoalVelocityX = VelocityFunc(args, speed); 
+            });
             keymapper.Map(new KeyTrigger("Move up", Keys.W, Keys.Up), (triggered, args) =>
             {
                 MotionEngine.GoalVelocityY = VelocityFunc(args, -speed);
-                if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_up"))) return;
+                if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_up")))
+                {
+                    return;
+                }
                 Animator.ChangeAnimation("walk_up");
                 Animator.FlipX = false;
                 Animator.FlipY = false;
@@ -156,12 +309,14 @@ namespace Farmi.Entities
             {
                 MotionEngine.GoalVelocityY = VelocityFunc(args, speed);
 
-                if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_down"))) return;
+                if (Equals(Animator.CurrentAnimation, Animator.GetAnimation("walk_down")))
+                {
+                    return;
+                }
                 Animator.ChangeAnimation("walk_down");
                 Animator.FlipX = false;
                 Animator.FlipY = false;
             });
-            #endregion
 
             keymapper.Map(new KeyTrigger("Flip left", Keys.A, Keys.Left), (triggered, args) =>
             {
@@ -184,10 +339,12 @@ namespace Farmi.Entities
                 Animator.ChangeAnimation("walk_right");
 
             }, InputState.Pressed | InputState.Down);
+            #endregion
 
-
-            keymapper.Map(new KeyTrigger("Interact", Keys.Space), 
-                (triggered, args) => TryInteract(args));
+            keymapper.Map(new KeyTrigger("Interact", Keys.Space), (triggered, args) => 
+                {
+                    TryInteract(args); 
+                });
 
             keymapper.Map(new KeyTrigger("Next day", Keys.F1), (triggered, args) =>
             {
@@ -199,10 +356,15 @@ namespace Farmi.Entities
                     calendar.SkipDay(23, 45);
                 }
             });
-            keymapper.Map(new KeyTrigger("Previous tool", Keys.Q), (triggered, args) => Inventory.PreviousTool(), InputState.Released);
-            keymapper.Map(new KeyTrigger("Next tool", Keys.E), (triggered, args) => Inventory.NextTool(), InputState.Released);
-            
-            
+
+            keymapper.Map(new KeyTrigger("Previous tool", Keys.Q), (triggered, args) =>
+                {
+                    Inventory.PreviousTool();
+                }, InputState.Released);
+            keymapper.Map(new KeyTrigger("Next tool", Keys.E), (triggered, args) => 
+                {
+                    Inventory.NextTool();
+                }, InputState.Released);
             
             keymapper.Map(new KeyTrigger("Spawn dog", Keys.F2), (triggered, args) =>
             {
@@ -231,16 +393,8 @@ namespace Farmi.Entities
                     }
                 });
 
-
-
             keymapper.Map(new KeyTrigger("Power tool", Keys.Z), PowerUpTool, InputState.Pressed | InputState.Down);
             keymapper.Map(new KeyTrigger("Interact with tool", Keys.Z), InteractWithTool, InputState.Released);
-
-            var padmapper = defaultInputSetup.Mapper.GetInputBindProvider<PadInputBindProvider>();
-            padmapper.Map(new ButtonTrigger("Move left", Buttons.LeftThumbstickLeft, Buttons.DPadLeft), (triggered, args) => MotionEngine.GoalVelocityX = -speed);
-            padmapper.Map(new ButtonTrigger("Move right", Buttons.LeftThumbstickRight, Buttons.DPadRight), (triggered, args) => MotionEngine.GoalVelocityX = speed);
-            padmapper.Map(new ButtonTrigger("Move up", Buttons.LeftThumbstickUp, Buttons.DPadUp), (triggered, args) => MotionEngine.GoalVelocityY = -speed);
-            padmapper.Map(new ButtonTrigger("Move down", Buttons.LeftThumbstickDown, Buttons.DPadDown), (triggered, args) => MotionEngine.GoalVelocityX = speed);
         }
 
         #endregion
@@ -337,17 +491,13 @@ namespace Farmi.Entities
         }
         private void TryInteract(InputEventArgs args)
         {
-            if (args.State != InputState.Released)
-            {
-                return;
-            }
-
             if (ClosestInteractable == null)
             {
                 return;
             }
 
-            (ClosestInteractable.Components.GetComponent(c => c is IInteractionComponent) as IInteractionComponent).Interact(this);
+            (ClosestInteractable.Components.GetComponent(
+                c => c is IInteractionComponent) as IInteractionComponent).Interact(this);
         }
         private float VelocityFunc(InputEventArgs args, float src)
         {

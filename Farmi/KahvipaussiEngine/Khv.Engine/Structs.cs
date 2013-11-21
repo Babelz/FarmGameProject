@@ -35,6 +35,15 @@ namespace Khv.Engine.Structs
             this.width = width;
             this.height = height;
         }
+
+        public override string ToString()
+        {
+            return string.Format("W:{0} - H:{1}", width, height);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     // käytössä - maps, gui

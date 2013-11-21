@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Khv.Game.GameObjects;
 
 namespace Farmi.Entities.Components
 {
-    public class FiniteStateMachine
+    public class FiniteStateMachine : IUpdatableObjectComponent
     {
         #region Vars
         public Stack<Action> states;
@@ -38,13 +39,6 @@ namespace Farmi.Entities.Components
             states = new Stack<Action>();
         }
 
-        public void Update()
-        {
-            if (CurrentState != null)
-            {
-                CurrentState();
-            }
-        }
         public Action PopState()
         {
             if (HasStates)
@@ -59,6 +53,13 @@ namespace Farmi.Entities.Components
             if (action != CurrentState)
             {
                 states.Push(action);
+            }
+        }
+        public void Update()
+        {
+            if (CurrentState != null)
+            {
+                CurrentState();
             }
         }
     }

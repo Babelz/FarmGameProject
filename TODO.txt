@@ -1,5 +1,7 @@
 TODO with Engine
 
+Gamepad ei toimi ainakaan windows8.1:sell‰
+
 Mappi prosessorissa oli jotaki h‰m‰r‰‰ layerin latauksen kanssa.
 TileMapManageriin Backgroundmaps iterointi.
 Window ottaa viel‰kin content managerin sis‰‰n.

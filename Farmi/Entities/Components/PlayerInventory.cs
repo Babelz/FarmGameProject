@@ -96,6 +96,11 @@ namespace Farmi.Entities.Components
 
         public void NextItem()
         {
+            if (items.Count == 0)
+            {
+                return;
+            }
+
             itemIndex++;
             if (itemIndex >= items.Count)
             {
@@ -109,6 +114,11 @@ namespace Farmi.Entities.Components
         }
         public void PreviousItem()
         {
+            if (items.Count == 0)
+            {
+                return;
+            }
+
             itemIndex--;
             if (itemIndex < 0)
             {
@@ -120,9 +130,23 @@ namespace Farmi.Entities.Components
 
             ItemInHands = nextItem;
         }
+        public void LastItem()
+        {
+            if (items.Count == 0)
+            {
+                return;
+            }
+
+            ItemInHands = items[itemIndex];
+        }
 
         public void NextTool()
         {
+            if (tools.Count == 0)
+            {
+                return;
+            }
+
             toolIndex++;
             if (toolIndex >= tools.Count)
             {
@@ -136,6 +160,11 @@ namespace Farmi.Entities.Components
         }
         public void PreviousTool()
         {
+            if (tools.Count == 0)
+            {
+                return;
+            }
+
             toolIndex--;
             if (toolIndex < 0)
             {
@@ -148,6 +177,26 @@ namespace Farmi.Entities.Components
             SelectedTool = nextTool;
         }
 
+        public void MoveItemInHandsToInventory()
+        {
+            if (HasItemInHands)
+            {
+                Item item = ItemInHands;
+                ItemInHands = null;
+
+                MoveToInventory(item);
+            }
+        }
+        public void MoveToInventory(Item item)
+        {
+            if (HasItemInHands)
+            {
+                if (!items.Contains(item))
+                {
+                    items.Add(item);
+                }
+            }
+        }
         public void AddToInventory(Item item)
         {
             if (HasItemInHands)

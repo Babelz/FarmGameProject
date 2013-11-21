@@ -7,7 +7,7 @@ using Khv.Maps.MapClasses.Processors;
 
 namespace Farmi.Entities
 {
-    public interface ISaveable
+    public interface ISavable
     {
         void Import(IDataset dataset);
         IDataset Export();

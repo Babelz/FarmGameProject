@@ -14,9 +14,11 @@ namespace Khv.Game.Collision
         #region Events
 
         /// <summary>
-        /// Kun törmäys tapahtuu
+        /// Kun törmäys tapahtuu.
         /// </summary>
         public event CollisionEventHandler OnCollision;
+
+        // TODO: tarvis sen OnCollisionLeave ja OnCollisionEnter eventit
 
         #endregion
 
@@ -42,9 +44,18 @@ namespace Khv.Game.Collision
         /// <summary>
         /// Törmääkö johonkin
         /// </summary>
-        /// <param name="other">Gameobject != itse</param>
-        /// <returns>true jos törmää</returns>
         public abstract bool Collides(GameObject other, out CollisionEventArgs result);
+        /// <summary>
+        /// Katsoo törmätäänkö argumenttina syötettyyn olioon. 
+        /// Samakuin Collides(GameObject other, out CollisionEventArgs result) 
+        /// mutta ilman "out results" pakkoa.
+        /// </summary>
+        public bool Collides(GameObject other)
+        {
+            CollisionEventArgs results = new CollisionEventArgs();
+
+            return Collides(other, out results);
+        }
 
         /// <summary>
         /// Päivittää colliderin toimintaa, etsii uusia
