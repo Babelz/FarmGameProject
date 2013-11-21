@@ -146,11 +146,6 @@ namespace Khv.Game.GameObjects
             }
         }
 
-        private void FlushQues()
-        {
-            FlushSafeAddQue();
-            FlushSafeRemoveQue();
-        }
         private void FlushSafeAddQue()
         {
             if (safeAddQue.Count > 0)
@@ -167,6 +162,13 @@ namespace Khv.Game.GameObjects
                 safeRemoveQue.Clear();
             }
         }
+
+        public void FlushQues()
+        {
+            FlushSafeAddQue();
+            FlushSafeRemoveQue();
+        }
+
 
         #region Safe add methods
         public void SafelyAddComponent<T>(T objectComponent) where T : IObjectComponent
