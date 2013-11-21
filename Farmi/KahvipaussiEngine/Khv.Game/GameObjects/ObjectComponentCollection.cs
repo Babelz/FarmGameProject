@@ -22,6 +22,9 @@ namespace Khv.Game.GameObjects
         private readonly List<IUpdatableObjectComponent> updatableComponents;
 
         private readonly Dictionary<Type, IList> componentLists;
+
+        private readonly List<IObjectComponent> safeRemoveQue;
+        private readonly List<IObjectComponent> safeAddQue;
         #endregion
 
         #region Properties
@@ -54,6 +57,9 @@ namespace Khv.Game.GameObjects
             componentLists.Add(typeof(IObjectComponent), allComponents);
             componentLists.Add(typeof(IDrawableObjectComponent), drawableComponents);
             componentLists.Add(typeof(IUpdatableObjectComponent), updatableComponents);
+
+            safeRemoveQue = new List<IObjectComponent>();
+            safeAddQue = new List<IObjectComponent>();
         }
 
         // Palauttaa komponentti listan komponentin tyypin perusteella.
@@ -139,6 +145,64 @@ namespace Khv.Game.GameObjects
                 }
             }
         }
+
+        private void FlushQues()
+        {
+            FlushSafeAddQue();
+            FlushSafeRemoveQue();
+        }
+        private void FlushSafeAddQue()
+        {
+            if (safeAddQue.Count > 0)
+            {
+                AddComponents<IObjectComponent>(safeAddQue);
+                safeAddQue.Clear();
+            }
+        }
+        private void FlushSafeRemoveQue()
+        {
+            if (safeRemoveQue.Count > 0)
+            {
+                RemoveComponents<IObjectComponent>(safeRemoveQue);
+                safeRemoveQue.Clear();
+            }
+        }
+
+        #region Safe add methods
+        public void SafelyAddComponent<T>(T objectComponent) where T : IObjectComponent
+        {
+            safeAddQue.Add(objectComponent);
+        }
+        public void SafelyAddComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
+        {
+            foreach (T objectComponent in drawableComponents)
+            {
+                safeAddQue.Add(objectComponent);
+            }
+        }
+        public void SafelyAddComponents<T>(params T[] objectComponents) where T : IObjectComponent
+        {
+            SafelyAddComponents<T>(objectComponents.ToList());
+        }
+        #endregion
+
+        #region Safe remove methods
+        public void SafelyRemoveComponent<T>(T objectComponent) where T : IObjectComponent
+        {
+            safeRemoveQue.Add(objectComponent);
+        }
+        public void SafelyRemoveComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
+        {
+            foreach (T objectComponent in drawableComponents)
+            {
+                safeRemoveQue.Add(objectComponent);
+            }
+        }
+        public void SafelyRemoveComponents<T>(params T[] objectComponents) where T : IObjectComponent
+        {
+            SafelyRemoveComponents<T>(objectComponents.ToList());
+        }
+        #endregion
 
         #region Add methods
         /// <summary>
@@ -253,6 +317,8 @@ namespace Khv.Game.GameObjects
         /// </summary>
         public IEnumerable<T> ComponentsOfType<T>(Predicate<T> predicate = null) where T : IObjectComponent
         {
+            FlushQues();
+
             List<T> list = GetComponentList(typeof(T)) as List<T>;
 
             if (predicate == null)

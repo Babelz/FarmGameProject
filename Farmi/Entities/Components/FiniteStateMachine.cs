@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Khv.Game.GameObjects;
+using Microsoft.Xna.Framework;
 
 namespace Farmi.Entities.Components
 {
@@ -55,7 +56,7 @@ namespace Farmi.Entities.Components
                 states.Push(action);
             }
         }
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             if (CurrentState != null)
             {

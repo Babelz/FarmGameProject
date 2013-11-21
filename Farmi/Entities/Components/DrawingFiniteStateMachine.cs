@@ -29,11 +29,18 @@ namespace Farmi.Entities.Components
                 return (HasFinished ? null : states.Peek());
             }
         }
+        public int DrawOrder
+        {
+            get;
+            set;
+        }
         #endregion
 
         public DrawingFiniteStateMachine()
         {
             states = new Stack<DrawingState>();
+
+            DrawOrder = 5;
         }
 
         public void PushState(DrawingState state)
