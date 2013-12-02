@@ -45,6 +45,17 @@ namespace Khv.Game.GameObjects
                 return allComponents.Count;
             }
         }
+
+        /// <summary>
+        /// Palauttaa kopion komponentti listasta
+        /// </summary>
+        public List<IObjectComponent> AllComponents
+        {
+            get
+            {
+                return allComponents.ToList();
+            }
+        }
         #endregion
 
         public ObjectComponentCollection()
@@ -177,7 +188,7 @@ namespace Khv.Game.GameObjects
         }
         public void SafelyAddComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
         {
-            foreach (T objectComponent in drawableComponents)
+            foreach (T objectComponent in allComponents)
             {
                 safeAddQue.Add(objectComponent);
             }
@@ -195,7 +206,7 @@ namespace Khv.Game.GameObjects
         }
         public void SafelyRemoveComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
         {
-            foreach (T objectComponent in drawableComponents)
+            foreach (T objectComponent in allComponents)
             {
                 safeRemoveQue.Add(objectComponent);
             }

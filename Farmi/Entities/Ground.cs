@@ -5,6 +5,7 @@ using System.Text;
 using Farmi.Entities.Components;
 using Khv.Engine;
 using Khv.Engine.Structs;
+using Khv.Game.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -83,6 +84,9 @@ namespace Farmi.Entities
             }
             else
             {
+                seed.Components.SafelyRemoveComponents<IObjectComponent>(
+                    seed.Components.AllComponents
+                    );
                 State = GroundState.Planted;
             }
         }

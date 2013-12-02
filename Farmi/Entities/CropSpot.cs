@@ -67,6 +67,14 @@ namespace Farmi.Entities
                 State = CropSpotState.Grounded;
             }
         }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            if (Ground == null) return;
+            Ground.Update(gameTime);
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (Ground == null) return;
