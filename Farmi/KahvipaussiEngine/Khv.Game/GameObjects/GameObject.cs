@@ -9,6 +9,7 @@ using System.Text;
 using KhvGame = Khv.Engine.KhvGame;
 using Game = Microsoft.Xna.Framework.Game;
 using Khv.Engine.Args;
+using Farmi.Entities;
 
 namespace Khv.Game.GameObjects
 {

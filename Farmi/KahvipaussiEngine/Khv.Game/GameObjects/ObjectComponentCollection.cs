@@ -73,6 +73,16 @@ namespace Khv.Game.GameObjects
             safeAddQue = new List<IObjectComponent>();
         }
 
+        // Tarkistaa tyypin ja heittää poikkeuksen jos tyyppi ei ole validi.
+        private void CheckType(Type type)
+        {
+            if (!type.IsInterface)
+            {
+                throw new ArgumentException("Tyyppi parametrin (T) tulee olla rajapinta " +
+                "IObjectComponent, IDrawableObjectComponent tai IUpdatableObjectComponent.");
+            }
+        }
+
         // Palauttaa komponentti listan komponentin tyypin perusteella.
         private IList GetComponentList(Type componentType)
         {
@@ -102,10 +112,10 @@ namespace Khv.Game.GameObjects
         }
        
         // Lisää komponentin jokaiseen listaan johon se voi kuulua.
-        private void AddToLists<T>(T objectComponent) where T : IObjectComponent
+        private void AddToLists(IObjectComponent objectComponent)
         {
             // Suorittaa lisäys operaation listaan jos komponenttia ei ole siinä.
-            PerformActionWith<T>((list, component) => 
+            PerformActionWith((list, component) => 
                 {
                     if (!list.Contains(component))
                     {
@@ -115,10 +125,10 @@ namespace Khv.Game.GameObjects
         }
         
         // Poistaa komponentin jokaisesta listasta johon se voisi kuulua.
-        private void RemoveFromLists<T>(T objectComponent) where T : IObjectComponent
+        private void RemoveFromLists(IObjectComponent objectComponent)
         {
             // Suorittaa poisto operaation listalle jos komponentti on listassa.
-            PerformActionWith<T>((list, component) => 
+            PerformActionWith((list, component) => 
                 {
                     if (list.Contains(component))
                     {
@@ -130,15 +140,16 @@ namespace Khv.Game.GameObjects
         // Suorittaa jonkin operaation listalla ja annetulla komponentilla.
         // Suoritetaan poisto ja lisäys operaatiot tällä metodilla jotta säästytään
         // turhalta koodin duplikoinnilta.
-        private void PerformActionWith<T>(Action<IList, T> action, T objectComponent) where T : IObjectComponent
+        private void PerformActionWith(Action<IList, IObjectComponent> action, IObjectComponent objectComponent)
         {
             IList list = null;
-            Type[] types = typeof(T).GetInterfaces();
+            Type objectComponentType = objectComponent.GetType();
+            Type[] types = objectComponentType.GetInterfaces();
             
             // Jos tyyppi on rajapinta, suoritetaan operaatio heti sillä ja listalla johon se voi kuulua.
-            if (typeof(T).IsInterface)
+            if (objectComponentType.IsInterface)
             {
-                list = componentLists[typeof(T)];
+                list = componentLists[objectComponentType];
                 action(list, objectComponent);
                 list = null;
             }
@@ -161,7 +172,7 @@ namespace Khv.Game.GameObjects
         {
             if (safeAddQue.Count > 0)
             {
-                AddComponents<IObjectComponent>(safeAddQue);
+                AddComponents(safeAddQue);
                 safeAddQue.Clear();
             }
         }
@@ -169,7 +180,7 @@ namespace Khv.Game.GameObjects
         {
             if (safeRemoveQue.Count > 0)
             {
-                RemoveComponents<IObjectComponent>(safeRemoveQue);
+                RemoveComponents(safeRemoveQue);
                 safeRemoveQue.Clear();
             }
         }
@@ -180,40 +191,39 @@ namespace Khv.Game.GameObjects
             FlushSafeRemoveQue();
         }
 
-
         #region Safe add methods
-        public void SafelyAddComponent<T>(T objectComponent) where T : IObjectComponent
+        public void SafelyAddComponent(IObjectComponent objectComponent)
         {
             safeAddQue.Add(objectComponent);
         }
-        public void SafelyAddComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
+        public void SafelyAddComponents(IEnumerable<IObjectComponent> objectComponents)
         {
-            foreach (T objectComponent in objectComponents)
+            foreach (IObjectComponent objectComponent in objectComponents)
             {
                 safeAddQue.Add(objectComponent);
             }
         }
-        public void SafelyAddComponents<T>(params T[] objectComponents) where T : IObjectComponent
+        public void SafelyAddComponents(params IObjectComponent[] objectComponents)
         {
-            SafelyAddComponents<T>(objectComponents.ToList());
+            SafelyAddComponents(objectComponents.ToList());
         }
         #endregion
 
         #region Safe remove methods
-        public void SafelyRemoveComponent<T>(T objectComponent) where T : IObjectComponent
+        public void SafelyRemoveComponent(IObjectComponent objectComponent)
         {
             safeRemoveQue.Add(objectComponent);
         }
-        public void SafelyRemoveComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
+        public void SafelyRemoveComponents(IEnumerable<IObjectComponent> objectComponents)
         {
-            foreach (T objectComponent in allComponents)
+            foreach (IObjectComponent objectComponent in allComponents)
             {
                 safeRemoveQue.Add(objectComponent);
             }
         }
-        public void SafelyRemoveComponents<T>(params T[] objectComponents) where T : IObjectComponent
+        public void SafelyRemoveComponents(params IObjectComponent[] objectComponents)
         {
-            SafelyRemoveComponents<T>(objectComponents.ToList());
+            SafelyRemoveComponents(objectComponents.ToList());
         }
         #endregion
 
@@ -221,26 +231,26 @@ namespace Khv.Game.GameObjects
         /// <summary>
         /// Lisää annetun komponentin listoihin.
         /// </summary>
-        public void AddComponent<T>(T objectComponent) where T : IObjectComponent
+        public void AddComponent(IObjectComponent objectComponent)
         {
             AddToLists(objectComponent);
         }
         /// <summary>
         /// Lisää annetut komponentit listoihin.
         /// </summary>
-        public void AddComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
+        public void AddComponents(IEnumerable<IObjectComponent> objectComponents)
         {
-            foreach (T component in objectComponents)
+            foreach (IObjectComponent objectComponent in objectComponents)
             {
-                AddToLists(component);
+                AddToLists(objectComponent);
             }
         }
         /// <summary>
         /// Lisää annetut komponentit listoihin.
         /// </summary>
-        public void AddComponents<T>(params T[] objectComponents) where T : IObjectComponent
+        public void AddComponents(params IObjectComponent[] objectComponents)
         {
-            AddComponents<T>(objectComponents.ToList());
+            AddComponents(objectComponents.ToList());
         }
         #endregion
 
@@ -248,26 +258,26 @@ namespace Khv.Game.GameObjects
         /// <summary>
         /// Poistaa annetun komponentin listoista.
         /// </summary>
-        public void RemoveComponent<T>(T objectComponent) where T : IObjectComponent
+        public void RemoveComponent(IObjectComponent objectComponent)
         {
             RemoveFromLists(objectComponent);
         }
         /// <summary>
         /// Poistaa annetut komponentit listoista.
         /// </summary>
-        public void RemoveComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
+        public void RemoveComponents(IEnumerable<IObjectComponent> objectComponents)
         {
-            foreach (T component in objectComponents)
+            foreach (IObjectComponent objectComponent in objectComponents)
             {
-                RemoveFromLists(component);
+                RemoveFromLists(objectComponent);
             }
         }
         /// <summary>
         /// Poistaa annetut komponentit listoista.
         /// </summary>
-        public void RemoveComponents<T>(params T[] objectComponents) where T : IObjectComponent
+        public void RemoveComponents(params IObjectComponent[] objectComponents)
         {
-            RemoveComponents<T>(objectComponents.ToList());
+            RemoveComponents(objectComponents.ToList());
         }
         #endregion
 
@@ -283,9 +293,9 @@ namespace Khv.Game.GameObjects
 
             if (predicate == null)
             {
-                foreach (IObjectComponent component in list)
+                foreach (IObjectComponent objectComponent in list)
                 {
-                    T result = component as T;
+                    T result = objectComponent as T;
                     if (result != null)
                     {
                         return result;
@@ -294,16 +304,15 @@ namespace Khv.Game.GameObjects
             }
             else
             {
-                foreach (IObjectComponent component in list)
+                foreach (IObjectComponent objectComponent in list)
                 {
-                    T result = component as T;
+                    T result = objectComponent as T;
                     if (result != null && predicate(result))
                     {
                         return result;
                     }
                 }
             }
-
 
             return default(T);
         }
@@ -321,6 +330,13 @@ namespace Khv.Game.GameObjects
         {
             return allComponents.Find(c => predicate(c)) != null;
         }
+        /// <summary>
+        /// Palauttaa truen jos jokin komponentti täyttää ehdon.
+        /// </summary>
+        public bool ContainsComponent(IObjectComponent objectComponent)
+        {
+            return allComponents.Contains(objectComponent);
+        }
         #endregion
 
         /// <summary>
@@ -330,22 +346,29 @@ namespace Khv.Game.GameObjects
         /// </summary>
         public IEnumerable<T> ComponentsOfType<T>(Predicate<T> predicate = null) where T : IObjectComponent
         {
+            CheckType(typeof(T));
+
             FlushQues();
 
-            List<T> list = GetComponentList(typeof(T)) as List<T>;
+            IList list = allComponents
+                .Where(c => c.GetType().GetInterfaces().Contains(typeof(T)))
+                .ToList();
 
             if (predicate == null)
             {
-                foreach (T component in list)
+                foreach (T objectComponent in list)
                 {
-                    yield return component;
+                    yield return objectComponent;
                 }
             }
             else
             {
-                foreach (T component in list.Where(c => predicate(c)))
+                foreach (T objectComponent in list)
                 {
-                    yield return component;
+                    if (predicate(objectComponent))
+                    {
+                        yield return objectComponent;
+                    }
                 }
             } 
         }

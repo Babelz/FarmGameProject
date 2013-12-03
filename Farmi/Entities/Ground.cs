@@ -56,7 +56,7 @@ namespace Farmi.Entities
 
         public void Update(GameTime gameTime)
         {
-            if (Seed == null)
+            if (Seed == null) 
                 return;
             Seed.Update(gameTime);
         }
@@ -85,13 +85,9 @@ namespace Farmi.Entities
             else
             {
                 // jotta ei päivitetä turhaan playerille liittyviä komponentteja
-                seed.Components.SafelyRemoveComponents<IObjectComponent>(
-                    seed.Components.AllComponents
-                    );
+                seed.Components.SafelyRemoveComponents(seed.Components.AllComponents);
                 // lisätään siemenelle olennaiset komponentit
-                seed.Components.SafelyAddComponents<IUpdatableObjectComponent>(
-                    new GrowComponent(seed)
-                    );
+                seed.Components.SafelyAddComponents(new GrowComponent(seed));
                 State = GroundState.Planted;
             }
         }
