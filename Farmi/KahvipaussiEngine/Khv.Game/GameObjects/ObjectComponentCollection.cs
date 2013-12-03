@@ -188,7 +188,7 @@ namespace Khv.Game.GameObjects
         }
         public void SafelyAddComponents<T>(IEnumerable<T> objectComponents) where T : IObjectComponent
         {
-            foreach (T objectComponent in allComponents)
+            foreach (T objectComponent in objectComponents)
             {
                 safeAddQue.Add(objectComponent);
             }

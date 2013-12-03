@@ -84,8 +84,13 @@ namespace Farmi.Entities
             }
             else
             {
+                // jotta ei päivitetä turhaan playerille liittyviä komponentteja
                 seed.Components.SafelyRemoveComponents<IObjectComponent>(
                     seed.Components.AllComponents
+                    );
+                // lisätään siemenelle olennaiset komponentit
+                seed.Components.SafelyAddComponents<IUpdatableObjectComponent>(
+                    new GrowComponent(seed)
                     );
                 State = GroundState.Planted;
             }

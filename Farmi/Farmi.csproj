@@ -101,6 +101,7 @@
     <Compile Include="Entities\Components\PowerUpComponent.cs" />
     <Compile Include="Entities\Components\PushableComponent.cs" />
     <Compile Include="Entities\Components\SeedInteractionComponent.cs" />
+    <Compile Include="Entities\Components\Seed\GrowComponent.cs" />
     <Compile Include="Entities\Components\TextureFader.cs" />
     <Compile Include="Entities\Components\TimerWrapper.cs" />
     <Compile Include="Entities\Components\ViewComponent.cs" />
