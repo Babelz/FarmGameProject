@@ -86,6 +86,25 @@ namespace Farmi.Entities
             Collider = new BoxCollider(world, this,
                 new BasicObjectCollisionQuerier(),
                 new BasicTileCollisionQuerier());
+
+            Collider.OnCollisionEnter += Collider_OnCollisionEnter;
+            Collider.OnCollision += Collider_OnCollision;
+            Collider.OnCollisionLeave += Collider_OnCollisionLeave;
+        }
+
+        void Collider_OnCollisionLeave(object sender, CollisionEventArgs result)
+        {
+            Console.WriteLine("Player @Leave with " + result.CollidingObject);
+        }
+
+        void Collider_OnCollision(object sender, CollisionEventArgs result)
+        {
+            Console.WriteLine("Player @Collide with " + result.CollidingObject);
+        }
+
+        void Collider_OnCollisionEnter(object sender, CollisionEventArgs result)
+        {
+            Console.WriteLine("Player @Enter with " + result.CollidingObject);
         }
 
         #region Init

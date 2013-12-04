@@ -22,7 +22,10 @@ namespace Khv.Game.Collision
         protected World world;
 
         private ITileCollisionQuerier tileQuerier;
-        private IObjectCollisionQuerier objectQuerier; 
+        private IObjectCollisionQuerier objectQuerier;
+
+        private List<GameObject> rememberedGameObjects;
+        private List<RuleTile> rememberedRuleTiles;
 
         #endregion
 
@@ -38,7 +41,8 @@ namespace Khv.Game.Collision
             this.world = world;
             this.objectQuerier = objectQuerier;
             this.tileQuerier = tileQuerier;
-
+            rememberedGameObjects = new List<GameObject>();
+            rememberedRuleTiles = new List<RuleTile>();
             Polygon = new Polygon();
             
             
@@ -93,12 +97,27 @@ namespace Khv.Game.Collision
                     CollisionEventArgs r = PolygonCollision(this, polygon);
                     if (r.WillIntersect)
                     {
-                        FireOnCollision(Instance, tile, r);
+                        // jos ei muisteta tileä, niin törmäys alkoi just
+                        if (!CanRemember(tile))
+                        {
+                            FireOnCollisionEnter(Instance, tile, r);
+                            Remember(tile);
+                        }
+                        else
+                        {
+                            // muistetaan että ollaan törmätty
+                            FireOnCollision(Instance, tile, r);
+                        }
+                        // response
                         if (!r.IsCanceled)
                         {
                             Asd(Instance, r);
                         }
-
+                    } // muistetaan tile, mutta jos ei kerta törmätä, niin collision on loppunut
+                    else if (CanRemember(tile))
+                    {
+                        FireOnCollisionLeave(Instance, tile, r);
+                        Forget(tile);
                     }
                 }
                 
@@ -114,16 +133,46 @@ namespace Khv.Game.Collision
             foreach (GameObject gameObject in nearGameObjects)
             {
                 CollisionEventArgs r;
-                if (!Collides(gameObject, out r)) continue;
+                if (!Collides(gameObject, out r))
+                {
+                    // jos ei törmätä, mutta muistetaan niin luultavasti collision on loppunut
+                    if (CanRemember(gameObject))
+                    {
+                        FireOnCollisionLeave(Instance, gameObject, r);
+                        Forget(gameObject);
+                    }
+                    continue;
 
-                FireOnCollision(Instance, gameObject, r);
+                }
+
+                bool canRemember = false;
+                // jos ei muisteta niin törmäys alkoi
+                if (!CanRemember(gameObject))
+                {
+                    FireOnCollisionEnter(Instance, gameObject, r);
+                    Remember(gameObject);
+                }
+                else
+                {
+                    FireOnCollision(Instance, gameObject, r);
+                    canRemember = true;
+                }
+                
                 if (!r.IsCanceled)
                 {
                     Asd(Instance, r);
                 }
 
                 CollisionEventArgs r2 = PolygonCollision(gameObject.Collider as PolygonCollider, this);
-                FireOnCollision(gameObject, Instance, r2);
+
+                if (canRemember)
+                {
+                    FireOnCollision(gameObject, Instance, r2);
+                }
+                else
+                {
+                    FireOnCollisionEnter(gameObject, Instance, r2);
+                }
                 if (!r2.IsCanceled)
                 {
                     Asd(gameObject, r2);
@@ -132,6 +181,36 @@ namespace Khv.Game.Collision
 
 
             }
+        }
+
+        private void Remember(GameObject gameObject)
+        {
+            rememberedGameObjects.Add(gameObject);
+        }
+
+        private void Remember(RuleTile ruleTile)
+        {
+            rememberedRuleTiles.Add(ruleTile);
+        }
+
+        private void Forget(GameObject gameObject)
+        {
+            rememberedGameObjects.Remove(gameObject);
+        }
+
+        private void Forget(RuleTile tile)
+        {
+            rememberedRuleTiles.Remove(tile);
+        }
+
+        private bool CanRemember(GameObject gameObject)
+        {
+            return rememberedGameObjects.Contains(gameObject);
+        }
+
+        private bool CanRemember(RuleTile tile)
+        {
+            return rememberedRuleTiles.Contains(tile);
         }
 
         private void Asd(GameObject gameObject, CollisionEventArgs r)
@@ -236,7 +315,7 @@ namespace Khv.Game.Collision
             return PolygonCollision(
                 who.Polygon,
                 other.Polygon,
-                who.Instance.Velocity - other.Instance.Velocity,
+                other.Instance.Velocity - who.Instance.Velocity,
                 who.Instance.Position,
                 other.Instance.Position
                 );
@@ -253,7 +332,7 @@ namespace Khv.Game.Collision
             return PolygonCollision(
                 who.Polygon,
                 other,
-                who.Instance.Velocity,
+                -who.Instance.Velocity,
                 who.Instance.Position
                 );
         }

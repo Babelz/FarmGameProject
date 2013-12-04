@@ -20,6 +20,8 @@ namespace Khv.Game.Collision
 
         // TODO: tarvis sen OnCollisionLeave ja OnCollisionEnter eventit
 
+        public event CollisionEventHandler OnCollisionEnter;
+        public event CollisionEventHandler OnCollisionLeave;
         #endregion
 
         #region Virtuals
@@ -35,6 +37,22 @@ namespace Khv.Game.Collision
                 result.CollidingObject = sender;
                 me.Collider.OnCollision(this, result);
             }
+        }
+
+        protected void FireOnCollisionEnter(GameObject me, object sender, CollisionEventArgs args)
+        {
+            if (me.Collider.OnCollisionEnter == null) return;
+
+            args.CollidingObject = sender;
+            me.Collider.OnCollisionEnter(this, args);
+        }
+
+        protected void FireOnCollisionLeave(GameObject me, object sender, CollisionEventArgs args)
+        {
+            if (me.Collider.OnCollisionLeave == null) return;
+
+            args.CollidingObject = sender;
+            me.Collider.OnCollisionLeave(this, args);
         }
 
         #endregion
